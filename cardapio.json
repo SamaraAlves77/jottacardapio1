@@ -196,7 +196,8 @@
             "imagem": "guarana_1l.jpeg"
         }
     ],
-    "Adicionais": [
+    
+    "adicionais_opcoes": [
         {
             "id": 28,
             "nome": "Creme de Requeijão",
