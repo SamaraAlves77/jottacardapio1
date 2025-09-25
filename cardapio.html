@@ -19,8 +19,7 @@
                 <li><a href="#combos-e-familia">Combos e Família</a></li>
                 <li><a href="#acompanhamentos">Acompanhamentos</a></li>
                 <li><a href="#bebidas">Bebidas</a></li>
-                <li><a href="#adicionais">Adicionais</a></li>
-            </ul>
+                </ul>
         </nav>
         <div class="header-actions">
             <button class="carrinho-btn" id="carrinho-btn">
@@ -54,12 +53,8 @@
             <div class="item-grid" id="bebidas-grid"></div>
         </section>
 
-        <section id="adicionais" class="menu-section">
-            <h2>Adicionais</h2>
-            <div class="item-grid" id="adicionais-grid"></div>
-        </section>
-    </main>
-
+        </main>
+    
     <div id="carrinho-modal" class="modal">
         <div class="modal-content">
             <span class="fechar-modal">&times;</span>
@@ -73,6 +68,24 @@
                 <input type="text" id="endereco-cliente" placeholder="Seu endereço">
                 <input type="text" id="telefone-cliente" placeholder="Seu telefone">
                 <button id="btn-finalizar-pedido">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="customizacao-modal" class="modal">
+        <div class="modal-content">
+            <span class="fechar-customizacao">&times;</span>
+            <h3>Customizar <span id="item-customizacao-nome"></span></h3>
+            
+            <div class="adicionais-opcoes" id="adicionais-opcoes-lista">
+                </div>
+
+            <div class="customizacao-resumo">
+                <p>Preço Base: R$ <span id="preco-base-customizacao">0,00</span></p>
+                <p>Adicionais: R$ <span id="preco-adicionais-customizacao">0,00</span></p>
+                <h4>Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
+                
+                <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
             </div>
         </div>
     </div>
