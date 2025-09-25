@@ -3,33 +3,37 @@
 // =======================================================
 let carrinho = []; // Array para armazenar os itens do pedido
 
-// Referências aos elementos da interface
+// Referências aos elementos da interface (Modal e Botões)
 const carrinhoModal = document.getElementById('carrinho-modal');
-const fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
+// Verificação de existência para evitar erros, caso o elemento ainda não esteja carregado
+const fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null; 
 const carrinhoBtn = document.getElementById('carrinho-btn');
 const contadorCarrinho = document.getElementById('contador-carrinho');
 const carrinhoItensContainer = document.getElementById('carrinho-itens');
 const carrinhoTotalSpan = document.getElementById('carrinho-total');
 const notificacao = document.getElementById('notificacao');
+const btnFinalizar = document.getElementById('btn-finalizar-pedido');
+const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+
 
 // =======================================================
-// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
+// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO (NOVAS FUNÇÕES)
 // =======================================================
 
 /**
- * Adiciona um item ao carrinho, atualiza a interface e exibe a notificação.
+ * Adiciona um item ao carrinho, atualiza o contador e exibe a notificação.
  * @param {object} item - O objeto do item a ser adicionado.
  */
 function adicionarAoCarrinho(item) {
     // 1. Adiciona o item ao array do carrinho
-    carrinho.push(item);
+    carrinho.push(item); 
     
     // 2. Atualiza o contador de itens no cabeçalho
     if (contadorCarrinho) {
         contadorCarrinho.textContent = carrinho.length;
     }
 
-    // 3. Atualiza a modal do carrinho (para ver a lista e total)
+    // 3. Atualiza a modal (lista de itens e total)
     atualizarModalCarrinho();
     
     // 4. Mostra a notificação de sucesso
@@ -41,42 +45,6 @@ function adicionarAoCarrinho(item) {
             notificacao.classList.remove('mostrar');
         }, 3000);
     }
-}
-
-/**
- * Atualiza o conteúdo e o total exibidos na modal do carrinho.
- */
-function atualizarModalCarrinho() {
-    if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
-
-    // Limpa o conteúdo anterior
-    carrinhoItensContainer.innerHTML = '';
-    let total = 0;
-
-    // Adiciona cada item do carrinho ao DOM
-    carrinho.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'carrinho-item';
-        
-        itemDiv.innerHTML = `
-            <span>${item.nome}</span>
-            <span>R$ ${item.preco.toFixed(2).replace('.', ',')}</span>
-            <button class="btn-remover" data-index="${index}">X</button>
-        `;
-        carrinhoItensContainer.appendChild(itemDiv);
-        total += item.preco;
-    });
-
-    // Atualiza o total
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
-
-    // Adiciona o listener para os novos botões de remoção
-    document.querySelectorAll('.btn-remover').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index');
-            removerDoCarrinho(index);
-        });
-    });
 }
 
 /**
@@ -94,8 +62,49 @@ function removerDoCarrinho(index) {
     atualizarModalCarrinho();
 }
 
+/**
+ * Atualiza o conteúdo e o total exibidos na modal do carrinho.
+ */
+function atualizarModalCarrinho() {
+    if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
+
+    // Limpa o conteúdo anterior
+    carrinhoItensContainer.innerHTML = '';
+    let total = 0;
+
+    // Adiciona cada item do carrinho ao DOM e calcula o total
+    carrinho.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'carrinho-item';
+        
+        // Garante a exibição do preço com duas casas decimais
+        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
+
+        itemDiv.innerHTML = `
+            <span>${item.nome}</span>
+            <span>R$ ${precoFormatado}</span>
+            <button class="btn-remover" data-index="${index}">X</button>
+        `;
+        carrinhoItensContainer.appendChild(itemDiv);
+        total += item.preco;
+    });
+
+    // Atualiza o total
+    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
+
+    // Adiciona o listener para os botões de remoção criados dinamicamente
+    document.querySelectorAll('.btn-remover').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // O dataset pega o atributo 'data-index'
+            const index = e.target.getAttribute('data-index'); 
+            removerDoCarrinho(index);
+        });
+    });
+}
+
+
 // =======================================================
-// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO (MANTIDAS/AJUSTADAS)
+// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO (Ajuste no Botão)
 // =======================================================
 
 // Função para criar cada item individual do cardápio
@@ -104,8 +113,8 @@ function criarItemCardapio(item) {
     divItem.className = 'item-card';
 
     const img = document.createElement('img');
-    // Ajusta o caminho da imagem: 'imagem_cardapio/'
-    img.src = `imagem_cardapio/${item.imagem}`;
+    // Caminho da imagem (ajustado para sua pasta)
+    img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
     divItem.appendChild(img);
 
@@ -129,10 +138,9 @@ function criarItemCardapio(item) {
     btnAdicionar.textContent = 'Adicionar';
     
     // =======================================================
-    // FUNÇÃO CORRIGIDA: Adicionando o Event Listener aqui!
+    // CORREÇÃO ESSENCIAL: Adicionando o Event Listener ao botão
     // =======================================================
     btnAdicionar.addEventListener('click', () => {
-        // Quando clicado, chama a função de adicionar, passando o objeto 'item'
         adicionarAoCarrinho(item); 
     });
     // =======================================================
@@ -142,7 +150,7 @@ function criarItemCardapio(item) {
 }
 
 
-// Sua função original para criar a seção (mantida)
+// Função para criar a seção do cardápio (MANTIDA)
 function criarSecaoCardapio(titulo, itens) {
     let containerId = '';
     switch(titulo) {
@@ -166,13 +174,16 @@ function criarSecaoCardapio(titulo, itens) {
     });
 }
 
-// Sua função original para carregar o JSON (mantida)
+// A função principal que carrega e exibe os dados do cardápio (MANTIDA)
 async function carregarCardapio() {
     try {
+        // Faz a requisição para o arquivo JSON
         const response = await fetch('./cardapio.json');
+        
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
+        
         const cardapioData = await response.json();
 
         for (const categoria in cardapioData) {
@@ -182,7 +193,6 @@ async function carregarCardapio() {
         }
     } catch (error) {
         console.error('Erro ao carregar o cardápio:', error);
-        // Exibe uma mensagem de erro na página
         document.body.innerHTML = `<h1>Erro ao carregar o cardápio. Tente novamente mais tarde.</h1>`;
     }
 }
@@ -191,6 +201,7 @@ async function carregarCardapio() {
 // EVENT LISTENERS DE INICIALIZAÇÃO
 // =======================================================
 
+// Inicia o carregamento do cardápio e configura os botões
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Inicia o carregamento do cardápio
     carregarCardapio();
@@ -199,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
             carrinhoModal.style.display = 'block';
-            // Garante que o carrinho está atualizado antes de abrir
             atualizarModalCarrinho(); 
         });
     }
@@ -218,29 +228,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 5. Lógica do Finalizar Pedido (Apenas um placeholder, precisa de implementação real)
-    const btnFinalizar = document.getElementById('btn-finalizar-pedido');
+    // 5. Lógica do Finalizar Pedido (Apenas um alerta placeholder)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             if (carrinho.length === 0) {
                 alert("Seu carrinho está vazio. Adicione itens antes de finalizar.");
                 return;
             }
-            
-            // Aqui você deve implementar a lógica para enviar o pedido (ex: para WhatsApp ou API)
-            alert("Pedido em preparação! (Funcionalidade de envio precisa ser implementada)");
+            // Implementação real deve ser feita aqui (ex: envio para WhatsApp/API)
+            alert(`Pedido finalizado! Total: R$ ${carrinhoTotalSpan.textContent}. Entraremos em contato!`);
+            // Resetar o carrinho após finalizar (opcional, dependendo da sua lógica)
+            // carrinho = [];
+            // contadorCarrinho.textContent = 0;
             carrinhoModal.style.display = 'none';
         });
     }
     
-    // 6. Lógica do Hamburger Menu (Se precisar de um toggle para o menu lateral)
-    const hamburgerBtn = document.getElementById('hamburger-menu-btn');
-    const navLinks = document.querySelector('.nav-links'); // Supondo que você quer mostrar/esconder a lista
-    
+    // 6. Lógica do Hamburger Menu (Apenas toggle de classe)
+    const navLinks = document.querySelector('.nav-links');
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
-            // Adicione ou remova uma classe CSS que faz o toggle (ex: 'active')
-            navLinks.classList.toggle('active');
+            // Requer que você tenha um CSS para a classe 'active'
+            navLinks.classList.toggle('active'); 
         });
     }
 
