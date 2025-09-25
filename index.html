@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JottaV Burguer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="entrada-visual" class="entrada-visual-container">
+        <img src="jottaV_burguer.png" alt="Logo JottaV Burguer">
+        <button id="abrir-cardapio-visual" class="btn-principal">VER CARDÁPIO</button>
+    </div>
+
+    <main id="main-content" style="display:none;">
+
+        <header>
+            <div class="logo">
+                <img src="jottaV_burguer.png" alt="Logo JottaV Burguer">
+            </div>
+            <nav id="nav-links" class="nav-links">
+                </nav>
+            <div class="header-actions">
+                <button id="abrir-carrinho" class="carrinho-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="contador-carrinho">0</span>
+                </button>
+                <button id="hamburger-menu" class="hamburger-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+
+        <div id="menu-container" class="container">
+            </div>
+
+        <div id="notificacao-flutuante" class="notificacao"></div>
+
+        <footer>
+            <p>&copy; 2024 JottaV Burguer. Todos os direitos reservados.</p>
+        </footer>
+
+    </main>
+
+    <div id="carrinho-modal" class="modal">
+        <div class="modal-content">
+            <span class="fechar-modal">&times;</span>
+            <h2>Seu Pedido</h2>
+            <div id="carrinho-vazio" class="carrinho-vazio">Seu carrinho está vazio.</div>
+            <div id="carrinho-itens">
+                </div>
+            <div class="carrinho-total">
+                <p>Total do Pedido: <span id="total-pedido">R$ 0,00</span></p>
+            </div>
+            <div class="carrinho-finalizar">
+                <h3>Dados para Finalizar</h3>
+                <label for="forma-pagamento">Forma de Pagamento:</label>
+                <select id="forma-pagamento">
+                    <option value="pix">PIX</option>
+                    <option value="cartao-credito">Cartão de Crédito</option>
+                    <option value="cartao-debito">Cartão de Débito</option>
+                    <option value="dinheiro">Dinheiro</option>
+                </select>
+
+                <label for="observacoes-gerais">Observações Gerais:</label>
+                <textarea id="observacoes-gerais" placeholder="Ex: Sem cebola, ponto da carne, etc."></textarea>
+                
+                <h3>Endereço de Entrega</h3>
+                <input type="text" id="campo-rua" placeholder="Rua">
+                <input type="text" id="campo-numero" placeholder="Número">
+                <input type="text" id="campo-bairro" placeholder="Bairro">
+                <textarea id="observacoes-endereco" placeholder="Ex: Perto do mercado, portão preto"></textarea>
+                
+                <p id="localizacao-status"></p>
+                <button id="btn-localizacao" class="btn-secundario">Usar minha localização atual</button>
+
+                <button id="finalizar-pedido-whatsapp" class="btn-principal" disabled>
+                    <i class="fab fa-whatsapp"></i> Finalizar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adicionais-modal" class="modal">
+        <div class="modal-content">
+            <span class="fechar-modal">&times;</span>
+            <h2>Opcionais</h2>
+            <div class="adicionais-opcoes-container" id="adicionais-opcoes">
+                </div>
+            <label for="observacao-item">Observações sobre o item:</label>
+            <textarea id="observacao-item" placeholder="Ex: Sem queijo, sem picles, etc."></textarea>
+            <button id="confirmar-adicionais" class="btn-principal">Confirmar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
