@@ -1,210 +1,197 @@
 /* ======================================================= */
-/* --- AJUSTES GERAIS PARA AS MODAIS E NOTIFICAÇÃO --- */
+/* --- AJUSTES GERAIS PARA MODAIS (GARANTIA DE CENTRALIZAÇÃO) --- */
 /* ======================================================= */
 
-/* Ajuste: Mantenha a modal do carrinho oculta por padrão e use a propriedade 'display: block' no JS */
+/* CRÍTICO: Usa Flexbox para garantir que a modal fique perfeitamente centralizada */
 .modal {
     display: none; 
     position: fixed;
-    z-index: 1000; /* Prioridade alta */
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Removido justify-content e align-items para usar o margin auto no modal-content */
+    
+    /* Centralização usando Flex */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
 
-/* Centralização do conteúdo da modal */
+/* Conteúdo da Modal (Ajustado para o design slim/minimalista) */
 .modal-content {
     background-color: var(--card-background);
-    margin: 10% auto; /* Centraliza verticalmente na tela */
-    padding: 30px;
-    border-radius: 12px; /* Arredondamento mais elegante */
-    width: 90%; 
-    max-width: 500px; /* Largura máxima ideal para customização */
-    box-shadow: 0 5px 15px var(--shadow-color);
+    padding: 0; /* Remove padding inicial para controle interno */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
+    max-width: 400px; /* Largura mais estreita, como no exemplo */
+    width: 90%;
     max-height: 90vh;
     overflow-y: auto;
+    margin: 0; /* Remove a margem 'auto' antiga */
     
-    /* Adicionando uma transição suave ao abrir (opcional) */
     animation-name: modalFadeIn;
     animation-duration: 0.3s;
 }
 
 @keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-50px); }
+    from { opacity: 0; transform: translateY(50px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Estilo do botão de fechar (X) - Aplicável a ambos 'fechar-modal' e 'fechar-customizacao' */
-.fechar-modal,
-.fechar-customizacao {
-    color: #999;
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    font-size: 32px;
-    font-weight: 300; /* Fonte mais fina */
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
+/* ======================================================= */
+/* --- ESTILOS ESPECÍFICOS DA MODAL DE CUSTOMIZAÇÃO --- */
+/* ======================================================= */
 
-.fechar-modal:hover,
-.fechar-customizacao:hover {
-    color: var(--primary-color);
-}
-
-.modal-content h3 {
-    text-align: center;
+/* 1. Header (Título e Botão de voltar) */
+#customizacao-modal h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    padding: 15px 10px 15px 40px; 
+    margin-bottom: 0;
+    border-bottom: 1px solid #eee;
+    font-weight: 700;
     color: var(--secondary-color);
-    margin-bottom: 25px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee; /* Linha divisória sutil */
-    font-size: 1.8rem;
+    position: relative;
 }
 
-/* ======================================================= */
-/* --- ESTILOS DA MODAL DE CUSTOMIZAÇÃO (ADICIONAIS) --- */
-/* ======================================================= */
+/* Seta de Voltar (Imita o ícone na imagem) */
+.fechar-customizacao {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-weight: bold;
+}
+/* Altera o 'X' para uma seta de voltar (unicode) */
+.fechar-customizacao::before {
+    content: '\2190'; 
+}
 
-/* Container da lista de adicionais */
+/* Título secundário "Deseja adicionar algo?" (Apenas se adicionado no HTML) */
+.adicionais-titulo-secundario {
+    font-size: 0.9rem;
+    color: #666;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+
+/* 2. Lista de Adicionais (Área de Scroll) */
 #adicionais-opcoes-lista {
-    max-height: 300px; /* Limita a altura para scroll */
+    padding: 0 20px; 
+    max-height: 350px; 
     overflow-y: auto;
-    padding-right: 15px; /* Espaço para a barra de rolagem */
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #eee; 
 }
 
-/* Estilo de cada item de adicional (Minimalista) */
+/* Item de Adicional (Clean e espaçado) */
 .adicional-item-opcao {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px dashed #ddd; /* Linha sutil */
-    color: var(--text-color);
-    font-size: 16px;
+    padding: 15px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px dashed #eee; 
 }
 
-.adicional-item-opcao:last-child {
-    border-bottom: none;
+/* Preço do Adicional (Forte e claro) */
+.adicional-item-opcao span {
+    display: flex;
+    align-items: center;
 }
-
-/* Preço pequeno */
 .adicional-item-opcao small {
-    color: #888;
-    font-weight: 400;
-    margin-left: 8px;
+    font-weight: 700; 
+    color: var(--secondary-color); 
+    margin-left: 10px;
 }
 
-/* Contador (+/-) - Design Elegante */
+/* 3. Contador e Botão de Adicionar (+) */
 .adicional-contador {
     display: flex;
     align-items: center;
-    gap: 8px; 
+    gap: 15px; 
 }
 
-/* Botões +/- */
-.adicional-contador button {
-    /* Cor de contraste sutil (pode ser um cinza escuro ou sua cor primária) */
-    background-color: var(--primary-color);
+/* Botão de aumentar (+) - Estilo da Imagem (Preto) */
+.adicional-contador .btn-aumentar-adicional {
+    background-color: var(--secondary-color); /* Preto */
     color: white;
     border: none;
     border-radius: 50%; 
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-    font-weight: bold;
+    width: 35px;
+    height: 35px;
+    font-size: 22px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    transition: background-color 0.2s;
     line-height: 1; 
     padding: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.adicional-contador button:hover {
-    background-color: #c0392b; /* Variação mais escura do primary-color */
-    transform: scale(1.05);
+.adicional-contador .btn-aumentar-adicional:hover {
+    background-color: #333;
 }
 
-/* Opcional: Estilo diferente para o botão de diminuir */
-.adicional-contador .btn-diminuir-adicional {
-    background-color: #95a5a6; /* Cinza suave para neutralidade */
-    color: white;
-}
-
-.adicional-contador .btn-diminuir-adicional:hover {
-    background-color: #7f8c8d;
-}
-
-/* Número da quantidade */
-.quantidade-adicional {
-    font-weight: 700;
-    color: var(--secondary-color);
-    width: 15px;
-    text-align: center;
+/* Esconde os elementos do contador completo para simular o design de clique único */
+/* Se você quiser o contador completo (- 1 +), remova as linhas 'display: none;' */
+.adicional-contador .btn-diminuir-adicional, 
+.adicional-contador .quantidade-adicional {
+    display: none; 
 }
 
 /* ======================================================= */
-/* --- ESTILOS DO RESUMO E BOTÃO FINAL --- */
+/* --- RODAPÉ DA MODAL (PREÇO E BOTÃO ADICIONAR) --- */
 /* ======================================================= */
 
 .customizacao-resumo {
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
-    margin-top: 25px;
+    padding: 20px;
+    margin-top: 0;
+    border-top: 1px solid #eee;
+    background-color: var(--card-background);
 }
 
-.customizacao-resumo p,
+/* Estiliza o Preço Total (Como o R$ 22,00 na imagem) */
 .customizacao-resumo h4 {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 400;
-    line-height: 1.8;
-}
-
-.customizacao-resumo span {
+    font-size: 1.8em;
+    color: var(--secondary-color);
+    margin: 0 0 10px 0;
     font-weight: 700;
-    color: var(--text-color);
 }
-
-.customizacao-resumo h4 {
-    font-size: 1.4em;
+.customizacao-resumo h4 span {
     color: var(--primary-color);
-    margin-top: 10px;
 }
 
-/* Botão "Adicionar ao Carrinho" da Customização */
+/* Oculta os detalhes para focar apenas no total (como no exemplo) */
+.customizacao-resumo p {
+    display: none; 
+}
+
+
+/* Botão "ADICIONAR" (Preto, grande e forte) */
 #btn-adicionar-customizado {
     width: 100%;
-    padding: 15px;
-    margin-top: 25px;
-    background-color: #2ecc71; /* Verde de sucesso */
+    padding: 18px; 
+    margin-top: 0;
+    background-color: var(--secondary-color); /* Preto */
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px; 
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.4);
+    transition: background-color 0.2s;
 }
 
 #btn-adicionar-customizado:hover {
-    background-color: #27ae60;
-    box-shadow: 0 6px 8px rgba(46, 204, 113, 0.6);
-}
-
-/* ======================================================= */
-/* --- RESPONSIVIDADE PARA O MENU MOBILE (CORREÇÃO) --- */
-/* ======================================================= */
-
-@media (max-width: 768px) {
-    /* Ajuste para garantir que a modal não se perca em telas pequenas */
-    .modal-content {
-        margin: 5% auto;
-        padding: 15px;
-    }
+    background-color: #333;
 }
