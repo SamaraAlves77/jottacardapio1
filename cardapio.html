@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - JottaV Burguer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#hamburgueres-artesanais" class="active">Hambúrgueres</a></li>
+                <li><a href="#combos-e-familia">Combos e Família</a></li>
+                <li><a href="#acompanhamentos">Acompanhamentos</a></li>
+                <li><a href="#bebidas">Bebidas</a></li>
+                <li><a href="#adicionais">Adicionais</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="carrinho-btn" id="carrinho-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="contador-carrinho">0</span>
+            </button>
+            <button class="hamburger-menu-btn" id="hamburger-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="hamburgueres-artesanais" class="menu-section">
+            <h2>Hambúrgueres Artesanais</h2>
+            <div class="item-grid" id="hamburgueres-artesanais-grid"></div>
+        </section>
+
+        <section id="combos-e-familia" class="menu-section">
+            <h2>Combos e Família</h2>
+            <div class="item-grid" id="combos-e-familia-grid"></div>
+        </section>
+
+        <section id="acompanhamentos" class="menu-section">
+            <h2>Acompanhamentos</h2>
+            <div class="item-grid" id="acompanhamentos-grid"></div>
+        </section>
+
+        <section id="bebidas" class="menu-section">
+            <h2>Bebidas</h2>
+            <div class="item-grid" id="bebidas-grid"></div>
+        </section>
+
+        <section id="adicionais" class="menu-section">
+            <h2>Adicionais</h2>
+            <div class="item-grid" id="adicionais-grid"></div>
+        </section>
+    </main>
+
+    <div id="carrinho-modal" class="modal">
+        <div class="modal-content">
+            <span class="fechar-modal">&times;</span>
+            <h3>Seu Pedido</h3>
+            <div class="carrinho-itens" id="carrinho-itens"></div>
+            <div class="carrinho-total">
+                Total: R$ <span id="carrinho-total">0.00</span>
+            </div>
+            <div class="carrinho-finalizar">
+                <input type="text" id="nome-cliente" placeholder="Seu nome">
+                <input type="text" id="endereco-cliente" placeholder="Seu endereço">
+                <input type="text" id="telefone-cliente" placeholder="Seu telefone">
+                <button id="btn-finalizar-pedido">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notificacao" class="notificacao">
+        Item adicionado ao carrinho!
+    </div>
+
+    <footer>
+        <p>&copy; 2024 JottaV Burguer. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
