@@ -1,545 +1,210 @@
-/* Importação da fonte (opcional, adicione a sua se desejar) */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* ======================================================= */
+/* --- AJUSTES GERAIS PARA AS MODAIS E NOTIFICAÇÃO --- */
+/* ======================================================= */
 
-:root {
-    --primary-color: #e53935; /* Vermelho JottaV Burguer */
-    --secondary-color: #212121; /* Preto */
-    --background-color: #f5f5f5; /* Cinza claro */
-    --card-background: #fff; /* Branco para os cards */
-    --text-color: #333; /* Cor do texto */
-    --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-}
-
-body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
-/* --- ESTILOS PARA A PÁGINA DE ENTRADA --- */
-
-.landing-page-container {
-    background-color: var(--background-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 2rem;
-}
-
-.landing-card {
-    background-color: var(--card-background);
-    border-radius: 15px;
-    box-shadow: 0 10px 20px var(--shadow-color);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    max-width: 800px;
-    width: 100%;
-}
-
-.card-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.logo-landing {
-    max-width: 250px;
-    height: auto;
-    margin-bottom: 1rem;
-}
-
-.slogan {
-    font-size: 1.2rem;
-    color: #666;
-    margin-top: 1rem;
-}
-
-.card-right {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-}
-
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.social-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.social-btn i {
-    margin-right: 0.5rem;
-}
-
-.instagram {
-    background: #E1306C;
-    color: white;
-}
-
-.whatsapp {
-    background: #25D366;
-    color: white;
-}
-
-.cardapio {
-    background: var(--primary-color);
-    color: white;
-}
-
-/* Responsividade para a página de entrada */
-@media (min-width: 768px) {
-    .landing-card {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 3rem;
-    }
-
-    .card-left, .card-right {
-        width: 45%;
-    }
-
-    .card-left {
-        align-items: flex-start;
-        text-align: left;
-    }
-    
-    .logo-landing {
-        max-width: 200px;
-    }
-}
-
-/* --- ESTILOS DO CARDÁPIO (Padrão para Desktop) --- */
-header {
-    background-color: var(--card-background);
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo img {
-    height: 60px;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--secondary-color);
-    font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--primary-color);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.carrinho-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-#contador-carrinho {
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 50%;
-    padding: 0.2rem 0.5rem;
-    position: absolute;
-    top: -5px;
-    right: -10px;
-}
-
-.hamburger-menu-btn {
-    display: none;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--secondary-color);
-}
-
-main {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.menu-section {
-    margin-bottom: 3rem;
-}
-
-.menu-section h2 {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.item-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    justify-content: center;
-}
-
-.item-card {
-    background-color: var(--card-background);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.item-card:hover {
-    transform: translateY(-5px);
-}
-
-.item-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover; /* Corrigido: ajusta a foto para preencher o espaço, cortando as bordas */
-    object-position: center; /* Centraliza a imagem */
-}
-
-.item-card h3 {
-    font-size: 1.5rem;
-    margin: 1rem 0 0.5rem;
-    padding: 0 1rem;
-    text-align: center;
-}
-
-.item-card p {
-    font-size: 0.9rem;
-    color: #666;
-    padding: 0 1rem;
-    flex-grow: 1;
-}
-
-.item-card .price {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-top: 1rem;
-    text-align: center;
-}
-
-.btn-add {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 1rem;
-    border-radius: 8px;
-    width: calc(100% - 2rem);
-}
-
-.btn-add:hover {
-    background-color: #d32f2f;
-}
-
-/* --- Modais (Pop-ups) --- */
+/* Ajuste: Mantenha a modal do carrinho oculta por padrão e use a propriedade 'display: block' no JS */
 .modal {
-    display: none;
+    display: none; 
     position: fixed;
-    z-index: 2000;
+    z-index: 1000; /* Prioridade alta */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
+    /* Removido justify-content e align-items para usar o margin auto no modal-content */
 }
 
+/* Centralização do conteúdo da modal */
 .modal-content {
     background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin: 10% auto; /* Centraliza verticalmente na tela */
+    padding: 30px;
+    border-radius: 12px; /* Arredondamento mais elegante */
+    width: 90%; 
+    max-width: 500px; /* Largura máxima ideal para customização */
+    box-shadow: 0 5px 15px var(--shadow-color);
     position: relative;
-    max-width: 600px;
-    width: 90%;
     max-height: 90vh;
     overflow-y: auto;
+    
+    /* Adicionando uma transição suave ao abrir (opcional) */
+    animation-name: modalFadeIn;
+    animation-duration: 0.3s;
 }
 
-.fechar-modal {
-    color: #aaa;
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo do botão de fechar (X) - Aplicável a ambos 'fechar-modal' e 'fechar-customizacao' */
+.fechar-modal,
+.fechar-customizacao {
+    color: #999;
     position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
-    font-weight: bold;
+    top: 15px;
+    right: 25px;
+    font-size: 32px;
+    font-weight: 300; /* Fonte mais fina */
     cursor: pointer;
+    transition: color 0.3s ease;
 }
 
-.fechar-modal:hover {
+.fechar-modal:hover,
+.fechar-customizacao:hover {
     color: var(--primary-color);
 }
 
-.adicionais-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.modal-content h3 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Linha divisória sutil */
+    font-size: 1.8rem;
 }
 
-.adicional-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-}
+/* ======================================================= */
+/* --- ESTILOS DA MODAL DE CUSTOMIZAÇÃO (ADICIONAIS) --- */
+/* ======================================================= */
 
-.adicional-item:hover {
-    background-color: #f9f9f9;
-}
-
-.adicional-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.adicional-info img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.adicional-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-increase, .btn-decrease {
-    background-color: #ddd;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.carrinho-itens {
-    max-height: 300px;
+/* Container da lista de adicionais */
+#adicionais-opcoes-lista {
+    max-height: 300px; /* Limita a altura para scroll */
     overflow-y: auto;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    padding-right: 15px; /* Espaço para a barra de rolagem */
+    margin-bottom: 20px;
 }
 
-.carrinho-item {
+/* Estilo de cada item de adicional (Minimalista) */
+.adicional-item-opcao {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed #eee;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #ddd; /* Linha sutil */
+    color: var(--text-color);
+    font-size: 16px;
 }
 
-.carrinho-actions {
+.adicional-item-opcao:last-child {
+    border-bottom: none;
+}
+
+/* Preço pequeno */
+.adicional-item-opcao small {
+    color: #888;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+/* Contador (+/-) - Design Elegante */
+.adicional-contador {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 8px; 
 }
 
-.btn-remove {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.carrinho-total {
-    text-align: right;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-}
-
-.carrinho-finalizar input,
-.carrinho-finalizar select {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.carrinho-finalizar button {
-    width: 100%;
-    padding: 1rem;
+/* Botões +/- */
+.adicional-contador button {
+    /* Cor de contraste sutil (pode ser um cinza escuro ou sua cor primária) */
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%; 
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    line-height: 1; 
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.adicional-contador button:hover {
+    background-color: #c0392b; /* Variação mais escura do primary-color */
+    transform: scale(1.05);
+}
+
+/* Opcional: Estilo diferente para o botão de diminuir */
+.adicional-contador .btn-diminuir-adicional {
+    background-color: #95a5a6; /* Cinza suave para neutralidade */
+    color: white;
+}
+
+.adicional-contador .btn-diminuir-adicional:hover {
+    background-color: #7f8c8d;
+}
+
+/* Número da quantidade */
+.quantidade-adicional {
+    font-weight: 700;
+    color: var(--secondary-color);
+    width: 15px;
+    text-align: center;
+}
+
+/* ======================================================= */
+/* --- ESTILOS DO RESUMO E BOTÃO FINAL --- */
+/* ======================================================= */
+
+.customizacao-resumo {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 25px;
+}
+
+.customizacao-resumo p,
+.customizacao-resumo h4 {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+.customizacao-resumo span {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.customizacao-resumo h4 {
+    font-size: 1.4em;
+    color: var(--primary-color);
+    margin-top: 10px;
+}
+
+/* Botão "Adicionar ao Carrinho" da Customização */
+#btn-adicionar-customizado {
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    background-color: #2ecc71; /* Verde de sucesso */
+    color: white;
+    border: none;
+    border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.4);
 }
 
-.carrinho-finalizar button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
+#btn-adicionar-customizado:hover {
+    background-color: #27ae60;
+    box-shadow: 0 6px 8px rgba(46, 204, 113, 0.6);
 }
 
-/* --- Notificação --- */
-.notificacao {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(150%);
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.5s ease-in-out;
-    z-index: 3000;
-}
+/* ======================================================= */
+/* --- RESPONSIVIDADE PARA O MENU MOBILE (CORREÇÃO) --- */
+/* ======================================================= */
 
-.notificacao.show {
-    transform: translateX(-50%) translateY(0);
-}
-
-/* --- Footer --- */
-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
-}
-
-/* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
-
-/* Telas Mobile (max-width: 768px) */
 @media (max-width: 768px) {
-    header {
-        padding: 1rem;
-    }
-
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 80px;
-        left: 0;
-        background-color: var(--card-background);
-        box-shadow: 0 2px 4px var(--shadow-color);
-        text-align: center;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .hamburger-menu-btn {
-        display: block;
-    }
-
-    main {
-        padding: 1rem 0.5rem;
-    }
-
-    .menu-section h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-    }
-
-    .item-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
-    }
-
-    .item-card {
-        padding: 0.5rem;
-    }
-
-    .item-card img {
-        height: 120px; /* Reduzi o tamanho para a foto ficar melhor no celular */
-        object-fit: cover; /* Mantive o ajuste para a foto não ser esticada */
-    }
-
-    .item-card h3 {
-        font-size: 0.9rem;
-        margin: 0.5rem 0;
-    }
-
-    .item-card p {
-        display: none;
-    }
-
-    .item-card .price {
-        font-size: 0.9rem;
-        margin: 0.2rem 0;
-    }
-
-    .btn-add {
-        padding: 0.4rem;
-        font-size: 0.8rem;
-        margin: 0.5rem 0;
-        width: 100%;
+    /* Ajuste para garantir que a modal não se perca em telas pequenas */
+    .modal-content {
+        margin: 5% auto;
+        padding: 15px;
     }
 }
