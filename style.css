@@ -1,8 +1,297 @@
-/* ======================================================= */
-/* --- AJUSTES GERAIS PARA MODAIS (GARANTIA DE CENTRALIZAÇÃO) --- */
-/* ======================================================= */
+/* Importação da fonte (opcional, adicione a sua se desejar) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* CRÍTICO: Usa Flexbox para garantir que a modal fique perfeitamente centralizada */
+:root {
+    --primary-color: #e53935; /* Vermelho JottaV Burguer */
+    --secondary-color: #212121; /* Preto */
+    --background-color: #f5f5f5; /* Cinza claro */
+    --card-background: #fff; /* Branco para os cards */
+    --text-color: #333; /* Cor do texto */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- ESTILOS PARA A PÁGINA DE ENTRADA --- */
+
+.landing-page-container {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.landing-card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.card-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo-landing {
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.slogan {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.card-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-btn i {
+    margin-right: 0.5rem;
+}
+
+.instagram {
+    background: #E1306C;
+    color: white;
+}
+
+.whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.cardapio {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Responsividade para a página de entrada */
+@media (min-width: 768px) {
+    .landing-card {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 3rem;
+    }
+
+    .card-left, .card-right {
+        width: 45%;
+    }
+
+    .card-left {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .logo-landing {
+        max-width: 200px;
+    }
+}
+
+/* --- ESTILOS DO CARDÁPIO (Padrão para Desktop) --- */
+header {
+    background-color: var(--card-background);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    height: 60px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.carrinho-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#contador-carrinho {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    position: absolute;
+    top: -5px;
+    right: -10px;
+}
+
+.hamburger-menu-btn {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-section {
+    margin-bottom: 3rem;
+}
+
+.menu-section h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.item-card {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+}
+
+.item-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; 
+    object-position: center; 
+}
+
+.item-card h3 {
+    font-size: 1.5rem;
+    margin: 1rem 0 0.5rem;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.item-card p {
+    font-size: 0.9rem;
+    color: #666;
+    padding: 0 1rem;
+    flex-grow: 1;
+}
+
+.item-card .price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.btn-add {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 1rem;
+    border-radius: 8px;
+    width: calc(100% - 2rem);
+}
+
+.btn-add:hover {
+    background-color: #d32f2f;
+}
+
+/* --- Modais (Pop-ups) --- */
+
+/* AJUSTE CRÍTICO: Usa Flexbox para garantir centralização perfeita */
 .modal {
     display: none; 
     position: fixed;
@@ -13,25 +302,26 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     
-    /* Centralização usando Flex */
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center; /* Centraliza verticalmente */
 }
 
-/* Conteúdo da Modal (Ajustado para o design slim/minimalista) */
+/* Conteúdo da Modal (Ajuste para a modal de customização e carrinho) */
 .modal-content {
     background-color: var(--card-background);
-    padding: 0; /* Remove padding inicial para controle interno */
+    /* Remove padding e margin para que a modal de customização possa controlar melhor */
+    padding: 0; 
+    margin: 0; 
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
-    max-width: 400px; /* Largura mais estreita, como no exemplo */
+    max-width: 600px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    margin: 0; /* Remove a margem 'auto' antiga */
     
+    /* Animação */
     animation-name: modalFadeIn;
     animation-duration: 0.3s;
 }
@@ -41,11 +331,125 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Estilos Padrão do Carrinho (Mantidos) */
+
+/* Garante o padding interno do carrinho, já que o .modal-content geral foi zerado */
+#carrinho-modal .modal-content {
+    padding: 2rem; 
+}
+
+.fechar-modal {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fechar-modal:hover {
+    color: var(--primary-color);
+}
+
+.carrinho-itens {
+    max-height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.carrinho-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+/* Botão 'X' de remover do carrinho */
+.carrinho-item .btn-remover {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.carrinho-total {
+    text-align: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.carrinho-finalizar input,
+.carrinho-finalizar select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.carrinho-finalizar button {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carrinho-finalizar button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+/* --- Notificação --- */
+.notificacao {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+    z-index: 3000;
+}
+
+.notificacao.mostrar {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
+
 /* ======================================================= */
-/* --- ESTILOS ESPECÍFICOS DA MODAL DE CUSTOMIZAÇÃO --- */
+/* --- ESTILOS DA MODAL DE CUSTOMIZAÇÃO (NOVA E MINIMALISTA) --- */
 /* ======================================================= */
 
-/* 1. Header (Título e Botão de voltar) */
+#customizacao-modal .modal-content {
+    max-width: 400px; /* Largura ideal para customização */
+}
+
+/* 1. Header (Título e Seta) */
 #customizacao-modal h3 {
     display: flex;
     align-items: center;
@@ -57,43 +461,37 @@
     font-weight: 700;
     color: var(--secondary-color);
     position: relative;
+    text-transform: capitalize;
 }
 
 /* Seta de Voltar (Imita o ícone na imagem) */
 .fechar-customizacao {
+    color: var(--secondary-color);
     position: absolute;
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 24px;
-    color: var(--secondary-color);
     cursor: pointer;
     font-weight: bold;
+    /* Altera o 'X' para uma seta de voltar */
+    content: none;
+    line-height: 1;
 }
-/* Altera o 'X' para uma seta de voltar (unicode) */
 .fechar-customizacao::before {
     content: '\2190'; 
 }
 
-/* Título secundário "Deseja adicionar algo?" (Apenas se adicionado no HTML) */
-.adicionais-titulo-secundario {
-    font-size: 0.9rem;
-    color: #666;
-    padding: 10px 20px;
-    text-align: center;
-}
-
-
-/* 2. Lista de Adicionais (Área de Scroll) */
+/* 2. Lista de Adicionais */
 #adicionais-opcoes-lista {
-    padding: 0 20px; 
+    padding: 10px 20px; 
     max-height: 350px; 
     overflow-y: auto;
     margin-bottom: 0;
     border-bottom: 1px solid #eee; 
 }
 
-/* Item de Adicional (Clean e espaçado) */
+/* Item de Adicional */
 .adicional-item-opcao {
     display: flex;
     justify-content: space-between;
@@ -104,11 +502,7 @@
     border-bottom: 1px dashed #eee; 
 }
 
-/* Preço do Adicional (Forte e claro) */
-.adicional-item-opcao span {
-    display: flex;
-    align-items: center;
-}
+/* Preço do Adicional */
 .adicional-item-opcao small {
     font-weight: 700; 
     color: var(--secondary-color); 
@@ -122,9 +516,9 @@
     gap: 15px; 
 }
 
-/* Botão de aumentar (+) - Estilo da Imagem (Preto) */
+/* Botão de aumentar (+) - Preto */
 .adicional-contador .btn-aumentar-adicional {
-    background-color: var(--secondary-color); /* Preto */
+    background-color: var(--secondary-color); 
     color: white;
     border: none;
     border-radius: 50%; 
@@ -142,47 +536,44 @@
     background-color: #333;
 }
 
-/* Esconde os elementos do contador completo para simular o design de clique único */
-/* Se você quiser o contador completo (- 1 +), remova as linhas 'display: none;' */
+/* Esconde o contador completo para simular o design de clique único */
 .adicional-contador .btn-diminuir-adicional, 
 .adicional-contador .quantidade-adicional {
     display: none; 
 }
 
-/* ======================================================= */
-/* --- RODAPÉ DA MODAL (PREÇO E BOTÃO ADICIONAR) --- */
-/* ======================================================= */
-
+/* 4. Rodapé da Modal (Preço e Botão ADICIONAR) */
 .customizacao-resumo {
     padding: 20px;
     margin-top: 0;
-    border-top: 1px solid #eee;
+    border-top: none; 
     background-color: var(--card-background);
 }
 
-/* Estiliza o Preço Total (Como o R$ 22,00 na imagem) */
+/* Estiliza o Preço Total */
 .customizacao-resumo h4 {
     font-size: 1.8em;
     color: var(--secondary-color);
     margin: 0 0 10px 0;
     font-weight: 700;
+    display: flex;
+    justify-content: space-between;
 }
 .customizacao-resumo h4 span {
     color: var(--primary-color);
 }
 
-/* Oculta os detalhes para focar apenas no total (como no exemplo) */
+/* Oculta os detalhes de preço, mostrando apenas o total */
 .customizacao-resumo p {
     display: none; 
 }
 
-
-/* Botão "ADICIONAR" (Preto, grande e forte) */
+/* Botão "ADICIONAR" (Preto e grande) */
 #btn-adicionar-customizado {
     width: 100%;
     padding: 18px; 
     margin-top: 0;
-    background-color: var(--secondary-color); /* Preto */
+    background-color: var(--secondary-color); 
     color: white;
     border: none;
     border-radius: 6px; 
@@ -194,4 +585,84 @@
 
 #btn-adicionar-customizado:hover {
     background-color: #333;
+}
+
+
+/* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
+
+/* Telas Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        background-color: var(--card-background);
+        box-shadow: 0 2px 4px var(--shadow-color);
+        text-align: center;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger-menu-btn {
+        display: block;
+    }
+
+    main {
+        padding: 1rem 0.5rem;
+    }
+
+    .menu-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .item-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    .item-card {
+        padding: 0.5rem;
+    }
+
+    .item-card img {
+        height: 120px; 
+        object-fit: cover; 
+    }
+
+    .item-card h3 {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+    }
+
+    .item-card p {
+        display: none;
+    }
+
+    .item-card .price {
+        font-size: 0.9rem;
+        margin: 0.2rem 0;
+    }
+
+    .btn-add {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+        margin: 0.5rem 0;
+        width: 100%;
+    }
+    
+    /* Ajuste de Margem da Modal para Mobile */
+    .modal-content {
+        max-height: 95vh;
+        margin: 10px; 
+    }
 }
