@@ -101,8 +101,8 @@ function atualizarModalCarrinho() {
 // =======================================================
 // FUNÇÕES DE CUSTOMIZAÇÃO
 // =======================================================
-// Categorias que acionam a customização
-const categoriasCustomizaveis = ['Hambúrgueres Artesanais', 'Acompanhamentos'];
+// ** CORREÇÃO: APENAS HAMBÚRGUERES ARTESANAIS PODEM SER CUSTOMIZADOS **
+const categoriasCustomizaveis = ['Hambúrgueres Artesanais'];
 
 
 function abrirModalCustomizacao(item) {
@@ -312,15 +312,13 @@ async function carregarCardapio() {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ** CORREÇÃO CRÍTICA PARA IMPEDIR POP-UPS AO CARREGAR A PÁGINA **
-    // 0. Garante que as modais estejam escondidas (display: none)
+    // CORREÇÃO CRÍTICA PARA IMPEDIR POP-UPS AO CARREGAR A PÁGINA
     if (carrinhoModal) {
         carrinhoModal.style.display = 'none';
     }
     if (customizacaoModal) {
         customizacaoModal.style.display = 'none';
     }
-    // FIM DA CORREÇÃO
 
     // Inicia o carregamento do cardápio
     carregarCardapio();
