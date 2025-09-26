@@ -6,6 +6,9 @@ let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
+// NOVO: Variável para armazenar o link da localização do cliente
+let localizacaoCliente = null;
+
 // Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
@@ -322,24 +325,73 @@ function setupEventListeners() {
         });
     }
     
-    // Lógica para finalizar pedido e gerar link do WhatsApp
+    // Lógica para anexar localização (NOVO)
+    const btnLocalizacao = document.getElementById('btn-anexar-localizacao');
+    if (btnLocalizacao) {
+        btnLocalizacao.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                btnLocalizacao.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aguardando...';
+                btnLocalizacao.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        // Gera link do Google Maps
+                        localizacaoCliente = `https://maps.google.com/?q=${latitude},${longitude}`;
+                        
+                        btnLocalizacao.innerHTML = '<i class="fas fa-check"></i> Localização Anexada!';
+                        btnLocalizacao.classList.add('btn-sucesso');
+                        btnLocalizacao.disabled = false;
+                        alert("Localização anexada com sucesso!");
+                    },
+                    (error) => {
+                        console.error("Erro ao obter localização:", error);
+                        btnLocalizacao.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao Anexar Localização';
+                        btnLocalizacao.classList.remove('btn-sucesso');
+                        btnLocalizacao.disabled = false;
+                        localizacaoCliente = null;
+                        alert("Não foi possível obter a localização. Verifique as permissões do navegador.");
+                    },
+                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                );
+            } else {
+                alert("Geolocalização não é suportada por este navegador.");
+            }
+        });
+    }
+
+    // Lógica para finalizar pedido e gerar link do WhatsApp (ATUALIZADO)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             if (carrinho.length === 0) { alert("Seu carrinho está vazio."); return; }
             
             // Pega dados do cliente
             const nomeCliente = document.getElementById('nome-cliente').value;
+            const formaPagamentoElement = document.getElementById('forma-pagamento');
+            const formaPagamento = formaPagamentoElement.value; // NOVO
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
+            const observacoes = document.getElementById('observacoes-pedido').value; // NOVO
             
-            if (!nomeCliente || !enderecoCliente || !telefoneCliente) {
-                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido."); return;
+            if (!nomeCliente || !formaPagamento || !enderecoCliente || !telefoneCliente) {
+                alert("Por favor, preencha seu nome, forma de pagamento, endereço e telefone para finalizar o pedido."); 
+                return;
             }
 
             let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
             mensagem += `*Nome:* ${nomeCliente}\n`;
+            mensagem += `*Forma de Pagamento:* ${formaPagamento.toUpperCase().replace('_', ' ')}\n`; // NOVO
             mensagem += `*Endereço:* ${enderecoCliente}\n`;
             mensagem += `*Telefone:* ${telefoneCliente}\n\n`;
+            
+            if (observacoes) { // NOVO
+                mensagem += `*Observações:* ${observacoes}\n\n`;
+            }
+
+            if (localizacaoCliente) { // NOVO
+                mensagem += `*Localização Anexada (Google Maps):* ${localizacaoCliente}\n\n`;
+            }
+            
             mensagem += `*ITENS DO PEDIDO (${carrinho.length}):*\n`;
             
             carrinho.forEach((item, index) => {
@@ -389,7 +441,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mainContentContainer = document.getElementById('main-content-container');
     
     // 2. Só prossegue se os arquivos HTML injetados e o container principal existem
-    // **NÃO TENTA MAIS CARREGAR conteudo_cardapio.html!**
     if (navbarOK && modalOK && mainContentContainer) {
         
         rebindElements(); 
