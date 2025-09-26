@@ -70,6 +70,8 @@ header {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    /* Linha que você estava ajustando no diff () */
+    min-height: 60px; /* Ajuste para caber na tela sem o header/footer */
 }
 
 .logo-header {
@@ -242,6 +244,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Min-height corrigido para funcionar bem com o header/footer */
     min-height: calc(100vh - 80px); 
     padding: 20px;
 }
@@ -563,7 +566,7 @@ header {
     }
 
     .hamburger-menu-btn {
-        display: block; /* MOSTRA o botão do menu hamburger */
+        display: block; 
     }
 
     .nav-links {
