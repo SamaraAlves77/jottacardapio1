@@ -10,16 +10,18 @@
 <body>
 
     <header>
-        <div class="logo">
-            <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
-        </div>
+        <a href="index.html" class="logo-link">
+            <div class="logo">
+                <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
+            </div>
+        </a>
         <nav>
             <ul class="nav-links">
                 <li><a href="#hamburgueres-artesanais" class="active">Hambúrgueres</a></li>
                 <li><a href="#combos-e-familia">Combos e Família</a></li>
                 <li><a href="#acompanhamentos">Acompanhamentos</a></li>
                 <li><a href="#bebidas">Bebidas</a></li>
-                </ul>
+            </ul>
         </nav>
         <div class="header-actions">
             <button class="carrinho-btn" id="carrinho-btn">
@@ -52,8 +54,7 @@
             <h2>Bebidas</h2>
             <div class="item-grid" id="bebidas-grid"></div>
         </section>
-
-        </main>
+    </main>
     
     <div id="carrinho-modal" class="modal">
         <div class="modal-content">
@@ -73,17 +74,21 @@
     </div>
     
     <div id="customizacao-modal" class="modal">
-        <div class="modal-content">
-            <span class="fechar-customizacao">&times;</span>
-            <h3>Customizar <span id="item-customizacao-nome"></span></h3>
+        <div class="modal-content customizacao-modal-content">
+            <span class="fechar-customizacao fechar-modal">&times;</span>
+            <h3 class="customizacao-header">Customizar <span id="item-customizacao-nome"></span></h3>
             
             <div class="adicionais-opcoes" id="adicionais-opcoes-lista">
-                </div>
+            </div>
 
             <div class="customizacao-resumo">
-                <p>Preço Base: R$ <span id="preco-base-customizacao">0,00</span></p>
-                <p>Adicionais: R$ <span id="preco-adicionais-customizacao">0,00</span></p>
-                <h4>Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
+                <div class="resumo-linha">
+                    <span>Preço Base:</span> R$ <span id="preco-base-customizacao">0,00</span>
+                </div>
+                <div class="resumo-linha">
+                    <span>Adicionais:</span> R$ <span id="preco-adicionais-customizacao">0,00</span>
+                </div>
+                <h4 class="resumo-total">Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
                 
                 <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
             </div>
