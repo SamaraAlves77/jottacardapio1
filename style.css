@@ -314,7 +314,6 @@ main {
     position: relative;
     max-width: 600px;
     width: 90%;
-    /* Removido max-height para permitir centralização perfeita */
 }
 
 .fechar-modal, .fechar-customizacao {
@@ -530,7 +529,7 @@ footer {
     }
 
     .item-card p {
-        display: none; /* Oculta a descrição para economizar espaço no layout de 2 colunas */
+        display: none; 
     }
 
     .item-card .price {
