@@ -1,88 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio JottaV Burguer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>JottaV Burguer - Cartão de Visita</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
-    <header>
-        <a href="https://samaraalves77.github.io/jottacardapio1/" class="logo-link">
-            <div class="logo">
-                <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
+    <div class="landing-page-container">
+        <div class="landing-card">
+            <div class="card-left">
+                <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer" class="logo-landing">
+                <h1 class="slogan">O verdadeiro sabor do hambúrguer artesanal!</h1>
             </div>
-        </a>
-
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#secao-hamburgueres" class="active">Burgers</a></li>
-                <li><a href="#secao-combos">Combos e Família</a></li>
-                <li><a href="#secao-acompanhamentos">Acompanhamentos</a></li>
-                <li><a href="#secao-bebidas">Bebidas</a></li>
-            </ul>
-        </nav>
-
-        <div class="header-actions">
-            <button class="carrinho-btn" id="carrinho-btn">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="contador-carrinho">0</span>
-            </button>
-            <button class="hamburger-menu-btn" id="hamburger-menu-btn" aria-label="Abrir Menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
-
-    <main id="cardapio-container">
-        <h2 style="text-align: center; padding-top: 50px;">Carregando Cardápio...</h2>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 JottaV Burguer. Todos os direitos reservados.</p>
-    </footer>
-
-    <div id="carrinho-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="fechar-modal">&times;</span>
-            <h3>Seu Pedido</h3>
-            <div class="carrinho-itens" id="carrinho-itens"></div>
-            <div class="carrinho-total">
-                Total: R$ <span id="carrinho-total">0.00</span>
-            </div>
-            <div class="carrinho-finalizar">
-                <input type="text" id="nome-cliente" placeholder="Seu nome" required>
-                <input type="text" id="endereco-cliente" placeholder="Seu endereço" required>
-                <input type="text" id="telefone-cliente" placeholder="Seu telefone" required>
-                <button id="btn-finalizar-pedido">Finalizar Pedido</button>
+            <div class="card-right">
+                <a href="https://www.instagram.com/jottavburguer/" target="_blank" class="social-btn instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://wa.me/5586981147596" target="_blank" class="social-btn whatsapp">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="cardapio.html" class="social-btn cardapio">
+                    <i class="fas fa-utensils"></i> Ver Cardápio
+                </a>
             </div>
         </div>
     </div>
-
-    <div id="customizacao-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="fechar-customizacao">&times;</span>
-            <h3>Customizar <span id="item-customizacao-nome"></span></h3>
-            
-            <div class="adicionais-opcoes" id="adicionais-opcoes-lista">
-            </div>
-
-            <div class="customizacao-resumo">
-                <p>Preço Base: R$ <span id="preco-base-customizacao">0,00</span></p>
-                <p>Adicionais: R$ <span id="preco-adicionais-customizacao">0,00</span></p>
-                <h4>Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
-                
-                <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="notificacao" class="notificacao">
-        Item adicionado ao carrinho!
-    </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
