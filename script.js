@@ -1,387 +1,426 @@
-// =======================================================
-// VARIÁVEIS DE ESTADO E REFERÊNCIAS DO DOM
-// =======================================================
-let carrinho = []; // Array para armazenar os itens do pedido
-let adicionaisGlobais = []; // Vai armazenar as opções de adicionais do JSON
-let itemEmCustomizacao = null; // Armazena o item que está sendo customizado
+// Variáveis Globais (Dados e Estado)
+let cardapioData = [];
+let carrinho = [];
+let itemIdCustomizando = null;
 
-// Elementos do Carrinho
+// Referências de Elementos (IDs e Classes)
+const cardapioContainer = document.getElementById('cardapio-container');
+const carrinhoBtn = document.querySelector('.carrinho-btn');
 const carrinhoModal = document.getElementById('carrinho-modal');
-const fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
-const carrinhoBtn = document.getElementById('carrinho-btn');
+const fecharCarrinho = document.querySelector('.fechar-modal');
+const carrinhoItensContainer = document.querySelector('.carrinho-itens');
+const carrinhoTotalElement = document.getElementById('carrinho-total');
 const contadorCarrinho = document.getElementById('contador-carrinho');
-const carrinhoItensContainer = document.getElementById('carrinho-itens');
-const carrinhoTotalSpan = document.getElementById('carrinho-total');
-const notificacao = document.getElementById('notificacao');
-const btnFinalizar = document.getElementById('btn-finalizar-pedido');
-const hamburgerBtn = document.getElementById('hamburger-menu-btn');
-
-// Elementos da Customização (NOVOS)
+const finalizarPedidoBtn = document.getElementById('btn-finalizar-pedido');
 const customizacaoModal = document.getElementById('customizacao-modal');
-const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
+const fecharCustomizacao = document.querySelector('.fechar-customizacao');
+const adicionaisLista = document.getElementById('adicionais-opcoes-lista');
+const resumoPrecoBase = document.getElementById('resumo-preco-base');
+const resumoPrecoAdicionais = document.getElementById('resumo-preco-adicionais');
+const resumoPrecoTotal = document.getElementById('resumo-preco-total');
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
 
 
 // =======================================================
-// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
+// FUNÇÕES DE UTILIDADE E RENDERIZAÇÃO
 // =======================================================
 
-/**
- * Adiciona um item ao carrinho, atualiza o contador e exibe a notificação.
- * @param {object} item - O objeto do item a ser adicionado (pode ser customizado ou não).
- */
-function adicionarAoCarrinho(item) {
-    carrinho.push(item); 
-    
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
+function formatarMoeda(valor) {
+    return `R$ ${valor.toFixed(2).replace('.', ',')}`;
+}
 
-    atualizarModalCarrinho();
-    
+function exibirNotificacao(mensagem) {
+    const notificacao = document.getElementById('notificacao');
     if (notificacao) {
+        notificacao.textContent = mensagem;
         notificacao.classList.add('mostrar');
-        
         setTimeout(() => {
             notificacao.classList.remove('mostrar');
         }, 3000);
     }
 }
 
-/**
- * Remove um item do carrinho pelo seu índice.
- * @param {number} index - O índice do item a ser removido no array do carrinho.
- */
-function removerDoCarrinho(index) {
-    carrinho.splice(index, 1);
-    
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
+// -------------------------------------------------------
+// 1. CARREGAR E RENDERIZAR CARDÁPIO
+// -------------------------------------------------------
+
+async function carregarCardapio() {
+    try {
+        const response = await fetch('cardapio.json');
+        cardapioData = await response.json();
+        renderizarCardapio(cardapioData);
+    } catch (error) {
+        console.error('Erro ao carregar o cardápio:', error);
+        cardapioContainer.innerHTML = '<p>Erro ao carregar o cardápio. Tente novamente mais tarde.</p>';
     }
-    atualizarModalCarrinho();
 }
 
-/**
- * Atualiza o conteúdo e o total exibidos na modal do carrinho.
- */
-function atualizarModalCarrinho() {
-    if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
+function renderizarCardapio(data) {
+    if (!cardapioContainer) return;
+    cardapioContainer.innerHTML = '';
 
-    carrinhoItensContainer.innerHTML = '';
-    let total = 0;
+    data.forEach(secao => {
+        const section = document.createElement('section');
+        section.className = 'menu-section';
+        section.id = `secao-${secao.id}`;
 
-    carrinho.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'carrinho-item';
-        
-        // Usa nomeExibicao se existir (para itens customizados) ou o nome normal
-        const nomeExibicao = item.nomeExibicao || item.nome;
-        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
+        const h2 = document.createElement('h2');
+        h2.textContent = secao.nome;
+        section.appendChild(h2);
 
-        itemDiv.innerHTML = `
-            <span class="carrinho-item-nome">${nomeExibicao}</span>
-            <span class="carrinho-item-preco">R$ ${precoFormatado}</span>
-            <button class="btn-remover" data-index="${index}">X</button>
-        `;
-        carrinhoItensContainer.appendChild(itemDiv);
-        total += item.preco;
+        const grid = document.createElement('div');
+        grid.className = 'item-grid';
+
+        secao.itens.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.setAttribute('data-item-id', item.id);
+            card.setAttribute('data-secao-id', secao.id);
+
+            card.innerHTML = `
+                <img src="imagem_cardapio/${item.imagem}" alt="${item.nome}">
+                <h3>${item.nome}</h3>
+                <p>${item.descricao}</p>
+                <div class="price">${formatarMoeda(item.preco)}</div>
+                <button class="btn-add" data-item-id="${item.id}" data-secao-id="${secao.id}">
+                    Customizar e Adicionar
+                </button>
+            `;
+            grid.appendChild(card);
+        });
+
+        section.appendChild(grid);
+        cardapioContainer.appendChild(section);
     });
 
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
+    // Adiciona listener para os botões "Customizar e Adicionar"
+    document.querySelectorAll('.btn-add').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const itemId = e.target.dataset.itemId;
+            const secaoId = e.target.dataset.secaoId;
+            abrirModalCustomizacao(secaoId, itemId);
+        });
+    });
+}
 
-    document.querySelectorAll('.btn-remover').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index'); 
+// -------------------------------------------------------
+// 2. FUNÇÕES DO CARRINHO
+// -------------------------------------------------------
+
+function calcularTotalCarrinho() {
+    let total = 0;
+    carrinho.forEach(item => {
+        total += item.precoTotal;
+    });
+    return total;
+}
+
+function atualizarContadorCarrinho() {
+    contadorCarrinho.textContent = carrinho.length;
+}
+
+function adicionarAoCarrinho(item) {
+    carrinho.push(item);
+    atualizarModalCarrinho();
+    atualizarContadorCarrinho();
+    exibirNotificacao(`${item.nome} adicionado ao carrinho!`);
+}
+
+function removerDoCarrinho(index) {
+    if (index > -1 && index < carrinho.length) {
+        const nomeItem = carrinho[index].nome;
+        carrinho.splice(index, 1);
+        atualizarModalCarrinho();
+        atualizarContadorCarrinho();
+        exibirNotificacao(`${nomeItem} removido do carrinho.`);
+    }
+}
+
+function atualizarModalCarrinho() {
+    if (!carrinhoItensContainer) return;
+
+    carrinhoItensContainer.innerHTML = '';
+    const total = calcularTotalCarrinho();
+    carrinhoTotalElement.textContent = formatarMoeda(total);
+
+    if (carrinho.length === 0) {
+        carrinhoItensContainer.innerHTML = '<p style="text-align: center; color: #666;">Seu carrinho está vazio.</p>';
+        finalizarPedidoBtn.disabled = true;
+        return;
+    }
+
+    finalizarPedidoBtn.disabled = false;
+
+    carrinho.forEach((item, index) => {
+        let descricaoAdicionais = item.adicionais.length > 0
+            ? item.adicionais.map(add => `${add.nome} (${add.quantidade}x)`).join(', ')
+            : 'Nenhum adicional.';
+
+        const itemElement = document.createElement('div');
+        itemElement.className = 'carrinho-item';
+        itemElement.innerHTML = `
+            <div>
+                <p><strong>${item.quantidade}x ${item.nome}</strong></p>
+                <small>${descricaoAdicionais}</small>
+            </div>
+            <div class="carrinho-actions">
+                <span>${formatarMoeda(item.precoTotal)}</span>
+                <button class="btn-remover" data-index="${index}">&times;</button>
+            </div>
+        `;
+        carrinhoItensContainer.appendChild(itemElement);
+    });
+
+    document.querySelectorAll('.btn-remover').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
             removerDoCarrinho(index);
         });
     });
 }
 
+// -------------------------------------------------------
+// 3. FUNÇÕES DE CUSTOMIZAÇÃO (ADICIONAIS)
+// -------------------------------------------------------
 
-// =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO (NOVAS)
-// =======================================================
-// Categorias que acionam a customização
-const categoriasCustomizaveis = ['Hambúrgueres Artesanais', 'Acompanhamentos'];
-
-
-function abrirModalCustomizacao(item) {
-    if (!customizacaoModal) return;
-
-    // Inicializa o objeto de customização com o item base
-    itemEmCustomizacao = { 
-        ...item,
-        adicionais: [], // Adicionais selecionados
-        precoFinal: item.preco // Preço inicial é o preço base
-    };
-
-    // Atualiza os títulos e preços base na modal
-    document.getElementById('item-customizacao-nome').textContent = item.nome;
-    document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
-    
-    // Renderiza e atualiza a modal
-    renderizarOpcoesAdicionais();
-    customizacaoModal.style.display = 'block';
+function encontrarItem(secaoId, itemId) {
+    const secao = cardapioData.find(s => s.id === secaoId);
+    if (secao) {
+        return secao.itens.find(i => i.id === itemId);
+    }
+    return null;
 }
 
-function renderizarOpcoesAdicionais() {
-    const lista = document.getElementById('adicionais-opcoes-lista');
-    lista.innerHTML = '';
+function abrirModalCustomizacao(secaoId, itemId) {
+    const item = encontrarItem(secaoId, itemId);
+    if (!item || !customizacaoModal || !adicionaisLista) return;
+
+    itemIdCustomizando = { secaoId: secaoId, itemId: itemId, adicionaisSelecionados: {}, precoBase: item.preco };
+
+    const modalTitle = customizacaoModal.querySelector('h3');
+    modalTitle.textContent = item.nome;
     
-    adicionaisGlobais.forEach(adicional => {
-        const selecionado = itemEmCustomizacao.adicionais.find(a => a.nome === adicional.nome);
-        const quantidade = selecionado ? selecionado.quantidade : 0;
-        
-        const div = document.createElement('div');
-        div.className = 'adicional-item-opcao';
-        
-        div.innerHTML = `
-            <span>${adicional.nome} <small>(R$ ${adicional.preco.toFixed(2).replace('.', ',')})</small></span>
-            <div class="adicional-contador">
-                <button class="btn-diminuir-adicional" data-nome="${adicional.nome}">-</button>
-                <span class="quantidade-adicional">${quantidade}</span>
-                <button class="btn-aumentar-adicional" data-nome="${adicional.nome}">+</button>
-            </div>
-        `;
-        lista.appendChild(div);
-    });
-    
-    adicionarListenersContador();
-    atualizarResumoCustomizacao();
-}
+    // Reseta a lista de adicionais
+    adicionaisLista.innerHTML = '';
 
-function adicionarListenersContador() {
-    // É importante remover os listeners antigos antes de adicionar os novos
-    document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
-    });
-    
-    document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
-    });
-}
+    // Renderiza Adicionais
+    if (item.adicionais && item.adicionais.length > 0) {
+        item.adicionais.forEach(adicional => {
+            const div = document.createElement('div');
+            div.className = 'adicional-item-opcao';
+            div.setAttribute('data-adicional-id', adicional.id);
+            
+            div.innerHTML = `
+                <div>
+                    ${adicional.nome}
+                    <small>+${formatarMoeda(adicional.preco)}</small>
+                </div>
+                <div class="adicional-contador">
+                    <button class="btn-diminuir-adicional" data-adicional-id="${adicional.id}" disabled>-</button>
+                    <span class="quantidade-adicional" data-adicional-id="${adicional.id}">0</span>
+                    <button class="btn-aumentar-adicional" data-adicional-id="${adicional.id}">+</button>
+                </div>
+            `;
+            adicionaisLista.appendChild(div);
+        });
 
-function gerenciarAdicional(nomeAdicional, delta) {
-    const adicionalData = adicionaisGlobais.find(a => a.nome === nomeAdicional);
-    if (!adicionalData) return;
-
-    let adicionalSelecionado = itemEmCustomizacao.adicionais.find(a => a.nome === nomeAdicional);
-
-    if (!adicionalSelecionado) {
-        if (delta > 0) {
-            itemEmCustomizacao.adicionais.push({
-                ...adicionalData,
-                quantidade: 1
+        // Adiciona listeners para os botões +/-
+        document.querySelectorAll('.adicional-contador button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = e.target.dataset.adicionalId;
+                const tipo = e.target.classList.contains('btn-aumentar-adicional') ? 'aumentar' : 'diminuir';
+                atualizarAdicional(id, tipo, item.adicionais);
             });
-        }
-    } else {
-        adicionalSelecionado.quantidade += delta;
-        
-        if (adicionalSelecionado.quantidade <= 0) {
-            itemEmCustomizacao.adicionais = itemEmCustomizacao.adicionais.filter(a => a.nome !== nomeAdicional);
-        }
-    }
-    
-    renderizarOpcoesAdicionais(); // Re-renderiza para atualizar a UI
-}
-
-function atualizarResumoCustomizacao() {
-    let precoAdicionais = 0;
-    
-    itemEmCustomizacao.adicionais.forEach(ad => {
-        precoAdicionais += ad.preco * ad.quantidade;
-    });
-
-    const precoBase = itemEmCustomizacao.preco;
-    const precoTotal = precoBase + precoAdicionais;
-
-    document.getElementById('preco-adicionais-customizacao').textContent = precoAdicionais.toFixed(2).replace('.', ',');
-    document.getElementById('preco-total-customizacao').textContent = precoTotal.toFixed(2).replace('.', ',');
-    
-    itemEmCustomizacao.precoFinal = precoTotal;
-}
-
-// =======================================================
-// FUNÇÕES DE CARREGAMENTO (MODIFICADAS)
-// =======================================================
-
-// Função para criar cada item individual do cardápio (AJUSTADA para Customização)
-function criarItemCardapio(item, categoria) {
-    const divItem = document.createElement('div');
-    divItem.className = 'item-card';
-
-    const img = document.createElement('img');
-    img.src = `imagem_cardapio/${item.imagem}`;
-    img.alt = item.nome;
-    divItem.appendChild(img);
-
-    const h3 = document.createElement('h3');
-    h3.textContent = item.nome;
-    divItem.appendChild(h3);
-
-    if (item.descricao) {
-        const pDescricao = document.createElement('p');
-        pDescricao.textContent = item.descricao;
-        divItem.appendChild(pDescricao);
-    }
-
-    const pPreco = document.createElement('p');
-    pPreco.className = 'price';
-    pPreco.textContent = `R$ ${item.preco.toFixed(2).replace('.', ',')}`;
-    divItem.appendChild(pPreco);
-
-    const btnAdicionar = document.createElement('button');
-    btnAdicionar.className = 'btn-add';
-    
-    // Lógica para Customizar ou Adicionar Direto
-    if (categoriasCustomizaveis.includes(categoria)) {
-        btnAdicionar.textContent = 'Customizar e Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            abrirModalCustomizacao(item);
         });
+
     } else {
-        btnAdicionar.textContent = 'Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            adicionarAoCarrinho(item); 
-        });
+        adicionaisLista.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Este item não possui adicionais.</p>';
     }
 
-    divItem.appendChild(btnAdicionar);
-    return divItem;
+    // Exibe o preço base e calcula o total inicial (apenas o preço base)
+    atualizarResumoCustomizacao();
+    customizacaoModal.style.display = 'flex';
 }
 
+function atualizarAdicional(adicionalId, tipo, listaAdicionais) {
+    let quantidade = itemIdCustomizando.adicionaisSelecionados[adicionalId] || 0;
+    const adicionalInfo = listaAdicionais.find(a => a.id === adicionalId);
 
-// Função para criar a seção do cardápio (AJUSTADA para passar a categoria)
-function criarSecaoCardapio(titulo, itens) {
-    let containerId = '';
-    switch(titulo) {
-        case 'Hambúrgueres Artesanais': containerId = 'hamburgueres-artesanais-grid'; break;
-        case 'Combos e Família': containerId = 'combos-e-familia-grid'; break;
-        case 'Acompanhamentos': containerId = 'acompanhamentos-grid'; break;
-        case 'Bebidas': containerId = 'bebidas-grid'; break;
-        // A categoria 'Adicionais' não existe mais como seção separada
-        default: console.warn(`Categoria desconhecida: ${titulo}`); return;
+    if (!adicionalInfo) return;
+
+    if (tipo === 'aumentar') {
+        quantidade++;
+    } else if (tipo === 'diminuir' && quantidade > 0) {
+        quantidade--;
+    }
+
+    itemIdCustomizando.adicionaisSelecionados[adicionalId] = quantidade;
+
+    // Atualiza o display da quantidade
+    const displayElement = document.querySelector(`.quantidade-adicional[data-adicional-id="${adicionalId}"]`);
+    if (displayElement) {
+        displayElement.textContent = quantidade;
+    }
+
+    // Atualiza o estado do botão de diminuir
+    const diminuirBtn = document.querySelector(`.btn-diminuir-adicional[data-adicional-id="${adicionalId}"]`);
+    if (diminuirBtn) {
+        diminuirBtn.disabled = quantidade === 0;
+    }
+
+    if (quantidade === 0) {
+        delete itemIdCustomizando.adicionaisSelecionados[adicionalId];
     }
     
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Contêiner não encontrado para a categoria: ${titulo}`);
-        return;
-    }
-
-    itens.forEach(item => {
-        const itemElemento = criarItemCardapio(item, titulo); // Passa o título/categoria
-        container.appendChild(itemElemento);
-    });
+    atualizarResumoCustomizacao(listaAdicionais);
 }
 
-// A função principal que carrega e exibe os dados do cardápio (AJUSTADA para carregar Adicionais)
-async function carregarCardapio() {
-    try {
-        const response = await fetch('./cardapio.json');
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
+function calcularTotalAdicionais(listaAdicionais) {
+    let totalAdicionais = 0;
+    for (const id in itemIdCustomizando.adicionaisSelecionados) {
+        const quantidade = itemIdCustomizando.adicionaisSelecionados[id];
+        const adicional = listaAdicionais.find(a => a.id === id);
+        if (adicional) {
+            totalAdicionais += adicional.preco * quantidade;
         }
-        const cardapioData = await response.json();
-        
-        // **CRÍTICO**: Carrega os adicionais globais e remove a chave principal
-        adicionaisGlobais = cardapioData.adicionais_opcoes || []; 
-        delete cardapioData.adicionais_opcoes; 
+    }
+    return totalAdicionais;
+}
 
-        for (const categoria in cardapioData) {
-            if (cardapioData.hasOwnProperty(categoria)) {
-                criarSecaoCardapio(categoria, cardapioData[categoria]);
-            }
-        }
-    } catch (error) {
-        console.error('Erro ao carregar o cardápio:', error);
-        document.body.innerHTML = `<h1>Erro ao carregar o cardápio. Tente novamente mais tarde.</h1>`;
+function atualizarResumoCustomizacao(listaAdicionais) {
+    const precoBase = itemIdCustomizando ? itemIdCustomizando.precoBase : 0;
+    const totalAdicionais = listaAdicionais ? calcularTotalAdicionais(listaAdicionais) : 0;
+    const totalGeral = precoBase + totalAdicionais;
+
+    // No design minimalista, focamos apenas no preço total no rodapé (h4)
+    if (resumoPrecoTotal) {
+        resumoPrecoTotal.innerHTML = `Total do Item: <span>${formatarMoeda(totalGeral)}</span>`;
+    }
+    
+    // Opcional, se você quiser manter os detalhes escondidos (como no CSS)
+    // if (resumoPrecoBase) resumoPrecoBase.textContent = formatarMoeda(precoBase);
+    // if (resumoPrecoAdicionais) resumoPrecoAdicionais.textContent = formatarMoeda(totalAdicionais);
+
+    if (btnAdicionarCustomizado) {
+        btnAdicionarCustomizado.textContent = `ADICIONAR ${formatarMoeda(totalGeral)}`;
     }
 }
+
 
 // =======================================================
 // EVENT LISTENERS DE INICIALIZAÇÃO
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicia o carregamento do cardápio
+    
+    // =======================================================
+    // 💥 CORREÇÃO CRÍTICA: Força o fechamento das modais no carregamento
+    // Isso resolve o problema de elas aparecerem abertas por padrão.
+    // =======================================================
+    if (carrinhoModal) {
+        carrinhoModal.style.display = 'none';
+    }
+    if (customizacaoModal) {
+        customizacaoModal.style.display = 'none';
+    }
+    // =======================================================
+    // ⬆️ FIM DO CÓDIGO DE CORREÇÃO
+    // =======================================================
+
+
+    // 1. Inicia o carregamento do cardápio
     carregarCardapio();
 
-    // 1. ABRIR MODAL DO CARRINHO
+    // 2. Evento para abrir a modal do carrinho
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.style.display = 'block';
-            atualizarModalCarrinho(); 
+            carrinhoModal.style.display = 'flex'; // Usa flex para centralizar
+            atualizarModalCarrinho();
         });
     }
 
-    // 2. FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X'
-    if (fecharModalBtn && carrinhoModal) {
-        fecharModalBtn.addEventListener('click', () => {
+    // 3. Evento para fechar a modal do carrinho
+    if (fecharCarrinho && carrinhoModal) {
+        fecharCarrinho.addEventListener('click', () => {
             carrinhoModal.style.display = 'none';
         });
     }
-    if (fecharCustomizacaoBtn && customizacaoModal) {
-        fecharCustomizacaoBtn.addEventListener('click', () => {
+
+    // 4. Evento para fechar a modal de customização
+    if (fecharCustomizacao && customizacaoModal) {
+        fecharCustomizacao.addEventListener('click', () => {
             customizacaoModal.style.display = 'none';
+            itemIdCustomizando = null; // Limpa o estado
         });
     }
 
-    // 3. FECHAR AMBAS AS MODAIS CLICANDO FORA
+    // 5. Adicionar item customizado ao carrinho
+    if (btnAdicionarCustomizado) {
+        btnAdicionarCustomizado.addEventListener('click', () => {
+            if (!itemIdCustomizando) return;
+
+            const itemOriginal = encontrarItem(itemIdCustomizando.secaoId, itemIdCustomizando.itemId);
+            if (!itemOriginal) return;
+
+            const listaAdicionais = itemOriginal.adicionais || [];
+            const precoAdicionais = calcularTotalAdicionais(listaAdicionais);
+            const precoBase = itemOriginal.preco;
+            const precoTotal = precoBase + precoAdicionais;
+
+            const adicionaisFinais = [];
+            for (const id in itemIdCustomizando.adicionaisSelecionados) {
+                const quantidade = itemIdCustomizando.adicionaisSelecionados[id];
+                const adicionalInfo = listaAdicionais.find(a => a.id === id);
+                if (adicionalInfo && quantidade > 0) {
+                    adicionaisFinais.push({
+                        nome: adicionalInfo.nome,
+                        preco: adicionalInfo.preco,
+                        quantidade: quantidade
+                    });
+                }
+            }
+
+            const novoItemCarrinho = {
+                id: itemOriginal.id,
+                nome: itemOriginal.nome,
+                precoBase: precoBase,
+                adicionais: adicionaisFinais,
+                precoTotal: precoTotal,
+                quantidade: 1 // Sempre adiciona como um item, a customização é única
+            };
+
+            adicionarAoCarrinho(novoItemCarrinho);
+            customizacaoModal.style.display = 'none';
+            itemIdCustomizando = null;
+        });
+    }
+
+    // 6. Fechar modais clicando fora
     window.addEventListener('click', (event) => {
-        if (event.target === carrinhoModal || event.target === customizacaoModal) {
-            event.target.style.display = 'none';
+        if (event.target === carrinhoModal) {
+            carrinhoModal.style.display = 'none';
+        }
+        if (event.target === customizacaoModal) {
+            customizacaoModal.style.display = 'none';
+            itemIdCustomizando = null;
         }
     });
 
-    // 4. ADICIONAR ITEM CUSTOMIZADO AO CARRINHO (Botão da Modal de Customização)
-    if (btnAdicionarCustomizado) {
-        btnAdicionarCustomizado.addEventListener('click', () => {
-            if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
-                 alert("Erro na customização. Tente novamente.");
-                 return;
-            }
-            
-            // Monta o nome customizado para exibição no carrinho
-            const adicionaisSelecionados = itemEmCustomizacao.adicionais
-                .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
-            
-            const nomeFinal = `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`;
-
-            const itemFinal = {
-                nome: itemEmCustomizacao.nome,
-                preco: itemEmCustomizacao.precoFinal,
-                nomeExibicao: nomeFinal,
-                adicionais: itemEmCustomizacao.adicionais
-            };
-            
-            adicionarAoCarrinho(itemFinal); 
-            customizacaoModal.style.display = 'none';
-        });
-    }
-    
-    // 5. Lógica do Finalizar Pedido (Simulação)
-    if (btnFinalizar) {
-        btnFinalizar.addEventListener('click', () => {
+    // 7. Evento de Finalizar Pedido (Apenas um placeholder)
+    if (finalizarPedidoBtn) {
+        finalizarPedidoBtn.addEventListener('click', () => {
             if (carrinho.length === 0) {
-                alert("Seu carrinho está vazio.");
+                exibirNotificacao("O carrinho está vazio!");
                 return;
             }
-            alert(`Pedido finalizado! Total: R$ ${carrinhoTotalSpan.textContent}. Entraremos em contato!`);
-            // Lógica para limpar o carrinho e fechar modal (se desejar)
-            carrinho = [];
-            if (contadorCarrinho) contadorCarrinho.textContent = 0;
-            carrinhoModal.style.display = 'none';
-        });
-    }
-
-    // 6. Lógica do Hamburger Menu
-    const navLinks = document.querySelector('.nav-links');
-    if (hamburgerBtn && navLinks) {
-        hamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active'); 
+            
+            // Aqui você deve integrar com o WhatsApp ou sistema de pedidos
+            alert("A função de Finalizar Pedido precisa ser implementada para enviar o pedido.");
+            // Exemplo de limpar o carrinho após um pedido simulado:
+            // carrinho = [];
+            // atualizarModalCarrinho();
+            // carrinhoModal.style.display = 'none';
+            // atualizarContadorCarrinho();
         });
     }
 
