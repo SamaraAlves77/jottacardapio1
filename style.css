@@ -262,14 +262,14 @@ main {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* As regras de display:flex, justify-content e align-items FORAM REMOVIDAS daqui */
+    /* Mantém o alinhamento para quando a classe 'ativo' for adicionada */
+    justify-content: center; 
+    align-items: center; 
 }
 
 /* NOVO: Classe que o JS adiciona para mostrar o modal */
 .modal.ativo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Esta linha fará o modal aparecer com o layout correto */
 }
 
 .modal-content {
