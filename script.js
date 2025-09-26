@@ -16,7 +16,7 @@ const notificacao = document.getElementById('notificacao');
 const btnFinalizar = document.getElementById('btn-finalizar-pedido');
 const hamburgerBtn = document.getElementById('hamburger-menu-btn');
 
-// Elementos da Customização (NOVOS)
+// Elementos da Customização 
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
@@ -28,6 +28,7 @@ const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customiza
 
 function atualizarContadorCarrinho() {
     if (contadorCarrinho) {
+        // Reduz para somar a quantidade de todos os itens no carrinho
         contadorCarrinho.textContent = carrinho.reduce((total, item) => total + item.quantidade, 0);
     }
 }
@@ -51,6 +52,7 @@ function atualizarModalCarrinho() {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
         
+        // Calcula o preço total deste item (Preço unitário * Quantidade)
         const precoFormatado = (item.preco * item.quantidade).toFixed(2).replace('.', ',');
 
         itemDiv.innerHTML = `
@@ -82,6 +84,7 @@ function adicionarAoCarrinho(item) {
     if (itemExistente) {
         itemExistente.quantidade += 1;
     } else {
+        // Usa o spread operator para garantir que o item seja copiado e tenha a quantidade inicial
         carrinho.push({ ...item, quantidade: 1 });
     }
 
@@ -93,7 +96,7 @@ function removerDoCarrinho(index) {
     if (index >= 0 && index < carrinho.length) {
         carrinho[index].quantidade -= 1;
         if (carrinho[index].quantidade <= 0) {
-            carrinho.splice(index, 1);
+            carrinho.splice(index, 1); // Remove o item do array se a quantidade for 0
         }
         atualizarContadorCarrinho();
         atualizarModalCarrinho();
@@ -114,17 +117,7 @@ function mostrarNotificacao(mensagem) {
 // FUNÇÕES DE CUSTOMIZAÇÃO (ADICIONAIS)
 // =======================================================
 
-function inicializarAdicionais() {
-    // Simulação de como você carregaria os adicionais do cardapio.json
-    // O ideal é buscar o cardapio.json via fetch
-    fetch('cardapio.json')
-        .then(response => response.json())
-        .then(data => {
-            adicionaisGlobais = data.adicionais_opcoes || [];
-            // O restante do código de inicialização pode continuar aqui
-        })
-        .catch(error => console.error('Erro ao carregar cardapio.json:', error));
-}
+// A função inicializarAdicionais foi removida e seu conteúdo está dentro de carregarCardapio para simplificar.
 
 function renderizarOpcoesAdicionais() {
     const lista = document.getElementById('adicionais-opcoes-lista');
@@ -136,6 +129,7 @@ function renderizarOpcoesAdicionais() {
     nomeItemSpan.textContent = itemEmCustomizacao.nome;
 
     adicionaisGlobais.forEach(adicional => {
+        // Encontra o adicional no item em customização, se existir
         const itemAtual = itemEmCustomizacao.adicionais.find(ad => ad.id === adicional.id) || { quantidade: 0 };
         const precoFormatado = adicional.preco.toFixed(2).replace('.', ',');
         
@@ -187,6 +181,7 @@ function alterarQuantidadeAdicional(id, mudanca) {
             itemEmCustomizacao.adicionais[adicionalIndex].quantidade = novaQuantidade;
         }
     } else if (novaQuantidade > 0) {
+        // Adiciona um novo adicional se a quantidade for maior que zero
         itemEmCustomizacao.adicionais.push({
             id: id,
             nome: adicionalOriginal.nome,
@@ -225,34 +220,39 @@ function atualizarResumoCustomizacao() {
 }
 
 // =======================================================
-// FUNÇÃO PRINCIPAL DE CARREGAMENTO
+// FUNÇÃO PRINCIPAL DE CARREGAMENTO DO CARDÁPIO
 // =======================================================
 
 function carregarCardapio() {
     fetch('cardapio.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                // Se a resposta não for OK (ex: arquivo não encontrado), lança um erro
+                throw new Error('Erro ao carregar cardapio.json. Verifique o caminho do arquivo.');
             }
             return response.json();
         })
         .then(data => {
-            adicionaisGlobais = data.adicionais_opcoes || []; // Carrega adicionais
+            // Guarda as opções de adicionais para uso posterior
+            adicionaisGlobais = data.adicionais_opcoes || []; 
 
             const main = document.querySelector('main');
-            if (!main) return;
+            if (!main) return; // Se não estiver na página cardapio.html, interrompe
 
             // Renderiza cada seção
             for (const categoria in data) {
                 if (categoria === "adicionais_opcoes") continue; // Pula os adicionais
                 
+                // Cria a seção do cardápio
                 const section = document.createElement('section');
                 section.className = 'menu-section';
-                section.id = categoria.toLowerCase().replace(/ /g, '-').replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u');
+                // Cria um ID amigável para navegação (ex: #hamburgueres-artesanais)
+                section.id = categoria.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
                 
                 section.innerHTML = `<h2>${categoria}</h2><div class="item-grid"></div>`;
                 const grid = section.querySelector('.item-grid');
 
+                // Itera sobre os itens dentro da categoria
                 data[categoria].forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'item-card';
@@ -272,7 +272,7 @@ function carregarCardapio() {
                     `;
                     grid.appendChild(card);
                 });
-                main.appendChild(section);
+                main.appendChild(section); // Adiciona a seção ao MAIN
             }
 
             // Adiciona listeners aos botões "Adicionar"
@@ -285,21 +285,20 @@ function carregarCardapio() {
                     
                     if (!itemData) return;
 
-                    // Verifica se o item é um hambúrguer artesanal para permitir customização
+                    // Verifica se é um item customizável (ex: Hambúrgueres Artesanais)
                     if (categoria === "Hambúrgueres Artesanais") {
-                        // Inicializa o itemEmCustomizacao com dados do item
                         itemEmCustomizacao = {
                             ...itemData,
                             precoFinal: itemData.preco,
-                            adicionais: [] // Começa sem adicionais
+                            adicionais: [] // Sempre começa a customização sem adicionais
                         };
                         abrirModalCustomizacao();
                     } else {
-                        // Para outros itens, adiciona diretamente ao carrinho
+                        // Para itens não customizáveis, adiciona diretamente
                         const itemSimples = {
                             nome: itemData.nome,
                             preco: itemData.preco,
-                            nomeExibicao: itemData.nome, // Sem customização, nome simples
+                            nomeExibicao: itemData.nome, 
                             quantidade: 1
                         };
                         adicionarAoCarrinho(itemSimples);
@@ -310,7 +309,11 @@ function carregarCardapio() {
         })
         .catch(error => {
             console.error('Erro ao carregar ou renderizar o cardápio:', error);
-            // Poderia adicionar uma mensagem de erro na tela para o usuário aqui.
+            // Mensagem de erro para o usuário (opcional)
+            const main = document.querySelector('main');
+            if(main) {
+                 main.innerHTML = `<p style="text-align: center; color: var(--primary-color);">Não foi possível carregar o cardápio. Tente recarregar a página.</p>`;
+            }
         });
 }
 
@@ -319,7 +322,7 @@ function abrirModalCustomizacao() {
     
     renderizarOpcoesAdicionais();
 
-    // CORREÇÃO: Abre com display: flex para centralizar
+    // CORREÇÃO MANTIDA: Abre com display: flex para centralizar
     customizacaoModal.style.display = 'flex'; 
 }
 
@@ -337,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            // CORREÇÃO: Mudar de 'block' para 'flex'
+            // CORREÇÃO MANTIDA: Abre com display: flex para centralizar
             carrinhoModal.style.display = 'flex'; 
             atualizarModalCarrinho(); 
         });
@@ -386,17 +389,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 5. Lógica do Finalizar Pedido (Simulação)
+    // 5. Lógica do Finalizar Pedido (WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
+            const nome = document.getElementById('nome-cliente').value;
+            const endereco = document.getElementById('endereco-cliente').value;
+            const telefone = document.getElementById('telefone-cliente').value;
+
             if (carrinho.length === 0) {
                 alert("Seu carrinho está vazio.");
                 return;
             }
-            
-            const nome = document.getElementById('nome-cliente').value;
-            const endereco = document.getElementById('endereco-cliente').value;
-            const telefone = document.getElementById('telefone-cliente').value;
             
             let mensagem = `*PEDIDO JottaV Burguer*\n\n`;
             mensagem += `*Cliente:* ${nome || 'Não Informado'}\n`;
@@ -412,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const total = calcularTotalCarrinho();
             mensagem += `\n*TOTAL DO PEDIDO: R$ ${total.toFixed(2).replace('.', ',')}*`;
             
+            // Substitua '5586981147596' pelo seu número de WhatsApp
             const linkWhatsApp = `https://wa.me/5586981147596?text=${encodeURIComponent(mensagem)}`;
             window.open(linkWhatsApp, '_blank');
             
