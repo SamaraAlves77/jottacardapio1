@@ -16,10 +16,23 @@ const notificacao = document.getElementById('notificacao');
 const btnFinalizar = document.getElementById('btn-finalizar-pedido');
 const hamburgerBtn = document.getElementById('hamburger-menu-btn');
 
-// Elementos da Customização (NOVOS)
+// Elementos da Customização
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
+
+
+// =======================================================
+// UTILS
+// =======================================================
+const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+});
+
+function formatarPreco(valor) {
+    return formatter.format(valor); 
+}
 
 
 // =======================================================
@@ -76,18 +89,17 @@ function atualizarModalCarrinho() {
         
         // Usa nomeExibicao se existir (para itens customizados) ou o nome normal
         const nomeExibicao = item.nomeExibicao || item.nome;
-        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
         itemDiv.innerHTML = `
             <span class="carrinho-item-nome">${nomeExibicao}</span>
-            <span class="carrinho-item-preco">R$ ${precoFormatado}</span>
+            <span class="carrinho-item-preco">${formatarPreco(item.preco)}</span>
             <button class="btn-remover" data-index="${index}">X</button>
         `;
         carrinhoItensContainer.appendChild(itemDiv);
         total += item.preco;
     });
 
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
+    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ','); // Mantém o formato no span de total
 
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -101,7 +113,7 @@ function atualizarModalCarrinho() {
 // =======================================================
 // FUNÇÕES DE CUSTOMIZAÇÃO
 // =======================================================
-// ** CORREÇÃO: APENAS HAMBÚRGUERES ARTESANAIS PODEM SER CUSTOMIZADOS **
+// Apenas Hambúrgueres Artesanais são customizáveis, conforme sua definição.
 const categoriasCustomizaveis = ['Hambúrgueres Artesanais'];
 
 
@@ -121,7 +133,7 @@ function abrirModalCustomizacao(item) {
     
     // Renderiza e atualiza a modal
     renderizarOpcoesAdicionais();
-    customizacaoModal.style.display = 'block';
+    customizacaoModal.style.display = 'flex'; // Mudado para 'flex' para usar centralização
 }
 
 function renderizarOpcoesAdicionais() {
@@ -138,7 +150,7 @@ function renderizarOpcoesAdicionais() {
         div.innerHTML = `
             <div>
                 <span>${adicional.nome}</span> 
-                <small>(R$ ${adicional.preco.toFixed(2).replace('.', ',')})</small>
+                <small>(${formatarPreco(adicional.preco)})</small>
             </div>
             <div class="adicional-contador">
                 <button class="btn-diminuir-adicional" data-nome="${adicional.nome}">-</button>
@@ -156,12 +168,11 @@ function renderizarOpcoesAdicionais() {
 function adicionarListenersContador() {
     // É importante remover os listeners antigos antes de adicionar os novos
     document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
+        // Usa `onclick = null` e depois atribui para garantir que não haja duplicidade
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
     });
     
     document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
     });
 }
@@ -231,7 +242,7 @@ function criarItemCardapio(item, categoria) {
 
     const pPreco = document.createElement('p');
     pPreco.className = 'price';
-    pPreco.textContent = `R$ ${item.preco.toFixed(2).replace('.', ',')}`;
+    pPreco.textContent = formatarPreco(item.preco); // Usa função de formatação
     divItem.appendChild(pPreco);
 
     const btnAdicionar = document.createElement('button');
@@ -257,6 +268,7 @@ function criarItemCardapio(item, categoria) {
 
 function criarSecaoCardapio(titulo, itens) {
     let containerId = '';
+    // Mapeamento dos nomes de categoria para os IDs dos grids no HTML
     switch(titulo) {
         case 'Hambúrgueres Artesanais': containerId = 'hamburgueres-artesanais-grid'; break;
         case 'Combos e Família': containerId = 'combos-e-familia-grid'; break;
@@ -286,17 +298,22 @@ async function carregarCardapio() {
         
         const cardapioData = await response.json();
         
-        const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
-        
-        if (adicionaisCategoria) {
-            adicionaisGlobais = adicionaisCategoria.itens || []; 
+        // CORREÇÃO CRÍTICA 1: Acessa a propriedade direta 'adicionais_opcoes'
+        if (cardapioData.adicionais_opcoes) {
+            adicionaisGlobais = cardapioData.adicionais_opcoes;
+        } else {
+             console.warn("Propriedade 'adicionais_opcoes' não encontrada no JSON.");
         }
 
-        cardapioData.forEach(categoriaObj => {
-            if (categoriaObj.id !== 'adicionais-extras') {
+        // CORREÇÃO CRÍTICA 2: Itera sobre o array DENTRO da propriedade 'categorias'
+        if (cardapioData.categorias && Array.isArray(cardapioData.categorias)) {
+            cardapioData.categorias.forEach(categoriaObj => {
                 criarSecaoCardapio(categoriaObj.nome, categoriaObj.itens);
-            }
-        });
+            });
+        } else {
+             console.error("Propriedade 'categorias' é inválida ou não encontrada no JSON.");
+        }
+        
     } catch (error) {
         console.error('Erro ao carregar o cardápio:', error);
         const main = document.querySelector('main');
@@ -312,7 +329,7 @@ async function carregarCardapio() {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // CORREÇÃO CRÍTICA PARA IMPEDIR POP-UPS AO CARREGAR A PÁGINA
+    // Garante que os modais estejam ocultos ao carregar a página
     if (carrinhoModal) {
         carrinhoModal.style.display = 'none';
     }
@@ -326,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.style.display = 'block';
+            carrinhoModal.style.display = 'flex'; // Mudado para 'flex' para usar centralização
             atualizarModalCarrinho(); 
         });
     }
@@ -401,7 +418,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             carrinho.forEach((item, index) => {
                 const precoFormatado = item.preco.toFixed(2).replace('.', ',');
-                mensagem += `${index + 1}. ${item.nomeExibicao || item.nome} - R$ ${precoFormatado}\n`;
+                // Usa o nomeExibicao formatado ou o nome base
+                mensagem += `${index + 1}. ${item.nomeExibicao || item.nome} - R$ ${precoFormatado}\n`; 
             });
             
             mensagem += `\n*TOTAL: R$ ${carrinhoTotalSpan.textContent}*`;
