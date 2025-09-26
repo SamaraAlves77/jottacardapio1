@@ -10,11 +10,9 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo-link">
-            <div class="logo">
-                <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
-            </div>
-        </a>
+        <div class="logo">
+            <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
+        </div>
         <nav>
             <ul class="nav-links">
                 <li><a href="#hamburgueres-artesanais" class="active">Hambúrgueres</a></li>
@@ -35,60 +33,68 @@
     </header>
 
     <main>
-        <section id="hamburgueres-artesanais" class="menu-section">
+        <section class="menu-section" id="hamburgueres-artesanais">
             <h2>Hambúrgueres Artesanais</h2>
-            <div class="item-grid" id="hamburgueres-artesanais-grid"></div>
+            <div class="item-grid" id="hamburgueres-artesanais-grid">
+                </div>
         </section>
 
-        <section id="combos-e-familia" class="menu-section">
+        <section class="menu-section" id="combos-e-familia">
             <h2>Combos e Família</h2>
-            <div class="item-grid" id="combos-e-familia-grid"></div>
+            <div class="item-grid" id="combos-e-familia-grid">
+                </div>
         </section>
 
-        <section id="acompanhamentos" class="menu-section">
+        <section class="menu-section" id="acompanhamentos">
             <h2>Acompanhamentos</h2>
-            <div class="item-grid" id="acompanhamentos-grid"></div>
+            <div class="item-grid" id="acompanhamentos-grid">
+                </div>
         </section>
 
-        <section id="bebidas" class="menu-section">
+        <section class="menu-section" id="bebidas">
             <h2>Bebidas</h2>
-            <div class="item-grid" id="bebidas-grid"></div>
+            <div class="item-grid" id="bebidas-grid">
+                </div>
         </section>
     </main>
-    
+
     <div id="carrinho-modal" class="modal">
         <div class="modal-content">
             <span class="fechar-modal">&times;</span>
-            <h3>Seu Pedido</h3>
-            <div class="carrinho-itens" id="carrinho-itens"></div>
-            <div class="carrinho-total">
-                Total: R$ <span id="carrinho-total">0.00</span>
+            <h3>Seu Carrinho</h3>
+            
+            <div class="carrinho-itens" id="carrinho-itens">
+                </div>
+
+            <div class="carrinho-total-container">
+                <span>Total:</span>
+                R$ <span id="carrinho-total">0,00</span>
             </div>
+            
             <div class="carrinho-finalizar">
-                <input type="text" id="nome-cliente" placeholder="Seu nome">
-                <input type="text" id="endereco-cliente" placeholder="Seu endereço">
-                <input type="text" id="telefone-cliente" placeholder="Seu telefone">
-                <button id="btn-finalizar-pedido">Finalizar Pedido</button>
+                <input type="text" id="nome-cliente" placeholder="Seu nome" required>
+                <input type="text" id="endereco-cliente" placeholder="Seu endereço" required>
+                <input type="text" id="telefone-cliente" placeholder="Seu telefone" required>
+                <button id="btn-finalizar-pedido">Finalizar Pedido (WhatsApp)</button>
             </div>
         </div>
     </div>
     
     <div id="customizacao-modal" class="modal">
-        <div class="modal-content customizacao-modal-content">
-            <span class="fechar-customizacao fechar-modal">&times;</span>
-            <h3 class="customizacao-header">Customizar <span id="item-customizacao-nome"></span></h3>
+        <div class="modal-content">
+            <span class="fechar-customizacao">&times;</span>
+            <h3>Customizar <span id="item-customizacao-nome"></span></h3>
             
-            <div class="adicionais-opcoes" id="adicionais-opcoes-lista">
+            <div class="adicionais-opcoes">
+                <h4>Adicionais:</h4>
+                <div id="adicionais-opcoes-lista">
+                    </div>
             </div>
 
             <div class="customizacao-resumo">
-                <div class="resumo-linha">
-                    <span>Preço Base:</span> R$ <span id="preco-base-customizacao">0,00</span>
-                </div>
-                <div class="resumo-linha">
-                    <span>Adicionais:</span> R$ <span id="preco-adicionais-customizacao">0,00</span>
-                </div>
-                <h4 class="resumo-total">Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
+                <p>Preço Base: R$ <span id="preco-base-customizacao">0,00</span></p>
+                <p>Adicionais: R$ <span id="preco-adicionais-customizacao">0,00</span></p>
+                <h4>Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
                 
                 <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
             </div>
