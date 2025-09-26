@@ -4,7 +4,7 @@
 let carrinho = [];
 let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
-const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais';
+const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; // Garante que apenas Artesanais possam ser customizados
 
 // Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
@@ -17,16 +17,17 @@ let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarri
 async function loadHTML(url, elementId) {
     const element = document.getElementById(elementId);
     if (!element) {
-        console.error(`Contêiner de destino '${elementId}' não encontrado em cardapio.html.`);
+        console.error(`Contêiner de destino '${elementId}' não encontrado. Verifique se o cardapio.html possui este ID.`);
         return false;
     }
     
     try {
+        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
-            // Exibe erro no corpo da página se o arquivo HTML não for encontrado
-            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome e o caminho.</h3>`;
+            // Se der erro 404, avisa o usuário diretamente na tela
+            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
         
@@ -40,7 +41,7 @@ async function loadHTML(url, elementId) {
 }
 
 function rebindElements() {
-    // Liga as variáveis globais aos elementos que acabaram de ser injetados
+    // ⚠️ Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM ⚠️
     carrinhoModal = document.getElementById('carrinho-modal');
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
@@ -130,12 +131,13 @@ function atualizarModalCarrinho() {
 
 
 // =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO (JANELA FLUTUANTE)
+// FUNÇÕES DE CUSTOMIZAÇÃO
 // =======================================================
 
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
 
+    // Cria uma cópia do item para customização
     itemEmCustomizacao = { 
         ...item,
         adicionais: [], 
@@ -237,6 +239,7 @@ function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
 
+    // ATENÇÃO: Confirme que o nome do arquivo da imagem está correto no JSON e na pasta!
     const img = document.createElement('img');
     img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
@@ -263,7 +266,6 @@ function criarItemCardapio(item, categoriaNome) {
     if (categoriaNome === CATEGORIA_CUSTOMIZAVEL) {
         btnAdicionar.textContent = 'Customizar e Adicionar';
         btnAdicionar.addEventListener('click', () => {
-            adicionarListenersContador(); // Garante que os botões de customização funcionem
             abrirModalCustomizacao(item);
         });
     } else {
@@ -278,6 +280,7 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
+    // O ID deve ser o nome da seção + '-grid' (ex: hamburgueres-artesanais-grid)
     const container = document.getElementById(idContainer); 
     if (!container) {
         console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
@@ -292,6 +295,7 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
 
 async function carregarCardapio() {
     try {
+        // Busca o cardapio.json na raiz
         const response = await fetch('./cardapio.json');
         
         if (!response.ok) {
@@ -306,6 +310,7 @@ async function carregarCardapio() {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
+        // Popula as seções do cardápio
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
                 const idContainerGrid = categoriaObj.id + '-grid'; 
@@ -317,7 +322,7 @@ async function carregarCardapio() {
         const main = document.querySelector('#main-content-container');
         if (main) {
             main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">
-                ❌ Erro ao carregar o cardápio. Verifique o formato do seu cardapio.json.
+                ❌ Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json existe e está formatado corretamente.
             </h1>`;
         }
     }
@@ -325,7 +330,7 @@ async function carregarCardapio() {
 
 
 // =======================================================
-// EVENT LISTENERS (Ligação de Botões)
+// EVENT LISTENERS E INICIALIZAÇÃO
 // =======================================================
 
 function setupEventListeners() {
@@ -460,24 +465,24 @@ function setupEventListeners() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     
-    // Carrega o HTML dinamicamente
+    // 1. Carrega o HTML dinamicamente. **VERIFIQUE O NOME DESTES ARQUIVOS!**
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const conteudoOK = await loadHTML('conteudo_cardapio.html', 'main-content-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // Só prossegue se todos os arquivos HTML necessários foram carregados
+    // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
     if (navbarOK && conteudoOK && modalOK) {
         
-        // 1. Re-liga os elementos injetados às variáveis JS
+        // Re-liga os elementos injetados às variáveis JS
         rebindElements(); 
         
-        // 2. Carrega os dados do JSON e popula o cardápio
+        // Carrega os dados do JSON e popula o cardápio
         await carregarCardapio(); 
         
-        // 3. Configura os Listeners
+        // Configura os Listeners de botões e modais
         setupEventListeners();
         
     } else {
-        console.error("Não foi possível carregar todas as partes do HTML. O cardápio não será exibido.");
+        console.error("Não foi possível carregar todas as partes do HTML. Verifique os erros acima.");
     }
 });
