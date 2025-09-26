@@ -4,20 +4,22 @@ let carrinho = [];
 let itemIdCustomizando = null;
 
 // Referências de Elementos (IDs e Classes)
-const cardapioContainer = document.getElementById('cardapio-container');
+const cardapioContainer = document.getElementById('cardapio-container'); // ID da <main>
 const carrinhoBtn = document.querySelector('.carrinho-btn');
 const carrinhoModal = document.getElementById('carrinho-modal');
 const fecharCarrinho = document.querySelector('.fechar-modal');
-const carrinhoItensContainer = document.querySelector('.carrinho-itens');
+const carrinhoItensContainer = document.getElementById('carrinho-itens'); // ID correto
 const carrinhoTotalElement = document.getElementById('carrinho-total');
 const contadorCarrinho = document.getElementById('contador-carrinho');
 const finalizarPedidoBtn = document.getElementById('btn-finalizar-pedido');
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacao = document.querySelector('.fechar-customizacao');
 const adicionaisLista = document.getElementById('adicionais-opcoes-lista');
-const resumoPrecoBase = document.getElementById('resumo-preco-base');
-const resumoPrecoAdicionais = document.getElementById('resumo-preco-adicionais');
-const resumoPrecoTotal = document.getElementById('resumo-preco-total');
+
+// CORREÇÃO CRÍTICA: Elementos do resumo da customização (usados para cálculo)
+const resumoPrecoBase = document.getElementById('preco-base-customizacao');
+const resumoPrecoAdicionais = document.getElementById('preco-adicionais-customizacao');
+const resumoPrecoTotalSpan = document.getElementById('preco-total-customizacao');
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
 
 
@@ -51,8 +53,9 @@ async function carregarCardapio() {
         renderizarCardapio(cardapioData);
     } catch (error) {
         console.error('Erro ao carregar o cardápio:', error);
-        // CRÍTICO: Se o erro for de sintaxe no JSON, ele para aqui.
-        cardapioContainer.innerHTML = '<p>Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json está correto e na pasta certa.</p>';
+        if (cardapioContainer) {
+            cardapioContainer.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json está correto.</p>';
+        }
     }
 }
 
@@ -66,7 +69,8 @@ function renderizarCardapio(data) {
 
         const section = document.createElement('section');
         section.className = 'menu-section';
-        section.id = `secao-${secao.id}`;
+        // Ajuste no ID para corresponder aos links de navegação no index.html corrigido
+        section.id = `secao-${secao.id}`; 
 
         const h2 = document.createElement('h2');
         h2.textContent = secao.nome;
@@ -145,7 +149,7 @@ function atualizarModalCarrinho() {
 
     carrinhoItensContainer.innerHTML = '';
     const total = calcularTotalCarrinho();
-    carrinhoTotalElement.textContent = formatarMoeda(total);
+    carrinhoTotalElement.textContent = formatarMoeda(total).replace('R$ ', ''); // Remove o R$ para exibir apenas o valor
 
     if (carrinho.length === 0) {
         carrinhoItensContainer.innerHTML = '<p style="text-align: center; color: #666;">Seu carrinho está vazio.</p>';
@@ -188,9 +192,11 @@ function atualizarModalCarrinho() {
 // -------------------------------------------------------
 
 function encontrarItem(secaoId, itemId) {
-    const secao = cardapioData.find(s => s.id === secaoId);
-    if (secao) {
-        return secao.itens.find(i => i.id === itemId);
+    // Procura o item de qualquer seção, incluindo a de combos
+    for (const secao of cardapioData) {
+        if (secao.id === secaoId) {
+            return secao.itens.find(i => i.id === itemId);
+        }
     }
     return null;
 }
@@ -207,7 +213,6 @@ function obterListaAdicionaisGlobais() {
 
 function abrirModalCustomizacao(secaoId, itemId) {
     const item = encontrarItem(secaoId, itemId);
-    // CRÍTICO: Obtém a lista de adicionais globais (molhos, queijos, etc.)
     const listaAdicionais = obterListaAdicionaisGlobais(); 
 
     if (!item || !customizacaoModal || !adicionaisLista) return;
@@ -218,11 +223,11 @@ function abrirModalCustomizacao(secaoId, itemId) {
         itemId: itemId, 
         adicionaisSelecionados: {}, 
         precoBase: item.preco,
-        listaAdicionaisGlobal: listaAdicionais // Salva a lista de adicionais para uso posterior
+        listaAdicionaisGlobal: listaAdicionais
     };
 
-    const modalTitle = customizacaoModal.querySelector('h3');
-    modalTitle.textContent = item.nome;
+    const modalTitle = document.getElementById('item-customizacao-nome');
+    if (modalTitle) modalTitle.textContent = item.nome;
     
     // Reseta a lista de adicionais
     adicionaisLista.innerHTML = '';
@@ -263,7 +268,7 @@ function abrirModalCustomizacao(secaoId, itemId) {
     }
 
     // Exibe o preço base e calcula o total inicial (apenas o preço base)
-    atualizarResumoCustomizacao(listaAdicionais);
+    atualizarResumoCustomizacao();
     customizacaoModal.style.display = 'flex';
 }
 
@@ -297,7 +302,7 @@ function atualizarAdicional(adicionalId, tipo, listaAdicionais) {
         delete itemIdCustomizando.adicionaisSelecionados[adicionalId];
     }
     
-    atualizarResumoCustomizacao(listaAdicionais);
+    atualizarResumoCustomizacao();
 }
 
 function calcularTotalAdicionais(listaAdicionais) {
@@ -314,16 +319,24 @@ function calcularTotalAdicionais(listaAdicionais) {
 
 function atualizarResumoCustomizacao() {
     // Usa a lista global que foi salva no estado da customização
-    const listaAdicionais = itemIdCustomizando.listaAdicionaisGlobal || []; 
+    const listaAdicionais = itemIdCustomizando.listaAdicionaisGlobal || [];
     
     const precoBase = itemIdCustomizando ? itemIdCustomizando.precoBase : 0;
     const totalAdicionais = calcularTotalAdicionais(listaAdicionais);
     const totalGeral = precoBase + totalAdicionais;
 
-    if (resumoPrecoTotal) {
-        resumoPrecoTotal.innerHTML = `Total do Item: <span>${formatarMoeda(totalGeral)}</span>`;
+    // CORREÇÃO: Atualiza os spans de resumo para corrigir a formatação da modal
+    if (resumoPrecoBase) {
+        resumoPrecoBase.textContent = formatarMoeda(precoBase).replace('R$ ', '');
     }
-
+    if (resumoPrecoAdicionais) {
+        resumoPrecoAdicionais.textContent = formatarMoeda(totalAdicionais).replace('R$ ', '');
+    }
+    if (resumoPrecoTotalSpan) {
+        resumoPrecoTotalSpan.textContent = formatarMoeda(totalGeral).replace('R$ ', '');
+    }
+    
+    // Atualiza o botão "ADICIONAR" com o preço final
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.textContent = `ADICIONAR ${formatarMoeda(totalGeral)}`;
     }
