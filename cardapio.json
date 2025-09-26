@@ -23,7 +23,7 @@
                     "nome": "Jotta Básico",
                     "descricao": "Pão, carne 120g prensada na chapa com cebola, queijo muçarela e molho da casa.",
                     "preco": 14.99,
-                    "imagem": "jotta_basico.jpeg"
+                    "imagem": "jotta_classic.jpeg" 
                 },
                 {
                     "id": "jotta-classic",
@@ -58,7 +58,7 @@
                     "nome": "Burguer salame",
                     "descricao": "Pão, requeijão, carne e salame.",
                     "preco": 28.99,
-                    "imagem": "burguer_salame.jpeg"
+                    "imagem": "burguer_salame.jpeg" 
                 },
                 {
                     "id": "calabresa-basico",
@@ -78,35 +78,35 @@
                     "nome": "Combo Econômico",
                     "descricao": "1 Smash Original + batata frita + refrigerante lata.",
                     "preco": 31.99,
-                    "imagem": "combo_economico.jpeg"
+                    "imagem": "combo_economico_smash.jpeg" // Nome do arquivo na pasta
                 },
                 {
                     "id": "combo-chef",
                     "nome": "Combo do Chef",
                     "descricao": "1 Jotta Classic + batata frita + refrigerante lata.",
                     "preco": 41.99,
-                    "imagem": "combo_do_chef.jpeg"
+                    "imagem": "combo_do_chef.jpeg" 
                 },
                 {
                     "id": "combo-smash-duplo",
                     "nome": "Combo Smash Duplo",
                     "descricao": "1 Smash Duplo + batata frita + refrigerante lata.",
                     "preco": 37.99,
-                    "imagem": "combo_smash_duplo.jpeg"
+                    "imagem": "combo_economico_smash.jpeg" // Nome do arquivo na pasta
                 },
                 {
                     "id": "combo-premium",
                     "nome": "Combo Premium",
                     "descricao": "1 Duplo Brutão + batata frita + refrigerante lata.",
                     "preco": 53.99,
-                    "imagem": "combo_premium.jpeg"
+                    "imagem": "combo_premium.jpeg" 
                 },
                 {
                     "id": "casal-smash-duplo",
                     "nome": "Casal Smash Duplo",
                     "descricao": "2 Smash Original + batata frita + Guaraná 1L.",
                     "preco": 49.99,
-                    "imagem": "casal_smash_duplo.jpeg"
+                    "imagem": "combo_economico_casal_smas.jpeg" // Nome do arquivo na pasta
                 },
                 {
                     "id": "casal-classic",
@@ -195,21 +195,28 @@
                     "nome": "Coca-Cola lata",
                     "descricao": "Refrigerante lata de Coca-Cola.",
                     "preco": 7.00,
-                    "imagem": "cocalata.png"
+                    "imagem": "cocalata.png" // Nome do arquivo na pasta
                 },
                 {
                     "id": "guarana-lata",
                     "nome": "Guaraná lata",
                     "descricao": "Refrigerante lata de Guaraná.",
                     "preco": 6.00,
-                    "imagem": "guaranalata.png"
+                    "imagem": "guaranalata.png" // Nome do arquivo na pasta
                 },
                 {
                     "id": "guarana-1l",
                     "nome": "Guaraná 1L",
                     "descricao": "Refrigerante de Guaraná de 1 litro.",
                     "preco": 9.00,
-                    "imagem": "guarana1l.jpeg" 
+                    "imagem": "guarana1l.jpg" // CORRIGIDO: Usa a extensão .jpg, conforme o arquivo na pasta
+                },
+                {
+                    "id": "pepsi-1l",
+                    "nome": "Pepsi 1L",
+                    "descricao": "Refrigerante Pepsi de 1 litro.",
+                    "preco": 9.00,
+                    "imagem": "pespi1l.jpeg" // Nome do arquivo na pasta
                 }
             ]
         }
