@@ -8,72 +8,63 @@
                 "nome": "Smash Original",
                 "descricao": "Pão, carne 80g prensada na chapa, queijo muçarela, cebola caramelizada, alface, tomate e molho da casa.",
                 "preco": 18.99,
-                "imagem": "smash_original.jpeg",
-                "adicionais": []
+                "imagem": "smash_original.jpeg"
             },
             {
                 "id": "smash-duplo",
                 "nome": "Smash Duplo",
                 "descricao": "Pão, 2 carnes 80g prensadas na chapa, 2 queijos muçarela, cebola caramelizada, alface, tomate e molho da casa.",
                 "preco": 24.99,
-                "imagem": "smash_duplo.jpeg",
-                "adicionais": []
+                "imagem": "smash_duplo.jpeg"
             },
             {
                 "id": "jotta-basico",
                 "nome": "Jotta Básico",
                 "descricao": "Pão, carne 120g prensada na chapa com cebola, queijo muçarela e molho da casa.",
                 "preco": 14.99,
-                "imagem": "jotta_basico.jpeg",
-                "adicionais": []
+                "imagem": "jotta_basico.jpeg"
             },
             {
                 "id": "jotta-classic",
                 "nome": "Jotta Classic",
                 "descricao": "Pão, carne 120g, molho barbecue, tomate, alface, bacon e queijo muçarela.",
                 "preco": 25.99,
-                "imagem": "jotta_classic.jpeg",
-                "adicionais": []
+                "imagem": "jotta_classic.jpeg"
             },
             {
                 "id": "burguer-xerife",
                 "nome": "Burguer do Xerife",
                 "descricao": "Pão, carne de 120g, queijo muçarela ou requeijão e linguiça.",
                 "preco": 22.99,
-                "imagem": "burguer_do_xerife.jpeg",
-                "adicionais": []
+                "imagem": "burguer_do_xerife.jpeg"
             },
             {
                 "id": "duplo-brutao",
                 "nome": "Duplo Brutão",
                 "descricao": "Pão, 2 carnes de 120g, queijo muçarela ou requeijão, molho da casa, 2 fatias de bacon.",
                 "preco": 37.99,
-                "imagem": "duplo_brutao.jpeg",
-                "adicionais": []
+                "imagem": "duplo_brutao.jpeg"
             },
             {
                 "id": "calabresa-prime",
                 "nome": "Calabresa prime",
                 "descricao": "Pão, molho, alface, tomate, calabresa, queijo, cebola caramelizada, carne ou frango.",
                 "preco": 26.99,
-                "imagem": "calabresa_prime.jpeg",
-                "adicionais": []
+                "imagem": "calabresa_prime.jpeg"
             },
             {
                 "id": "burguer-salame",
                 "nome": "Burguer salame",
                 "descricao": "Pão, requeijão, carne e salame.",
                 "preco": 28.99,
-                "imagem": "burguer_salame.jpeg",
-                "adicionais": []
+                "imagem": "burguer_salame.jpeg"
             },
             {
                 "id": "calabresa-basico",
                 "nome": "Calabresa básico",
                 "descricao": "Pão, molho da casa, calabresa e queijo muçarela.",
                 "preco": 15.00,
-                "imagem": "calabresa_basico.jpeg",
-                "adicionais": []
+                "imagem": "calabresa_basico.jpeg"
             }
         ]
     },
@@ -86,96 +77,84 @@
                 "nome": "Combo Econômico",
                 "descricao": "1 Smash Original + batata frita + refrigerante lata.",
                 "preco": 31.99,
-                "imagem": "combo_economico.jpeg",
-                "adicionais": []
+                "imagem": "combo_economico.jpeg"
             },
             {
                 "id": "combo-chef",
                 "nome": "Combo do Chef",
                 "descricao": "1 Jotta Classic + batata frita + refrigerante lata.",
                 "preco": 41.99,
-                "imagem": "combo_do_chef.jpeg",
-                "adicionais": []
+                "imagem": "combo_do_chef.jpeg"
             },
             {
                 "id": "combo-smash-duplo",
                 "nome": "Combo Smash Duplo",
                 "descricao": "1 Smash Duplo + batata frita + refrigerante lata.",
                 "preco": 37.99,
-                "imagem": "combo_smash_duplo.jpeg",
-                "adicionais": []
+                "imagem": "combo_smash_duplo.jpeg"
             },
             {
                 "id": "combo-premium",
                 "nome": "Combo Premium",
                 "descricao": "1 Duplo Brutão + batata frita + refrigerante lata.",
                 "preco": 53.99,
-                "imagem": "combo_premium.jpeg",
-                "adicionais": []
+                "imagem": "combo_premium.jpeg"
             },
             {
                 "id": "casal-smash-duplo",
                 "nome": "Casal Smash Duplo",
                 "descricao": "2 Smash Original + batata frita + Guaraná 1L.",
                 "preco": 49.99,
-                "imagem": "casal_smash_duplo.jpeg",
-                "adicionais": []
+                "imagem": "casal_smash_duplo.jpeg"
             },
             {
                 "id": "casal-classic",
                 "nome": "Casal Classic",
                 "descricao": "2 Jotta Classic + batata frita + Guaraná 1L.",
                 "preco": 63.99,
-                "imagem": "casal_classic.jpeg",
-                "adicionais": []
+                "imagem": "casal_classic.jpeg"
             },
             {
                 "id": "casal-smash",
                 "nome": "Casal Smash",
                 "descricao": "2 Smash Duplo + batata frita + Guaraná 1L.",
                 "preco": 61.99,
-                "imagem": "casal_smash.jpeg",
-                "adicionais": []
+                "imagem": "casal_smash.jpeg"
             },
             {
                 "id": "casal-premium",
                 "nome": "Casal Premium",
                 "descricao": "2 Duplo Brutão + batata frita + Guaraná 1L.",
                 "preco": 87.99,
-                "imagem": "casal_premium.jpeg",
-                "adicionais": []
+                "imagem": "casal_premium.jpeg"
             },
             {
                 "id": "familia-smash-original",
                 "nome": "Família Smash Original",
                 "descricao": "4 Smash Original + batata frita + Guaraná 1L.",
                 "preco": 87.99,
-                "imagem": "familia_smash_original.jpeg",
-                "adicionais": []
+                "imagem": "familia_smash_original.jpeg"
             },
             {
                 "id": "familia-classic",
                 "nome": "Família Classic",
                 "descricao": "4 Jotta Classic + batata frita + Guaraná 1L.",
                 "preco": 115.99,
-                "imagem": "familia_classic.jpeg",
-                "adicionais": []
+                "imagem": "familia_classic.jpeg"
             },
             {
                 "id": "familia-smash-duplo",
                 "nome": "Família Smash Duplo",
                 "descricao": "4 Smash Duplo + batata frita + Guaraná 1L.",
                 "preco": 111.99,
-                "imagem": "familia_smash_duplo.jpeg",
-                "adicionais": []
+                "imagem": "familia_smash_duplo.jpeg"
             },
             {
                 "id": "familia-brutao",
                 "nome": "Família Brutão",
                 "descricao": "4 Duplo Brutão + batata frita + Guaraná 1L.",
                 "preco": 154.90,
-                "imagem": "familia_brutao.jpeg",
-                "adicionais": []
+                "imagem": "familia_brutao.jpeg"
             }
         ]
     },
@@ -188,27 +167,21 @@
                 "nome": "Batata Frita",
                 "descricao": "Batata frita com especiarias e molho especial.",
                 "preco": 11.99,
-                "imagem": "batata_palito.jpeg",
-                "adicionais": [
-                    {"id": "ched-muss", "nome": "Queijo Muçarela", "preco": 4.00},
-                    {"id": "bacon-acomp", "nome": "Bacon", "preco": 4.00}
-                ]
+                "imagem": "batata_palito.jpeg"
             },
             {
                 "id": "batata-cheddar-bacon",
                 "nome": "Batata Cheddar e Bacon",
                 "descricao": "Batata frita coberta com cheddar cremoso e bacon crocante.",
                 "preco": 17.99,
-                "imagem": "batata_com_bacon.jpeg",
-                "adicionais": []
+                "imagem": "batata_com_bacon.jpeg"
             },
             {
                 "id": "aneis-cebola",
                 "nome": "Anéis de Cebola",
                 "descricao": "Anéis de cebola crocantes, empanados e fritos.",
                 "preco": 15.00,
-                "imagem": "aneis_cebola.jpeg",
-                "adicionais": []
+                "imagem": "aneis_cebola.jpeg"
             }
         ]
     },
@@ -221,24 +194,21 @@
                 "nome": "Coca-Cola lata",
                 "descricao": "Refrigerante lata de Coca-Cola.",
                 "preco": 7.00,
-                "imagem": "coca_cola_lata.jpeg",
-                "adicionais": []
+                "imagem": "coca_cola_lata.jpeg"
             },
             {
                 "id": "guarana-lata",
                 "nome": "Guaraná lata",
                 "descricao": "Refrigerante lata de Guaraná.",
                 "preco": 6.00,
-                "imagem": "guarana_lata.jpeg",
-                "adicionais": []
+                "imagem": "guarana_lata.jpeg"
             },
             {
                 "id": "guarana-1l",
                 "nome": "Guaraná 1L",
                 "descricao": "Refrigerante de Guaraná de 1 litro.",
                 "preco": 9.00,
-                "imagem": "guarana_1l.jpeg",
-                "adicionais": []
+                "imagem": "guarana_1l.jpeg"
             }
         ]
     },
@@ -249,82 +219,62 @@
             {
                 "id": "creme-requeijao-extra",
                 "nome": "Creme de Requeijão",
-                "descricao": "Copo pequeno de Creme de Requeijão extra para mergulho.",
                 "preco": 4.00,
-                "imagem": "creme_requeijao.jpeg",
-                "adicionais": []
+                "imagem": "creme_requeijao.jpeg"
             },
             {
                 "id": "queijo-mucarela-extra",
                 "nome": "Queijo Muçarela",
-                "descricao": "Porção extra de queijo muçarela.",
                 "preco": 4.00,
-                "imagem": "queijo_mucarela.jpeg",
-                "adicionais": []
+                "imagem": "queijo_mucarela.jpeg"
             },
             {
                 "id": "bacon-extra",
                 "nome": "Bacon",
-                "descricao": "Porção extra de bacon.",
                 "preco": 4.00,
-                "imagem": "bacon.jpeg",
-                "adicionais": []
+                "imagem": "bacon.jpeg"
             },
             {
                 "id": "farofa-bacon",
                 "nome": "Farofa de bacon",
-                "descricao": "Farofa de bacon crocante.",
                 "preco": 3.00,
-                "imagem": "farofa_bacon.jpeg",
-                "adicionais": []
+                "imagem": "farofa_bacon.jpeg"
             },
             {
                 "id": "farofa-alho",
                 "nome": "Farofa de alho",
-                "descricao": "Farofa de alho crocante.",
                 "preco": 3.00,
-                "imagem": "farofa_alho.jpeg",
-                "adicionais": []
+                "imagem": "farofa_alho.jpeg"
             },
             {
                 "id": "molho-barbecue-extra",
                 "nome": "Molho barbecue",
-                "descricao": "Molho barbecue extra.",
                 "preco": 2.00,
-                "imagem": "molho_barbecue.jpeg",
-                "adicionais": []
+                "imagem": "molho_barbecue.jpeg"
             },
             {
                 "id": "molho-casa-extra",
                 "nome": "Molho da casa",
-                "descricao": "Molho da casa extra.",
                 "preco": 2.00,
-                "imagem": "molho_da_casa.jpeg",
-                "adicionais": []
+                "imagem": "molho_da_casa.jpeg"
             },
             {
                 "id": "calabresa-extra",
                 "nome": "Calabresa",
-                "descricao": "Porção de calabresa.",
                 "preco": 5.00,
-                "imagem": "calabresa.jpeg",
-                "adicionais": []
+                "imagem": "calabresa.jpeg"
             },
             {
                 "id": "salame-extra",
                 "nome": "Salame",
-                "descricao": "Porção de salame.",
                 "preco": 7.00,
-                "imagem": "salame.jpeg",
-                "adicionais": []
+                "imagem": "salame.jpeg"
             },
             {
                 "id": "requeijao-extra",
                 "nome": "Requeijão",
-                "descricao": "Porção de requeijão.",
                 "preco": 4.00,
-                "imagem": "requeijao.jpeg",
-                "adicionais": []
+                "imagem": "requeijao.jpeg"
             }
         ]
     }
