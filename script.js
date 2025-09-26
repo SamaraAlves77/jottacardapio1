@@ -1,9 +1,9 @@
 // =======================================================
 // VARIÁVEIS DE ESTADO E REFERÊNCIAS DO DOM
 // =======================================================
-let carrinho = []; // Array para armazenar os itens do pedido
-let adicionaisGlobais = []; // Vai armazenar as opções de adicionais do JSON
-let itemEmCustomizacao = null; // Armazena o item que está sendo customizado
+let carrinho = []; 
+let adicionaisGlobais = []; 
+let itemEmCustomizacao = null; 
 
 // Elementos do Carrinho
 const carrinhoModal = document.getElementById('carrinho-modal');
@@ -15,22 +15,18 @@ const carrinhoTotalSpan = document.getElementById('carrinho-total');
 const notificacao = document.getElementById('notificacao');
 const btnFinalizar = document.getElementById('btn-finalizar-pedido');
 const hamburgerBtn = document.getElementById('hamburger-menu-btn');
-const navLinks = document.querySelector('.nav-links'); // Referência para o menu
+const navLinks = document.querySelector('.nav-links'); 
 
-// Elementos da Customização (NOVOS)
+// Elementos da Customização (Modal Flutuante)
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
-
+const listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista'); // ID essencial
 
 // =======================================================
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
 // =======================================================
 
-/**
- * Adiciona um item ao carrinho, atualiza o contador e exibe a notificação.
- * @param {object} item - O objeto do item a ser adicionado (pode ser customizado ou não).
- */
 function adicionarAoCarrinho(item) {
     carrinho.push(item); 
     
@@ -40,20 +36,14 @@ function adicionarAoCarrinho(item) {
 
     atualizarModalCarrinho();
     
-    // Mostra a notificação de item adicionado
     if (notificacao) {
         notificacao.classList.add('mostrar');
-        
         setTimeout(() => {
             notificacao.classList.remove('mostrar');
         }, 3000);
     }
 }
 
-/**
- * Remove um item do carrinho pelo seu índice.
- * @param {number} index - O índice do item a ser removido no array do carrinho.
- */
 function removerDoCarrinho(index) {
     carrinho.splice(index, 1);
     
@@ -63,9 +53,6 @@ function removerDoCarrinho(index) {
     atualizarModalCarrinho();
 }
 
-/**
- * Atualiza o conteúdo e o total exibidos na modal do carrinho.
- */
 function atualizarModalCarrinho() {
     if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
 
@@ -76,7 +63,6 @@ function atualizarModalCarrinho() {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
         
-        // Usa nomeExibicao se existir (para itens customizados) ou o nome normal
         const nomeExibicao = item.nomeExibicao || item.nome;
         const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
@@ -91,7 +77,6 @@ function atualizarModalCarrinho() {
 
     carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
 
-    // Adiciona listeners para os botões de remover dentro do modal
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const index = e.target.getAttribute('data-index'); 
@@ -104,36 +89,28 @@ function atualizarModalCarrinho() {
 // =======================================================
 // FUNÇÕES DE CUSTOMIZAÇÃO (JANELA FLUTUANTE)
 // =======================================================
-// Apenas itens desta categoria podem ser customizados
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais';
 
-
-/**
- * Abre a modal de customização para um item específico.
- * @param {object} item - O objeto do item base (ex: Smash Original).
- */
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
 
-    // Inicializa o objeto de customização com o item base
     itemEmCustomizacao = { 
         ...item,
-        adicionais: [], // Adicionais selecionados
-        precoFinal: item.preco // Preço inicial é o preço base
+        adicionais: [], 
+        precoFinal: item.preco 
     };
 
-    // Atualiza os títulos e preços base na modal
     document.getElementById('item-customizacao-nome').textContent = item.nome;
     document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
     
-    // Renderiza e atualiza a modal
     renderizarOpcoesAdicionais();
-    customizacaoModal.style.display = 'flex'; // Usamos flex para centralizar
+    customizacaoModal.style.display = 'flex'; 
 }
 
 function renderizarOpcoesAdicionais() {
-    const lista = document.getElementById('adicionais-opcoes-lista');
-    lista.innerHTML = '';
+    if (!listaAdicionaisContainer) return;
+
+    listaAdicionaisContainer.innerHTML = '';
     
     adicionaisGlobais.forEach(adicional => {
         const selecionado = itemEmCustomizacao.adicionais.find(a => a.nome === adicional.nome);
@@ -153,7 +130,7 @@ function renderizarOpcoesAdicionais() {
                 <button class="btn-aumentar-adicional" data-nome="${adicional.nome}">+</button>
             </div>
         `;
-        lista.appendChild(div);
+        listaAdicionaisContainer.appendChild(div);
     });
     
     adicionarListenersContador();
@@ -161,7 +138,6 @@ function renderizarOpcoesAdicionais() {
 }
 
 function adicionarListenersContador() {
-    // Adiciona listeners de clique dinamicamente
     document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
     });
@@ -192,7 +168,7 @@ function gerenciarAdicional(nomeAdicional, delta) {
         }
     }
     
-    renderizarOpcoesAdicionais(); // Re-renderiza para atualizar a UI
+    renderizarOpcoesAdicionais();
 }
 
 function atualizarResumoCustomizacao() {
@@ -220,7 +196,7 @@ function criarItemCardapio(item, categoriaNome) {
     divItem.className = 'item-card';
 
     const img = document.createElement('img');
-    img.src = `imagem_cardapio/${item.imagem}`; // Caminho da imagem
+    img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
     divItem.appendChild(img);
 
@@ -242,7 +218,6 @@ function criarItemCardapio(item, categoriaNome) {
     const btnAdicionar = document.createElement('button');
     btnAdicionar.className = 'btn-add';
     
-    // Lógica para Customizar (se for Hambúrguer Artesanal) ou Adicionar Direto
     if (categoriaNome === CATEGORIA_CUSTOMIZAVEL) {
         btnAdicionar.textContent = 'Customizar e Adicionar';
         btnAdicionar.addEventListener('click', () => {
@@ -259,12 +234,6 @@ function criarItemCardapio(item, categoriaNome) {
     return divItem;
 }
 
-/**
- * Cria a seção do cardápio e carrega os itens.
- * @param {string} titulo - Título da categoria (ex: Hambúrgueres Artesanais).
- * @param {string} idContainer - O ID do elemento div-grid no HTML (ex: hamburgueres-artesanais-grid).
- * @param {Array<Object>} itens - Lista de itens da categoria.
- */
 function criarSecaoCardapio(titulo, idContainer, itens) {
     const container = document.getElementById(idContainer);
     if (!container) {
@@ -278,9 +247,6 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
     });
 }
 
-/**
- * Carrega e processa o arquivo JSON do cardápio.
- */
 async function carregarCardapio() {
     try {
         const response = await fetch('./cardapio.json');
@@ -288,19 +254,16 @@ async function carregarCardapio() {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         
-        const cardapioData = await response.json(); // Espera um Array de Categorias
+        const cardapioData = await response.json(); 
 
-        // Separa os adicionais e o restante do cardápio
         const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
         
         if (adicionaisCategoria) {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
-        // Renderiza cada seção
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
-                // O HTML usa o ID do objeto + '-grid'
                 const idContainerGrid = categoriaObj.id + '-grid'; 
                 criarSecaoCardapio(categoriaObj.nome, idContainerGrid, categoriaObj.itens);
             }
@@ -320,20 +283,19 @@ async function carregarCardapio() {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Inicia o carregamento do cardápio
     if (document.querySelector('main')) {
         carregarCardapio();
     }
     
-    // 1. ABRIR MODAL DO CARRINHO
+    // ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.style.display = 'flex'; // Garante o display flex para centralizar
+            carrinhoModal.style.display = 'flex'; 
             atualizarModalCarrinho(); 
         });
     }
 
-    // 2. FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X'
+    // FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X' E CLICANDO FORA
     if (fecharModalBtn && carrinhoModal) {
         fecharModalBtn.addEventListener('click', () => {
             carrinhoModal.style.display = 'none';
@@ -344,15 +306,13 @@ document.addEventListener('DOMContentLoaded', () => {
             customizacaoModal.style.display = 'none';
         });
     }
-
-    // 3. FECHAR AMBAS AS MODAIS CLICANDO FORA
     window.addEventListener('click', (event) => {
         if (event.target === carrinhoModal || event.target === customizacaoModal) {
             event.target.style.display = 'none';
         }
     });
 
-    // 4. ADICIONAR ITEM CUSTOMIZADO AO CARRINHO (Botão da Modal de Customização)
+    // ADICIONAR ITEM CUSTOMIZADO AO CARRINHO (Botão da Modal de Customização)
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
@@ -360,17 +320,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Monta o nome customizado para exibição no carrinho
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
-            // Ajuste do nome final para ser mais curto
             const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
 
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
-                // Nome completo para o WhatsApp, Nome curto para o carrinho
                 nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
                 nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
                 adicionais: itemEmCustomizacao.adicionais
@@ -381,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 5. Lógica do Finalizar Pedido (Geração do Link WhatsApp)
+    // Lógica do Finalizar Pedido (Geração do Link WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             if (carrinho.length === 0) {
@@ -406,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             carrinho.forEach((item, index) => {
                 const precoFormatado = item.preco.toFixed(2).replace('.', ',');
-                // Usa nomeWhatsApp se existir (para customizados) ou o nome normal
                 const nomeItem = item.nomeWhatsApp || item.nome; 
                 mensagem += `${index + 1}. ${nomeItem} - R$ ${precoFormatado}\n`;
             });
@@ -414,20 +370,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalFinal = carrinhoTotalSpan.textContent;
             mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
-            const numeroWhatsApp = '5586981147596'; // Seu número
+            const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.open(linkWhatsApp, '_blank');
         });
     }
 
-    // 6. Lógica do Hamburger Menu
+    // Lógica do Hamburger Menu
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active'); 
         });
         
-        // Fecha o menu mobile ao clicar em um link (âncora)
+        // Fecha o menu mobile ao clicar em um link
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (navLinks.classList.contains('active')) {
@@ -436,5 +392,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
 });
