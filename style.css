@@ -379,6 +379,14 @@ main {
     border-bottom: 1px dashed #eee;
 }
 
+/* MELHORIA: Garante que o nome do item quebre a linha no carrinho */
+.carrinho-item-nome {
+    flex-grow: 1;
+    margin-right: 10px;
+    white-space: normal;
+    word-break: break-word;
+}
+
 .btn-remover {
     background: none;
     border: none;
@@ -461,6 +469,8 @@ footer {
 @media (max-width: 768px) {
     header {
         padding: 1rem;
+        position: relative; /* CORREÇÃO: Ancorar o menu mobile neste elemento */
+        min-height: 80px;
     }
 
     .nav-links {
@@ -468,16 +478,20 @@ footer {
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 80px;
+        top: 100%; /* CORREÇÃO: Posiciona o menu exatamente abaixo do header */
         left: 0;
         background-color: var(--card-background);
         box-shadow: 0 2px 4px var(--shadow-color);
         text-align: center;
+        z-index: 990; /* Garante que o menu esteja acima do conteúdo principal */
+        border-top: 1px solid #ddd;
     }
-    .nav-links a {
-        color: var(--secondary-color);
+    
+    .nav-links li a {
+        padding: 10px; 
+        display: block;
     }
-
+    
     .nav-links.active {
         display: flex;
     }
@@ -500,17 +514,14 @@ footer {
         margin-bottom: 1rem;
     }
 
-    /* ************************************************* */
-    /* ** CORREÇÃO: LAYOUT DE 2 COLUNAS PARA MOBILE ** */
-    /* ************************************************* */
+    /* ** LAYOUT DE 2 COLUNAS PARA MOBILE ** */
     .item-grid {
-        /* Define duas colunas de tamanho igual com espaçamento de 1rem */
         grid-template-columns: repeat(2, 1fr); 
         gap: 1rem;
     }
 
     .item-card {
-        padding: 0.5rem; /* Reduz o padding interno do card */
+        padding: 0.5rem;
         flex-direction: column; 
         text-align: center; 
         gap: 0;
@@ -518,40 +529,37 @@ footer {
     
     .item-card img {
         width: 100%; 
-        height: 100px; /* Reduz a altura da imagem para caber no grid de 2 colunas */
+        height: 100px;
         object-fit: cover;
-        margin: 0 0 0.5rem 0; /* Espaçamento abaixo da imagem */
+        margin: 0 0 0.5rem 0;
         border-radius: 8px;
     }
 
     .item-card h3 {
-        font-size: 0.9rem; /* Reduz o tamanho da fonte do título */
+        font-size: 0.9rem;
         margin: 0;
         text-align: center; 
-        /* Limita o título a duas linhas para evitar quebra de layout */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; 
     }
 
     .item-card p {
-        /* Mantemos a descrição invisível para economizar espaço nas 2 colunas */
         display: none;
     }
 
     .item-card .price {
-        font-size: 0.85rem; /* Reduz o tamanho da fonte do preço */
+        font-size: 0.85rem;
         margin: 0.2rem 0;
         text-align: center; 
     }
     
     .btn-add {
-        padding: 0.5rem; /* Ajusta o padding do botão */
-        font-size: 0.8rem; /* Reduz o tamanho da fonte do botão */
+        padding: 0.5rem;
+        font-size: 0.8rem;
         margin: 0.5rem 0 0;
         width: 100%;
     }
-    /* ************************************************* */
     
     /* Ajustes da Modal no Mobile */
     .modal-content {
