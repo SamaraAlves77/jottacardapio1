@@ -207,10 +207,9 @@ function atualizarResumoCustomizacao() {
 }
 
 // =======================================================
-// FUNÇÕES DE CARREGAMENTO (CORRIGIDAS)
+// FUNÇÕES DE CARREGAMENTO
 // =======================================================
 
-// Função para criar cada item individual do cardápio 
 function criarItemCardapio(item, categoria) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
@@ -256,7 +255,6 @@ function criarItemCardapio(item, categoria) {
 }
 
 
-// Função para criar a seção do cardápio
 function criarSecaoCardapio(titulo, itens) {
     let containerId = '';
     switch(titulo) {
@@ -279,10 +277,6 @@ function criarSecaoCardapio(titulo, itens) {
     });
 }
 
-/**
- * A função principal que carrega e exibe os dados do cardápio.
- * CORRIGIDA para iterar corretamente sobre o array do JSON.
- */
 async function carregarCardapio() {
     try {
         const response = await fetch('./cardapio.json');
@@ -290,27 +284,21 @@ async function carregarCardapio() {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         
-        // **cardapioData é um ARRAY, conforme a sua estrutura de JSON**
         const cardapioData = await response.json();
         
-        // 1. CRÍTICO: Encontra a categoria de adicionais dentro do ARRAY
         const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
         
         if (adicionaisCategoria) {
-            adicionaisGlobais = adicionaisCategoria.itens || []; // Popula os adicionais globais
+            adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
-        // 2. Itera sobre cada objeto do array (cada categoria principal)
         cardapioData.forEach(categoriaObj => {
-            // Filtra o objeto de adicionais, pois ele não deve ser renderizado como uma seção
             if (categoriaObj.id !== 'adicionais-extras') {
-                // Passa o nome da categoria e o array de itens para a função de criação de seção
                 criarSecaoCardapio(categoriaObj.nome, categoriaObj.itens);
             }
         });
     } catch (error) {
         console.error('Erro ao carregar o cardápio:', error);
-        // Garante que o usuário veja uma mensagem de erro se o JSON falhar
         const main = document.querySelector('main');
         if (main) {
             main.innerHTML = `<h1>Erro ao carregar o cardápio. Verifique o console para mais detalhes.</h1>`;
@@ -323,6 +311,17 @@ async function carregarCardapio() {
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // ** CORREÇÃO CRÍTICA PARA IMPEDIR POP-UPS AO CARREGAR A PÁGINA **
+    // 0. Garante que as modais estejam escondidas (display: none)
+    if (carrinhoModal) {
+        carrinhoModal.style.display = 'none';
+    }
+    if (customizacaoModal) {
+        customizacaoModal.style.display = 'none';
+    }
+    // FIM DA CORREÇÃO
+
     // Inicia o carregamento do cardápio
     carregarCardapio();
 
@@ -387,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Lógica para formatar a mensagem do WhatsApp (opcional, mas recomendado)
             const nomeCliente = document.getElementById('nome-cliente').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
@@ -410,17 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             mensagem += `\n*TOTAL: R$ ${carrinhoTotalSpan.textContent}*`;
             
-            // Número de telefone do restaurante (ex: 5586981147596)
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.open(linkWhatsApp, '_blank');
-
-            // Lógica para limpar o carrinho e fechar modal (opcional, após o cliente ser redirecionado)
-            // carrinho = [];
-            // if (contadorCarrinho) contadorCarrinho.textContent = 0;
-            // atualizarModalCarrinho();
-            // carrinhoModal.style.display = 'none';
         });
     }
 
