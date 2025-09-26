@@ -1,36 +1,47 @@
-/* Importação da fonte (opcional, adicione a sua se desejar) */
+/* ======================================================= */
+/* CONFIGURAÇÕES GLOBAIS E VARIÁVEIS CSS */
+/* ======================================================= */
+
+/* Importação da fonte (Recomendado para consistência visual) */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+/* Define variáveis de cores e tamanhos na raiz do documento */
 :root {
-    --primary-color: #e53935; /* Vermelho JottaV Burguer */
-    --secondary-color: #212121; /* Preto */
-    --background-color: #f5f5f5; /* Cinza claro */
-    --card-background: #fff; /* Branco para os cards */
-    --text-color: #333; /* Cor do texto */
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --primary-color: #e53935; /* Vermelho JottaV Burguer: Destaque, botões e preços */
+    --secondary-color: #212121; /* Preto: Usado para texto principal e footer */
+    --background-color: #f5f5f5; /* Cinza claro: Fundo da página e containers */
+    --card-background: #fff; /* Branco: Fundo dos cards e modais */
+    --text-color: #333; /* Cor do texto geral, escuro */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Cor padrão para sombras suaves */
 }
 
+/* Reset CSS para remover margens/paddings padrão dos navegadores */
 * {
-    box-sizing: border-box;
+    /* Define o modelo de caixa: padding e border são incluídos na largura/altura */
+    box-sizing: border-box; 
+    /* Remove margens e preenchimentos padrão */
     margin: 0;
     padding: 0;
+    /* Aplica a fonte principal a todos os elementos */
     font-family: 'Roboto', sans-serif;
 }
 
 body {
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.6; /* Espaçamento de linha para melhor leitura */
 }
 
-/* --- ESTILOS PARA A PÁGINA DE ENTRADA --- */
+/* ======================================================= */
+/* ESTILOS PARA A PÁGINA DE ENTRADA (index.html) */
+/* ======================================================= */
 
 .landing-page-container {
     background-color: var(--background-color);
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    min-height: 100vh; /* Ocupa a altura total da tela */
     padding: 2rem;
 }
 
@@ -40,18 +51,11 @@ body {
     box-shadow: 0 10px 20px var(--shadow-color);
     padding: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Empilha no mobile (padrão) */
     align-items: center;
     gap: 2rem;
     max-width: 800px;
     width: 100%;
-}
-
-.card-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
 .logo-landing {
@@ -73,6 +77,7 @@ body {
     gap: 1rem;
 }
 
+/* Botões de Mídia Social e Cardápio */
 .social-btn {
     display: flex;
     align-items: center;
@@ -86,52 +91,36 @@ body {
 }
 
 .social-btn:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .social-btn i {
-    margin-right: 0.5rem;
+    margin-right: 0.5rem; /* Espaçamento entre o ícone e o texto */
 }
 
-.instagram {
-    background: #E1306C;
-    color: white;
-}
+/* Cores específicas dos botões */
+.instagram { background: #E1306C; color: white; }
+.whatsapp { background: #25D366; color: white; }
+.cardapio { background: var(--primary-color); color: white; }
 
-.whatsapp {
-    background: #25D366;
-    color: white;
-}
-
-.cardapio {
-    background: var(--primary-color);
-    color: white;
-}
-
-/* Responsividade para a página de entrada */
+/* Responsividade para a página de entrada (Desktop/Tablet) */
 @media (min-width: 768px) {
     .landing-card {
-        flex-direction: row;
+        flex-direction: row; /* Coloca os elementos lado a lado */
         justify-content: space-between;
         padding: 3rem;
     }
-
     .card-left, .card-right {
         width: 45%;
     }
-
-    .card-left {
-        align-items: flex-start;
-        text-align: left;
-    }
-    
-    .logo-landing {
-        max-width: 200px;
-    }
 }
 
-/* --- ESTILOS DO CARDÁPIO (Padrão para Desktop) --- */
+/* ======================================================= */
+/* ESTILOS DO CARDÁPIO (cardapio.html) */
+/* ======================================================= */
+
+/* --- Header e Navegação --- */
 header {
     background-color: var(--card-background);
     padding: 1rem 2rem;
@@ -139,7 +128,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: sticky; /* Fixa o header no topo ao rolar */
     top: 0;
     z-index: 1000;
 }
@@ -163,7 +152,7 @@ header {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: var(--primary-color);
+    color: var(--primary-color); /* Destaque ao passar o mouse ou na aba ativa */
 }
 
 .header-actions {
@@ -172,6 +161,7 @@ header {
     gap: 1.5rem;
 }
 
+/* Botão do Carrinho */
 .carrinho-btn {
     background: none;
     border: none;
@@ -183,6 +173,7 @@ header {
 }
 
 #contador-carrinho {
+    /* O círculo vermelho com a contagem de itens */
     background-color: var(--primary-color);
     color: white;
     font-size: 0.8rem;
@@ -195,7 +186,7 @@ header {
 }
 
 .hamburger-menu-btn {
-    display: none;
+    display: none; /* Oculto por padrão no desktop. Aparece no mobile via media query. */
     font-size: 2rem;
     background: none;
     border: none;
@@ -203,6 +194,7 @@ header {
     color: var(--secondary-color);
 }
 
+/* --- Conteúdo Principal e Cards --- */
 main {
     padding: 2rem;
     max-width: 1200px;
@@ -221,6 +213,7 @@ main {
 }
 
 .item-grid {
+    /* Cria o layout de grade com colunas flexíveis */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
@@ -234,12 +227,11 @@ main {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    text-align: center;
     transition: transform 0.3s ease;
 }
 
 .item-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Efeito de elevação no hover */
 }
 
 .item-card img {
@@ -251,9 +243,7 @@ main {
 
 .item-card h3 {
     font-size: 1.5rem;
-    margin: 1rem 0 0.5rem;
     padding: 0 1rem;
-    text-align: center;
 }
 
 .item-card p {
@@ -268,7 +258,6 @@ main {
     font-weight: 700;
     color: var(--primary-color);
     margin-top: 1rem;
-    text-align: center;
 }
 
 .btn-add {
@@ -276,31 +265,24 @@ main {
     color: white;
     border: none;
     padding: 0.8rem;
-    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     margin: 1rem;
     border-radius: 8px;
     width: calc(100% - 2rem);
 }
 
-.btn-add:hover {
-    background-color: #d32f2f;
-}
+/* ======================================================= */
+/* ESTILOS DOS MODAIS (Pop-ups) */
+/* ======================================================= */
 
-/* --- Modais (Pop-ups) --- */
 .modal {
     display: none;
     position: fixed;
     z-index: 2000;
-    left: 0;
-    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Centralização com Flexbox */
-    display: flex; 
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semitransparente */
     justify-content: center; 
     align-items: center; 
 }
@@ -309,7 +291,6 @@ main {
     background-color: var(--card-background);
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     max-width: 600px;
     width: 90%;
@@ -317,55 +298,20 @@ main {
     overflow-y: auto;
 }
 
+/* Botões de Fechar Modal */
 .fechar-modal, .fechar-customizacao {
     color: #aaa;
     position: absolute;
     top: 10px;
     right: 20px;
     font-size: 2rem;
-    font-weight: bold;
     cursor: pointer;
 }
 
-.fechar-modal:hover, .fechar-customizacao:hover {
-    color: var(--primary-color);
-}
-
-/* AJUSTES PARA NOVA ESTRUTURA DE CUSTOMIZAÇÃO NO HTML/JS */
-.adicionais-opcoes { 
-    margin-top: 15px;
-}
-
-.adicional-item-opcao {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
-}
-
-.adicional-contador {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.adicional-contador button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-    line-height: 1;
-    transition: background-color 0.2s;
-}
-
+/* --- Conteúdo do Carrinho (Modal) --- */
 .carrinho-itens {
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: auto; /* Adiciona barra de rolagem se muitos itens */
     border-bottom: 1px solid #ddd;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
@@ -379,7 +325,6 @@ main {
     border-bottom: 1px dashed #eee;
 }
 
-/* MELHORIA: Garante que o nome do item quebre a linha no carrinho */
 .carrinho-item-nome {
     flex-grow: 1;
     margin-right: 10px;
@@ -387,34 +332,16 @@ main {
     word-break: break-word;
 }
 
-.btn-remover {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0 5px;
-}
-
 .carrinho-total-container {
     display: flex;
     justify-content: space-between;
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--secondary-color);
     padding: 10px 0;
 }
 
-.carrinho-total {
-    text-align: right;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-}
-
-.carrinho-finalizar input,
-.carrinho-finalizar select {
+/* Campos do formulário de finalização */
+.carrinho-finalizar input {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
@@ -427,94 +354,59 @@ main {
     padding: 1rem;
     background-color: var(--primary-color);
     color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-/* --- Notificação --- */
+/* --- Notificação de Adicionado --- */
 .notificacao {
     position: fixed;
     bottom: 2rem;
     left: 50%;
-    transform: translateX(-50%) translateY(150%);
+    transform: translateX(-50%) translateY(150%); /* Oculta na parte inferior */
     background-color: var(--primary-color);
     color: white;
     padding: 1rem 2rem;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.5s ease-in-out;
     z-index: 3000;
 }
 
 .notificacao.mostrar {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0); /* Faz a notificação aparecer */
 }
 
-/* --- Footer --- */
-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
-}
+/* ======================================================= */
+/* MEDIA QUERIES (RESPONSIVIDADE PARA MOBILE) */
+/* ======================================================= */
 
-/* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
-
-/* Telas Mobile (max-width: 768px) */
 @media (max-width: 768px) {
+    
+    /* --- Header no Mobile --- */
     header {
-        padding: 1rem;
-        position: relative; /* CORREÇÃO: Ancorar o menu mobile neste elemento */
-        min-height: 80px;
+        position: relative; /* Ajusta a posição para o menu hamburger */
     }
 
     .nav-links {
-        display: none;
+        display: none; /* Oculta links no mobile por padrão */
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 100%; /* CORREÇÃO: Posiciona o menu exatamente abaixo do header */
+        top: 100%; /* Posiciona o menu abaixo do header */
         left: 0;
         background-color: var(--card-background);
-        box-shadow: 0 2px 4px var(--shadow-color);
-        text-align: center;
-        z-index: 990; /* Garante que o menu esteja acima do conteúdo principal */
-        border-top: 1px solid #ddd;
-    }
-    
-    .nav-links li a {
-        padding: 10px; 
-        display: block;
+        z-index: 990; 
     }
     
     .nav-links.active {
-        display: flex;
+        display: flex; /* Exibe o menu quando a classe 'active' é adicionada pelo JS */
     }
 
     .hamburger-menu-btn {
-        display: block;
-        color: var(--secondary-color);
-    }
-    
-    .carrinho-btn {
-        color: var(--secondary-color);
+        display: block; /* Mostra o ícone de menu no mobile */
     }
 
-    main {
-        padding: 1rem 0.5rem;
-    }
-
-    .menu-section h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-    }
-
-    /* ** LAYOUT DE 2 COLUNAS PARA MOBILE ** */
+    /* --- Grid de Itens no Mobile (2 Colunas) --- */
     .item-grid {
         grid-template-columns: repeat(2, 1fr); 
         gap: 1rem;
@@ -522,36 +414,26 @@ footer {
 
     .item-card {
         padding: 0.5rem;
-        flex-direction: column; 
-        text-align: center; 
-        gap: 0;
     }
     
     .item-card img {
-        width: 100%; 
-        height: 100px;
-        object-fit: cover;
-        margin: 0 0 0.5rem 0;
-        border-radius: 8px;
+        height: 100px; /* Altura menor para se adequar ao mobile */
     }
 
     .item-card h3 {
         font-size: 0.9rem;
-        margin: 0;
-        text-align: center; 
+        /* Três regras para cortar o texto que exceder e adicionar '...' */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; 
     }
 
     .item-card p {
-        display: none;
+        display: none; /* Oculta a descrição para economizar espaço */
     }
 
     .item-card .price {
         font-size: 0.85rem;
-        margin: 0.2rem 0;
-        text-align: center; 
     }
     
     .btn-add {
@@ -561,7 +443,7 @@ footer {
         width: 100%;
     }
     
-    /* Ajustes da Modal no Mobile */
+    /* Ajustes para Modais no Mobile */
     .modal-content {
         margin: 0 10px;
         width: calc(100% - 20px);
