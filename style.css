@@ -23,7 +23,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- ESTILOS PARA A PÁGINA DE ENTRADA (LANDING PAGE) --- */
+/* --- ESTILOS PARA A PÁGINA DE ENTRADA --- */
 
 .landing-page-container {
     background-color: var(--background-color);
@@ -35,48 +35,42 @@ body {
 }
 
 .landing-card {
-    display: flex;
     background-color: var(--card-background);
-    border-radius: 12px;
-    box-shadow: 0 8px 16px var(--shadow-color);
-    max-width: 900px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
     width: 100%;
-    overflow: hidden;
 }
 
 .card-left {
-    flex: 1;
-    background-color: var(--secondary-color);
-    color: #fff;
-    padding: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
 }
 
 .logo-landing {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-    object-fit: cover;
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 1rem;
 }
 
 .slogan {
-    font-size: 1.8rem;
-    margin: 0;
-    line-height: 1.3;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 1rem;
 }
 
 .card-right {
-    flex: 1;
-    padding: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 1.5rem;
+    width: 100%;
+    gap: 1rem;
 }
 
 .social-btn {
@@ -84,131 +78,130 @@ body {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 700;
     font-size: 1.1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .social-btn i {
-    margin-right: 0.8rem;
-    font-size: 1.3rem;
+    margin-right: 0.5rem;
 }
 
 .instagram {
-    background-color: #e4405f; /* Instagram Red/Pink */
-    color: #fff;
-}
-
-.instagram:hover {
-    background-color: #d82c4a;
-    transform: translateY(-2px);
+    background: #E1306C;
+    color: white;
 }
 
 .whatsapp {
-    background-color: #25d366; /* WhatsApp Green */
-    color: #fff;
-}
-
-.whatsapp:hover {
-    background-color: #1fad51;
-    transform: translateY(-2px);
+    background: #25D366;
+    color: white;
 }
 
 .cardapio {
-    background-color: var(--primary-color);
-    color: #fff;
+    background: var(--primary-color);
+    color: white;
 }
 
-.cardapio:hover {
-    background-color: #c4312f;
-    transform: translateY(-2px);
+/* Responsividade para a página de entrada */
+@media (min-width: 768px) {
+    .landing-card {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 3rem;
+    }
+
+    .card-left, .card-right {
+        width: 45%;
+    }
+
+    .card-left {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .logo-landing {
+        max-width: 200px;
+    }
 }
 
-/* --- ESTILOS GERAIS DO CARDÁPIO (cardapio.html) --- */
-
+/* --- ESTILOS DO CARDÁPIO (Padrão para Desktop) --- */
 header {
-    background-color: var(--secondary-color);
-    color: #fff;
+    background-color: var(--card-background);
     padding: 1rem 2rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 6px var(--shadow-color);
+    z-index: 1000;
 }
 
-header .logo img {
-    height: 50px;
+.logo img {
+    height: 60px;
 }
 
-nav ul {
+.nav-links {
     list-style: none;
     display: flex;
     gap: 1.5rem;
 }
 
-nav a {
-    color: #fff;
+.nav-links a {
     text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 0.2rem;
-    border-bottom: 2px solid transparent;
-    transition: border-bottom 0.3s;
+    color: var(--secondary-color);
+    font-weight: 700;
+    transition: color 0.3s ease;
 }
 
-nav a:hover,
-nav a.active {
-    border-bottom: 2px solid var(--primary-color);
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
 }
 
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .carrinho-btn {
-    background-color: var(--primary-color);
-    color: #fff;
+    background: none;
     border: none;
-    padding: 0.5rem 0.8rem;
-    border-radius: 5px;
     cursor: pointer;
+    font-size: 1.5rem;
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
-.carrinho-btn:hover {
-    background-color: #c4312f;
 }
 
 #contador-carrinho {
-    background-color: #fff;
-    color: var(--primary-color);
-    border-radius: 50%;
-    padding: 0.1rem 0.4rem;
-    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
     font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    position: absolute;
+    top: -5px;
+    right: -10px;
 }
 
 .hamburger-menu-btn {
+    display: none;
+    font-size: 2rem;
     background: none;
     border: none;
-    color: #fff;
-    font-size: 1.5rem;
     cursor: pointer;
-    display: none; /* Escondido por padrão, só aparece no mobile */
+    color: var(--secondary-color);
 }
-
-/* --- ESTILOS DO CONTEÚDO PRINCIPAL --- */
 
 main {
     padding: 2rem;
@@ -218,22 +211,20 @@ main {
 
 .menu-section {
     margin-bottom: 3rem;
-    padding-top: 50px; /* Para cabeçalhos que ficam atrás do sticky header */
-    margin-top: -50px;
 }
 
 .menu-section h2 {
     font-size: 2.5rem;
     color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
+    justify-content: center;
 }
 
 .item-card {
@@ -241,10 +232,10 @@ main {
     border-radius: 10px;
     box-shadow: 0 4px 8px var(--shadow-color);
     overflow: hidden;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s;
+    text-align: center;
+    transition: transform 0.3s ease;
 }
 
 .item-card:hover {
@@ -255,190 +246,99 @@ main {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    object-position: center;
 }
 
 .item-card h3 {
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--secondary-color);
+    margin: 1rem 0 0.5rem;
+    padding: 0 1rem;
+    text-align: center;
 }
 
 .item-card p {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #666;
-    margin-bottom: 1rem;
-    flex-grow: 1; /* Permite que a descrição ocupe o espaço necessário */
+    padding: 0 1rem;
+    flex-grow: 1;
 }
 
 .item-card .price {
-    font-size: 1.4rem;
-    font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: 700;
     color: var(--primary-color);
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    text-align: center;
 }
 
 .btn-add {
     background-color: var(--primary-color);
-    color: #fff;
+    color: white;
     border: none;
     padding: 0.8rem;
-    border-radius: 5px;
-    cursor: pointer;
     font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 1rem;
+    border-radius: 8px;
+    width: calc(100% - 2rem);
 }
 
 .btn-add:hover {
-    background-color: #c4312f;
+    background-color: #d32f2f;
 }
 
-/* --- ESTILOS DO FOOTER --- */
-
-footer {
-    background-color: var(--secondary-color);
-    color: #fff;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
-}
-
-/* --- ESTILOS DAS MODAIS (CARRINHO E CUSTOMIZAÇÃO) --- */
-
+/* --- Modais (Pop-ups) --- */
 .modal {
-    display: none; /* Oculto por padrão, controlado pelo JS */
+    display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.7);
+    /* ************************************************* */
+    /* ** CORREÇÃO CRÍTICA: Centralização com Flexbox ** */
+    /* ************************************************* */
+    display: flex; /* Define o modal como contêiner flex */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
 
 .modal-content {
     background-color: var(--card-background);
-    margin: 10% auto;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    /* ************************************************* */
+    /* ** REMOÇÃO: Deixe o Flexbox do .modal fazer o trabalho ** */
+    /* margin: 10% auto; <--- Removido */
+    /* ************************************************* */
 }
 
 .fechar-modal, .fechar-customizacao {
     color: #aaa;
-    float: right;
-    font-size: 28px;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
 }
 
-.fechar-modal:hover,
-.fechar-modal:focus,
-.fechar-customizacao:hover,
-.fechar-customizacao:focus {
+.fechar-modal:hover, .fechar-customizacao:hover {
     color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
 }
 
-/* Estilos do Carrinho */
-#carrinho-itens {
+.adicionais-opcoes { /* Elemento da lista de adicionais na modal de customização */
     margin-top: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-.carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-top: 1px solid #f9f9f9;
-}
-
-.carrinho-item-nome {
-    flex-grow: 1;
-    font-size: 0.95rem;
-    padding-right: 10px;
-}
-
-.btn-remover {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0 5px;
-}
-
-.carrinho-total-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--secondary-color);
-    padding: 10px 0;
-}
-
-.carrinho-finalizar input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-#btn-finalizar-pedido {
-    width: 100%;
-    background-color: #25d366; /* Verde WhatsApp */
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#btn-finalizar-pedido:hover {
-    background-color: #1fad51;
-}
-
-/* Estilos da Notificação (Item Adicionado) */
-#notificacao {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    z-index: 1001;
-    opacity: 0;
-    transition: opacity 0.5s, transform 0.5s;
-    pointer-events: none;
-}
-
-#notificacao.mostrar {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
-}
-
-/* Estilos da Modal de Customização */
-
-#customizacao-modal h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
 }
 
 .adicional-item-opcao {
@@ -447,10 +347,6 @@ footer {
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px dashed #eee;
-}
-
-.adicional-item-opcao small {
-    color: #999;
 }
 
 .adicional-contador {
@@ -472,110 +368,102 @@ footer {
     transition: background-color 0.2s;
 }
 
-.adicional-contador button:hover {
-    background-color: #c4312f;
+.carrinho-itens {
+    max-height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-.quantidade-adicional {
-    min-width: 15px;
-    text-align: center;
+.carrinho-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.btn-remover {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
     font-weight: bold;
+    font-size: 1rem;
+    padding: 0 5px;
 }
 
-.customizacao-resumo {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #ddd;
-}
-
-.customizacao-resumo p {
+.carrinho-total-container {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.customizacao-resumo h4 {
-    display: flex;
-    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
     color: var(--secondary-color);
-    font-size: 1.3rem;
-    margin-top: 10px;
+    padding: 10px 0;
 }
 
-#btn-adicionar-customizado {
+.carrinho-total {
+    text-align: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.carrinho-finalizar input,
+.carrinho-finalizar select {
     width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#btn-finalizar-pedido, #btn-adicionar-customizado {
+    width: 100%;
+    padding: 1rem;
     background-color: var(--primary-color);
     color: white;
-    padding: 12px;
     border: none;
     border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-top: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-#btn-adicionar-customizado:hover {
-    background-color: #c4312f;
+/* --- Notificação --- */
+.notificacao {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+    z-index: 3000;
 }
 
+.notificacao.mostrar {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
 
 /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
 
-/* Telas de Tablet (max-width: 992px) */
-@media (max-width: 992px) {
-    .landing-card {
-        flex-direction: column;
-    }
-    
-    .card-left, .card-right {
-        padding: 2rem;
-    }
-
-    .slogan {
-        font-size: 1.5rem;
-    }
-
-    header {
-        padding: 1rem 1.5rem;
-    }
-
-    nav ul {
-        gap: 1rem;
-    }
-
-    .item-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-}
-
 /* Telas Mobile (max-width: 768px) */
 @media (max-width: 768px) {
-    /* Ajustes da Landing Page */
-    .landing-page-container {
-        padding: 1rem;
-    }
-
-    .card-left {
-        padding: 1.5rem;
-    }
-
-    .logo-landing {
-        width: 120px;
-        height: 120px;
-    }
-
-    .slogan {
-        font-size: 1.4rem;
-    }
-
-    .card-right {
-        padding: 1.5rem;
-    }
-
-    /* Ajustes do Cardápio Header */
     header {
         padding: 1rem;
     }
@@ -585,32 +473,24 @@ footer {
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 70px; /* Ajuste a altura dependendo da altura final do seu header */
+        top: 80px;
         left: 0;
-        background-color: var(--secondary-color); /* Fundo escuro */
+        background-color: var(--card-background);
         box-shadow: 0 2px 4px var(--shadow-color);
         text-align: center;
-        padding-bottom: 10px;
     }
 
-    .nav-links li {
-        width: 100%;
-        margin: 0;
-    }
-    
-    .nav-links a {
-        display: block;
-        padding: 10px 0;
-        width: 100%;
-        color: #fff;
-    }
-    
     .nav-links.active {
         display: flex;
     }
 
     .hamburger-menu-btn {
         display: block;
+        color: var(--secondary-color); /* Garante que o ícone seja visível */
+    }
+    
+    .carrinho-btn {
+        color: var(--secondary-color); /* Garante que o ícone seja visível */
     }
 
     main {
@@ -622,15 +502,15 @@ footer {
         margin-bottom: 1rem;
     }
 
-    /* ** CORREÇÃO 1: Grade de 1 coluna para melhor visualização do texto ** */
     .item-grid {
-        grid-template-columns: repeat(1, 1fr); /* Apenas 1 item por linha */
-        gap: 1.5rem;
+        grid-template-columns: repeat(1, 1fr); /* CORRIGIDO: 1 coluna no mobile para melhor leitura */
+        gap: 1rem;
     }
 
     .item-card {
         padding: 1rem;
-        flex-direction: row; /* Coloca imagem e texto lado a lado (opcional, mas comum) */
+        flex-direction: row; /* Layout horizontal no mobile */
+        text-align: left;
         gap: 1rem;
     }
     
@@ -638,47 +518,40 @@ footer {
         width: 100px;
         height: 100px;
         flex-shrink: 0;
-        margin-bottom: 0;
-    }
-
-    .item-card .content { /* Se você tiver uma div content, ajuste o layout */
-        flex-grow: 1;
-    }
-
-    /* ** CORREÇÃO 2: Garante que a descrição (p) seja visível ** */
-    .item-card p {
-        display: block; /* Garante que a descrição do item apareça */
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-        color: #666;
+        margin: 0;
     }
 
     .item-card h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        margin: 0;
+        text-align: left;
     }
 
-    .item-card .price {
-        font-size: 1.1rem;
+    /* ** CORREÇÃO MOBILE: Garante que a descrição (p) seja visível ** */
+    .item-card p {
+        display: block;
+        font-size: 0.85rem;
+        padding: 0;
         margin-bottom: 0.5rem;
     }
 
+    .item-card .price {
+        font-size: 1rem;
+        margin: 0.2rem 0;
+        text-align: left;
+    }
+    
     .btn-add {
         padding: 0.6rem;
         font-size: 0.9rem;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .modal-content {
+        margin: 0 10px; /* Adiciona uma pequena margem para não encostar na borda */
+        width: calc(100% - 20px);
+        padding: 1rem;
     }
 
-    /* Ajustes da Modal no Mobile */
-    .modal-content {
-        margin: 5% auto;
-        padding: 15px;
-        width: 95%;
-    }
-    
-    .carrinho-item-nome {
-        font-size: 0.9rem;
-    }
-    
-    .carrinho-total-container {
-        font-size: 1.1rem;
-    }
 }
