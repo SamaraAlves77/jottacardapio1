@@ -144,6 +144,12 @@ header {
     z-index: 1000;
 }
 
+/* Estilo do Link da Logo */
+.logo-link {
+    text-decoration: none; /* Garante que o link não sublinhe a logo */
+    display: block;
+}
+
 .logo img {
     height: 60px;
 }
@@ -293,7 +299,7 @@ main {
 
 /* AJUSTE CRÍTICO: Usa Flexbox para garantir centralização perfeita */
 .modal {
-    display: none; 
+    display: none; /* CRÍTICO: Inicialmente escondido */
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -310,7 +316,6 @@ main {
 /* Conteúdo da Modal (Ajuste para a modal de customização e carrinho) */
 .modal-content {
     background-color: var(--card-background);
-    /* Remove padding e margin para que a modal de customização possa controlar melhor */
     padding: 0; 
     margin: 0; 
     border-radius: 10px;
@@ -321,7 +326,6 @@ main {
     max-height: 90vh;
     overflow-y: auto;
     
-    /* Animação */
     animation-name: modalFadeIn;
     animation-duration: 0.3s;
 }
@@ -333,7 +337,6 @@ main {
 
 /* Estilos Padrão do Carrinho (Mantidos) */
 
-/* Garante o padding interno do carrinho, já que o .modal-content geral foi zerado */
 #carrinho-modal .modal-content {
     padding: 2rem; 
 }
@@ -442,11 +445,11 @@ footer {
 
 
 /* ======================================================= */
-/* --- ESTILOS DA MODAL DE CUSTOMIZAÇÃO (NOVA E MINIMALISTA) --- */
+/* --- ESTILOS DA MODAL DE CUSTOMIZAÇÃO (MINIMALISTA) --- */
 /* ======================================================= */
 
 #customizacao-modal .modal-content {
-    max-width: 400px; /* Largura ideal para customização */
+    max-width: 400px; 
 }
 
 /* 1. Header (Título e Seta) */
@@ -474,7 +477,6 @@ footer {
     font-size: 24px;
     cursor: pointer;
     font-weight: bold;
-    /* Altera o 'X' para uma seta de voltar */
     content: none;
     line-height: 1;
 }
