@@ -254,7 +254,7 @@ main {
 
 /* --- ESTILOS: JANELAS FLUTUANTES (MODAIS) --- */
 .modal {
-    /* CORREÇÃO CRÍTICA APLICADA: display: none; é a única regra de exibição aqui. */
+    /* CORREÇÃO CRÍTICA: display: none; para esconder no início. */
     display: none;
     position: fixed;
     z-index: 2000;
@@ -269,7 +269,7 @@ main {
 
 /* Esta classe é usada pelo JavaScript para MOSTRAR o modal */
 .modal.mostrar {
-    display: flex; 
+    display: flex;
 }
 
 
@@ -415,25 +415,39 @@ main {
         gap: 0.8rem;
     }
 
+    /* Ajuste de altura para que o card caiba na tela */
     .item-card img {
-        height: 100px;
+        height: 120px; /* Aumentado um pouco a altura para melhor visualização */
     }
 
     .item-card h3 {
-        font-size: 0.9rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        font-size: 1rem; /* Aumentei a fonte do título */
+        margin: 0.5rem 0 0.3rem;
+        padding: 0 0.5rem;
+        /* Remover regras de corte de texto para o título se quebrar em duas linhas */
+        overflow: visible;
+        white-space: normal;
+        text-overflow: clip;
     }
 
     .item-card p {
-        display: none;
+        font-size: 0.7rem; /* Reduzido a fonte para caber mais texto */
+        display: block; /* MANTIDO VISÍVEL para ter descrição */
+        height: 35px; /* Altura fixa para caber 2 ou 3 linhas */
+        overflow: hidden; /* Garante que não vai estourar o card */
+        text-overflow: ellipsis; 
+        padding: 0 0.5rem;
     }
+    
+    .item-card .price {
+        font-size: 1rem; /* Ajuste do preço */
+        margin-top: 0.5rem;
+    }
 
     .btn-add {
         padding: 0.5rem;
-        font-size: 0.8rem;
-        margin: 0.5rem 0 0;
-        width: 100%;
+        font-size: 0.9rem; /* Aumentado o tamanho da fonte */
+        margin: 0.5rem 0.5rem 0.5rem; /* Ajustado a margem */
+        width: calc(100% - 1rem); /* Ajustado a largura para compensar a margem */
     }
 }
