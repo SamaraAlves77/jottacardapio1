@@ -291,7 +291,7 @@ main {
 
 /* --- Modais (Pop-ups) --- */
 .modal {
-    display: none;
+    display: none; /* O JS deve alterar para 'flex' ao abrir */
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -300,10 +300,10 @@ main {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     /* Centralização usando Flexbox */
-    display: flex; 
+    display: flex; /* O JS irá garantir que isso seja ativado */
     justify-content: center; 
     align-items: center; 
-    /* Permite a rolagem da modal se o conteúdo exceder a tela */
+    /* Permite a rolagem da tela inteira do modal, se o conteúdo for grande */
     overflow-y: auto; 
 }
 
@@ -315,8 +315,7 @@ main {
     position: relative;
     max-width: 600px;
     width: 90%;
-    /* Removido o overflow-y: auto daqui para que a rolagem fique na tela inteira da modal */
-    /* max-height: 90vh; (Removido para permitir que o modal cresça se necessário e o .modal role) */
+    /* Removido max-height para permitir centralização perfeita */
 }
 
 .fechar-modal, .fechar-customizacao {
@@ -550,7 +549,6 @@ footer {
     
     /* Ajustes da Modal no Mobile */
     .modal-content {
-        /* Garante que o conteúdo tenha algum espaço ao redor */
         margin: 10px; 
         width: calc(100% - 20px);
         padding: 1rem;
