@@ -12,7 +12,7 @@
     <header>
         <a href="https://samaraalves77.github.io/jottacardapio1/" class="logo-link">
             <div class="logo">
-                <img src="imagem_cardapio/logojottavburguer.png" alt="Logo JottaV Burguer">
+                <img src="imagem_cardapio/jottaV_burguer.png" alt="Logo JottaV Burguer">
             </div>
         </a>
 
@@ -26,18 +26,18 @@
         </nav>
 
         <div class="header-actions">
-            <button class="carrinho-btn">
+            <button class="carrinho-btn" id="carrinho-btn">
                 <i class="fas fa-shopping-cart"></i>
                 <span id="contador-carrinho">0</span>
             </button>
-            <button class="hamburger-menu-btn" aria-label="Abrir Menu">
+            <button class="hamburger-menu-btn" id="hamburger-menu-btn" aria-label="Abrir Menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </header>
 
     <main id="cardapio-container">
-        <h2>Carregando Cardápio...</h2>
+        <h2 style="text-align: center; padding-top: 50px;">Carregando Cardápio...</h2>
     </main>
 
     <footer>
@@ -47,52 +47,41 @@
     <div id="carrinho-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="fechar-modal">&times;</span>
-            <h2>Seu Pedido</h2>
-
-            <div class="carrinho-itens">
-                <p style="text-align: center; color: #666;">Seu carrinho está vazio.</p>
+            <h3>Seu Pedido</h3>
+            <div class="carrinho-itens" id="carrinho-itens"></div>
+            <div class="carrinho-total">
+                Total: R$ <span id="carrinho-total">0.00</span>
             </div>
-
-            <div class="carrinho-total-area">
-                <div class="carrinho-total">
-                    Total: <span id="carrinho-total">R$ 0,00</span>
-                </div>
-                
-                <form class="carrinho-finalizar">
-                    <input type="text" id="nome-cliente" placeholder="Seu nome" required>
-                    <input type="text" id="endereco-cliente" placeholder="Endereço de entrega" required>
-                    <select id="forma-pagamento" required>
-                        <option value="">Selecione o pagamento</option>
-                        <option value="pix">Pix</option>
-                        <option value="cartao">Cartão</option>
-                        <option value="dinheiro">Dinheiro</option>
-                    </select>
-                    
-                    <button id="btn-finalizar-pedido" type="button" disabled>
-                        FINALIZAR PEDIDO
-                    </button>
-                </form>
+            <div class="carrinho-finalizar">
+                <input type="text" id="nome-cliente" placeholder="Seu nome" required>
+                <input type="text" id="endereco-cliente" placeholder="Seu endereço" required>
+                <input type="text" id="telefone-cliente" placeholder="Seu telefone" required>
+                <button id="btn-finalizar-pedido">Finalizar Pedido</button>
             </div>
         </div>
     </div>
 
     <div id="customizacao-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="fechar-customizacao"></span>
+            <span class="fechar-customizacao">&times;</span>
+            <h3>Customizar <span id="item-customizacao-nome"></span></h3>
             
-            <h3>Item em Customização</h3>
-
-            <div id="adicionais-opcoes-lista">
-                </div>
+            <div class="adicionais-opcoes" id="adicionais-opcoes-lista">
+            </div>
 
             <div class="customizacao-resumo">
-                <h4 id="resumo-preco-total">Total do Item: <span>R$ 0,00</span></h4>
-                <button id="btn-adicionar-customizado">ADICIONAR</button>
+                <p>Preço Base: R$ <span id="preco-base-customizacao">0,00</span></p>
+                <p>Adicionais: R$ <span id="preco-adicionais-customizacao">0,00</span></p>
+                <h4>Total do Item: R$ <span id="preco-total-customizacao">0,00</span></h4>
+                
+                <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
             </div>
         </div>
     </div>
     
-    <div id="notificacao" class="notificacao"></div>
+    <div id="notificacao" class="notificacao">
+        Item adicionado ao carrinho!
+    </div>
 
     <script src="script.js"></script>
 </body>
