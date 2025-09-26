@@ -99,7 +99,8 @@ function atualizarModalCarrinho() {
         total += item.preco;
     });
 
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ','); // Mantém o formato no span de total
+    // CORREÇÃO 1: Usa a função formatarPreco para manter a consistência R$ X.XXX,XX
+    carrinhoTotalSpan.textContent = formatarPreco(total);
 
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -129,7 +130,9 @@ function abrirModalCustomizacao(item) {
 
     // Atualiza os títulos e preços base na modal
     document.getElementById('item-customizacao-nome').textContent = item.nome;
-    document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
+    
+    // CORREÇÃO 2: Usa a função formatarPreco para o preço base
+    document.getElementById('preco-base-customizacao').textContent = formatarPreco(item.preco); 
     
     // Renderiza e atualiza a modal
     renderizarOpcoesAdicionais();
@@ -211,8 +214,9 @@ function atualizarResumoCustomizacao() {
     const precoBase = itemEmCustomizacao.preco;
     const precoTotal = precoBase + precoAdicionais;
 
-    document.getElementById('preco-adicionais-customizacao').textContent = precoAdicionais.toFixed(2).replace('.', ',');
-    document.getElementById('preco-total-customizacao').textContent = precoTotal.toFixed(2).replace('.', ',');
+    // CORREÇÃO 3: Usa a função formatarPreco para manter a consistência
+    document.getElementById('preco-adicionais-customizacao').textContent = formatarPreco(precoAdicionais);
+    document.getElementById('preco-total-customizacao').textContent = formatarPreco(precoTotal);
     
     itemEmCustomizacao.precoFinal = precoTotal;
 }
@@ -422,7 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 mensagem += `${index + 1}. ${item.nomeExibicao || item.nome} - R$ ${precoFormatado}\n`; 
             });
             
-            mensagem += `\n*TOTAL: R$ ${carrinhoTotalSpan.textContent}*`;
+            // Pega o valor total do span, que está no formato R$ X.XXX,XX
+            mensagem += `\n*TOTAL: ${carrinhoTotalSpan.textContent}*`; 
             
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
