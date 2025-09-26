@@ -195,21 +195,24 @@
                     "nome": "Coca-Cola lata",
                     "descricao": "Refrigerante lata de Coca-Cola.",
                     "preco": 7.00,
-                    "imagem": "coca_cola_lata.jpeg"
+                    // CORRIGIDO: O nome do arquivo na sua pasta é 'cocalata.png'
+                    "imagem": "cocalata.png"
                 },
                 {
                     "id": "guarana-lata",
                     "nome": "Guaraná lata",
                     "descricao": "Refrigerante lata de Guaraná.",
                     "preco": 6.00,
-                    "imagem": "guarana_lata.jpeg"
+                    // CORRIGIDO: O nome do arquivo na sua pasta é 'guaranalata.png'
+                    "imagem": "guaranalata.png"
                 },
                 {
                     "id": "guarana-1l",
                     "nome": "Guaraná 1L",
                     "descricao": "Refrigerante de Guaraná de 1 litro.",
                     "preco": 9.00,
-                    "imagem": "guarana_1l.jpeg"
+                    // CORRIGIDO: O nome do arquivo na sua pasta é 'guarana1l.png'
+                    "imagem": "guarana1l.png"
                 }
             ]
         }
