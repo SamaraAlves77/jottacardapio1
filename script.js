@@ -292,14 +292,9 @@ function atualizarResumoCustomizacao(listaAdicionais) {
     const totalAdicionais = listaAdicionais ? calcularTotalAdicionais(listaAdicionais) : 0;
     const totalGeral = precoBase + totalAdicionais;
 
-    // No design minimalista, focamos apenas no preço total no rodapé (h4)
     if (resumoPrecoTotal) {
         resumoPrecoTotal.innerHTML = `Total do Item: <span>${formatarMoeda(totalGeral)}</span>`;
     }
-    
-    // Opcional, se você quiser manter os detalhes escondidos (como no CSS)
-    // if (resumoPrecoBase) resumoPrecoBase.textContent = formatarMoeda(precoBase);
-    // if (resumoPrecoAdicionais) resumoPrecoAdicionais.textContent = formatarMoeda(totalAdicionais);
 
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.textContent = `ADICIONAR ${formatarMoeda(totalGeral)}`;
@@ -313,19 +308,17 @@ function atualizarResumoCustomizacao(listaAdicionais) {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // =======================================================
     // 💥 CORREÇÃO CRÍTICA: Força o fechamento das modais no carregamento
-    // Isso resolve o problema de elas aparecerem abertas por padrão.
-    // =======================================================
+    const carrinhoModal = document.getElementById('carrinho-modal');
+    const customizacaoModal = document.getElementById('customizacao-modal');
+    
     if (carrinhoModal) {
         carrinhoModal.style.display = 'none';
     }
     if (customizacaoModal) {
         customizacaoModal.style.display = 'none';
     }
-    // =======================================================
     // ⬆️ FIM DO CÓDIGO DE CORREÇÃO
-    // =======================================================
 
 
     // 1. Inicia o carregamento do cardápio
@@ -350,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fecharCustomizacao && customizacaoModal) {
         fecharCustomizacao.addEventListener('click', () => {
             customizacaoModal.style.display = 'none';
-            itemIdCustomizando = null; // Limpa o estado
+            itemIdCustomizando = null; 
         });
     }
 
@@ -386,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 precoBase: precoBase,
                 adicionais: adicionaisFinais,
                 precoTotal: precoTotal,
-                quantidade: 1 // Sempre adiciona como um item, a customização é única
+                quantidade: 1 
             };
 
             adicionarAoCarrinho(novoItemCarrinho);
@@ -416,12 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Aqui você deve integrar com o WhatsApp ou sistema de pedidos
             alert("A função de Finalizar Pedido precisa ser implementada para enviar o pedido.");
-            // Exemplo de limpar o carrinho após um pedido simulado:
-            // carrinho = [];
-            // atualizarModalCarrinho();
-            // carrinhoModal.style.display = 'none';
-            // atualizarContadorCarrinho();
         });
     }
-
 });
