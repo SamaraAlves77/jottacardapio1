@@ -28,7 +28,6 @@ const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customiza
 
 function atualizarContadorCarrinho() {
     if (contadorCarrinho) {
-        // Reduz para somar a quantidade de todos os itens no carrinho
         contadorCarrinho.textContent = carrinho.reduce((total, item) => total + item.quantidade, 0);
     }
 }
@@ -52,7 +51,6 @@ function atualizarModalCarrinho() {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
         
-        // Calcula o preço total deste item (Preço unitário * Quantidade)
         const precoFormatado = (item.preco * item.quantidade).toFixed(2).replace('.', ',');
 
         itemDiv.innerHTML = `
@@ -117,8 +115,6 @@ function mostrarNotificacao(mensagem) {
 // FUNÇÕES DE CUSTOMIZAÇÃO (ADICIONAIS)
 // =======================================================
 
-// A função inicializarAdicionais foi removida e seu conteúdo está dentro de carregarCardapio para simplificar.
-
 function renderizarOpcoesAdicionais() {
     const lista = document.getElementById('adicionais-opcoes-lista');
     const nomeItemSpan = document.getElementById('item-customizacao-nome');
@@ -129,7 +125,6 @@ function renderizarOpcoesAdicionais() {
     nomeItemSpan.textContent = itemEmCustomizacao.nome;
 
     adicionaisGlobais.forEach(adicional => {
-        // Encontra o adicional no item em customização, se existir
         const itemAtual = itemEmCustomizacao.adicionais.find(ad => ad.id === adicional.id) || { quantidade: 0 };
         const precoFormatado = adicional.preco.toFixed(2).replace('.', ',');
         
@@ -165,6 +160,8 @@ function renderizarOpcoesAdicionais() {
 }
 
 function alterarQuantidadeAdicional(id, mudanca) {
+    if (!itemEmCustomizacao) return;
+    
     const adicionalIndex = itemEmCustomizacao.adicionais.findIndex(ad => ad.id === id);
     const adicionalOriginal = adicionaisGlobais.find(ad => ad.id === id);
 
@@ -181,7 +178,6 @@ function alterarQuantidadeAdicional(id, mudanca) {
             itemEmCustomizacao.adicionais[adicionalIndex].quantidade = novaQuantidade;
         }
     } else if (novaQuantidade > 0) {
-        // Adiciona um novo adicional se a quantidade for maior que zero
         itemEmCustomizacao.adicionais.push({
             id: id,
             nome: adicionalOriginal.nome,
@@ -227,8 +223,7 @@ function carregarCardapio() {
     fetch('cardapio.json')
         .then(response => {
             if (!response.ok) {
-                // Se a resposta não for OK (ex: arquivo não encontrado), lança um erro
-                throw new Error('Erro ao carregar cardapio.json. Verifique o caminho do arquivo.');
+                throw new Error('Erro ao carregar cardapio.json. Verifique o caminho e nome do arquivo.');
             }
             return response.json();
         })
@@ -237,22 +232,20 @@ function carregarCardapio() {
             adicionaisGlobais = data.adicionais_opcoes || []; 
 
             const main = document.querySelector('main');
-            if (!main) return; // Se não estiver na página cardapio.html, interrompe
+            if (!main) return;
 
             // Renderiza cada seção
             for (const categoria in data) {
-                if (categoria === "adicionais_opcoes") continue; // Pula os adicionais
+                if (categoria === "adicionais_opcoes") continue;
                 
-                // Cria a seção do cardápio
                 const section = document.createElement('section');
                 section.className = 'menu-section';
-                // Cria um ID amigável para navegação (ex: #hamburgueres-artesanais)
+                // Cria um ID amigável para navegação
                 section.id = categoria.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
                 
                 section.innerHTML = `<h2>${categoria}</h2><div class="item-grid"></div>`;
                 const grid = section.querySelector('.item-grid');
 
-                // Itera sobre os itens dentro da categoria
                 data[categoria].forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'item-card';
@@ -272,7 +265,7 @@ function carregarCardapio() {
                     `;
                     grid.appendChild(card);
                 });
-                main.appendChild(section); // Adiciona a seção ao MAIN
+                main.appendChild(section); 
             }
 
             // Adiciona listeners aos botões "Adicionar"
@@ -290,7 +283,7 @@ function carregarCardapio() {
                         itemEmCustomizacao = {
                             ...itemData,
                             precoFinal: itemData.preco,
-                            adicionais: [] // Sempre começa a customização sem adicionais
+                            adicionais: []
                         };
                         abrirModalCustomizacao();
                     } else {
@@ -299,7 +292,6 @@ function carregarCardapio() {
                             nome: itemData.nome,
                             preco: itemData.preco,
                             nomeExibicao: itemData.nome, 
-                            quantidade: 1
                         };
                         adicionarAoCarrinho(itemSimples);
                     }
@@ -309,10 +301,9 @@ function carregarCardapio() {
         })
         .catch(error => {
             console.error('Erro ao carregar ou renderizar o cardápio:', error);
-            // Mensagem de erro para o usuário (opcional)
             const main = document.querySelector('main');
             if(main) {
-                 main.innerHTML = `<p style="text-align: center; color: var(--primary-color);">Não foi possível carregar o cardápio. Tente recarregar a página.</p>`;
+                 main.innerHTML = `<p style="text-align: center; color: var(--primary-color);">Não foi possível carregar o cardápio. Verifique se o arquivo cardapio.json existe.</p>`;
             }
         });
 }
@@ -322,7 +313,7 @@ function abrirModalCustomizacao() {
     
     renderizarOpcoesAdicionais();
 
-    // CORREÇÃO MANTIDA: Abre com display: flex para centralizar
+    // Abre com display: flex para centralizar
     customizacaoModal.style.display = 'flex'; 
 }
 
@@ -332,21 +323,20 @@ function abrirModalCustomizacao() {
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Se estiver na página do cardápio, carrega os dados
+    // 1. Carrega o cardápio APENAS se estiver no cardapio.html (tem o elemento <main>)
     if (document.querySelector('main')) {
         carregarCardapio();
     }
     
-    // 1. ABRIR MODAL DO CARRINHO
+    // 2. ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            // CORREÇÃO MANTIDA: Abre com display: flex para centralizar
-            carrinhoModal.style.display = 'flex'; 
+            carrinhoModal.style.display = 'flex'; // Abre com flex para centralizar
             atualizarModalCarrinho(); 
         });
     }
 
-    // 2. FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X'
+    // 3. FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X'
     if (fecharModalBtn && carrinhoModal) {
         fecharModalBtn.addEventListener('click', () => {
             carrinhoModal.style.display = 'none';
@@ -358,14 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. FECHAR AMBAS AS MODAIS CLICANDO FORA
+    // 4. FECHAR AMBAS AS MODAIS CLICANDO FORA
     window.addEventListener('click', (event) => {
         if (event.target === carrinhoModal || event.target === customizacaoModal) {
             event.target.style.display = 'none';
         }
     });
 
-    // 4. Lógica do Botão "Adicionar ao Carrinho" da Customização
+    // 5. Lógica do Botão "Adicionar ao Carrinho" da Customização
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao) return;
@@ -381,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 preco: itemEmCustomizacao.precoFinal,
                 nomeExibicao: nomeFinal,
                 adicionais: itemEmCustomizacao.adicionais,
-                quantidade: 1 // Adiciona apenas uma unidade do item customizado de uma vez
+                quantidade: 1 
             };
             
             adicionarAoCarrinho(itemFinal); 
@@ -389,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 5. Lógica do Finalizar Pedido (WhatsApp)
+    // 6. Lógica do Finalizar Pedido (WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             const nome = document.getElementById('nome-cliente').value;
@@ -415,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const total = calcularTotalCarrinho();
             mensagem += `\n*TOTAL DO PEDIDO: R$ ${total.toFixed(2).replace('.', ',')}*`;
             
-            // Substitua '5586981147596' pelo seu número de WhatsApp
             const linkWhatsApp = `https://wa.me/5586981147596?text=${encodeURIComponent(mensagem)}`;
             window.open(linkWhatsApp, '_blank');
             
@@ -426,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Lógica do Hamburger Menu
+    // 7. Lógica do Hamburger Menu
     const navLinks = document.querySelector('.nav-links');
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
