@@ -26,307 +26,319 @@ const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customiza
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
 // =======================================================
 
-/**
- * Adiciona um item ao carrinho, atualiza o contador e exibe a notificação.
- * @param {object} item - O objeto do item a ser adicionado (pode ser customizado ou não).
- */
-function adicionarAoCarrinho(item) {
-    carrinho.push(item); 
-    
+function atualizarContadorCarrinho() {
     if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-
-    atualizarModalCarrinho();
-    
-    if (notificacao) {
-        notificacao.classList.add('mostrar');
-        
-        setTimeout(() => {
-            notificacao.classList.remove('mostrar');
-        }, 3000);
+        contadorCarrinho.textContent = carrinho.reduce((total, item) => total + item.quantidade, 0);
     }
 }
 
-/**
- * Remove um item do carrinho pelo seu índice.
- * @param {number} index - O índice do item a ser removido no array do carrinho.
- */
-function removerDoCarrinho(index) {
-    carrinho.splice(index, 1);
-    
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-    atualizarModalCarrinho();
+function calcularTotalCarrinho() {
+    return carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
 }
 
-/**
- * Atualiza o conteúdo e o total exibidos na modal do carrinho.
- */
 function atualizarModalCarrinho() {
     if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
 
     carrinhoItensContainer.innerHTML = '';
-    let total = 0;
+    
+    if (carrinho.length === 0) {
+        carrinhoItensContainer.innerHTML = '<p style="text-align: center; padding: 1rem;">Seu carrinho está vazio.</p>';
+        carrinhoTotalSpan.textContent = '0.00';
+        return;
+    }
 
     carrinho.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
         
-        // Usa nomeExibicao se existir (para itens customizados) ou o nome normal
-        const nomeExibicao = item.nomeExibicao || item.nome;
-        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
+        const precoFormatado = (item.preco * item.quantidade).toFixed(2).replace('.', ',');
 
         itemDiv.innerHTML = `
-            <span class="carrinho-item-nome">${nomeExibicao}</span>
-            <span class="carrinho-item-preco">R$ ${precoFormatado}</span>
-            <button class="btn-remover" data-index="${index}">X</button>
+            <div>
+                <strong>${item.nomeExibicao}</strong> (${item.quantidade}x)
+                <button class="btn-remover" data-index="${index}">Remover</button>
+            </div>
+            <span>R$ ${precoFormatado}</span>
         `;
         carrinhoItensContainer.appendChild(itemDiv);
-        total += item.preco;
     });
 
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
-
-    document.querySelectorAll('.btn-remover').forEach(btn => {
+    // Adiciona o listener para remover item
+    carrinhoItensContainer.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index'); 
+            const index = parseInt(e.target.dataset.index);
             removerDoCarrinho(index);
         });
     });
+
+    const total = calcularTotalCarrinho();
+    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
+}
+
+function adicionarAoCarrinho(item) {
+    // Procura se o item (incluindo nomeExibicao, que diferencia adicionais) já existe
+    const itemExistente = carrinho.find(c => c.nomeExibicao === item.nomeExibicao);
+
+    if (itemExistente) {
+        itemExistente.quantidade += 1;
+    } else {
+        carrinho.push({ ...item, quantidade: 1 });
+    }
+
+    atualizarContadorCarrinho();
+    mostrarNotificacao(`${item.nome} adicionado!`);
+}
+
+function removerDoCarrinho(index) {
+    if (index >= 0 && index < carrinho.length) {
+        carrinho[index].quantidade -= 1;
+        if (carrinho[index].quantidade <= 0) {
+            carrinho.splice(index, 1);
+        }
+        atualizarContadorCarrinho();
+        atualizarModalCarrinho();
+    }
+}
+
+function mostrarNotificacao(mensagem) {
+    if (!notificacao) return;
+    notificacao.textContent = mensagem;
+    notificacao.classList.add('mostrar');
+    setTimeout(() => {
+        notificacao.classList.remove('mostrar');
+    }, 2000);
 }
 
 
 // =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO
+// FUNÇÕES DE CUSTOMIZAÇÃO (ADICIONAIS)
 // =======================================================
-// ** CORREÇÃO: APENAS HAMBÚRGUERES ARTESANAIS PODEM SER CUSTOMIZADOS **
-const categoriasCustomizaveis = ['Hambúrgueres Artesanais'];
 
-
-function abrirModalCustomizacao(item) {
-    if (!customizacaoModal) return;
-
-    // Inicializa o objeto de customização com o item base
-    itemEmCustomizacao = { 
-        ...item,
-        adicionais: [], // Adicionais selecionados
-        precoFinal: item.preco // Preço inicial é o preço base
-    };
-
-    // Atualiza os títulos e preços base na modal
-    document.getElementById('item-customizacao-nome').textContent = item.nome;
-    document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
-    
-    // Renderiza e atualiza a modal
-    renderizarOpcoesAdicionais();
-    customizacaoModal.style.display = 'block';
+function inicializarAdicionais() {
+    // Simulação de como você carregaria os adicionais do cardapio.json
+    // O ideal é buscar o cardapio.json via fetch
+    fetch('cardapio.json')
+        .then(response => response.json())
+        .then(data => {
+            adicionaisGlobais = data.adicionais_opcoes || [];
+            // O restante do código de inicialização pode continuar aqui
+        })
+        .catch(error => console.error('Erro ao carregar cardapio.json:', error));
 }
 
 function renderizarOpcoesAdicionais() {
     const lista = document.getElementById('adicionais-opcoes-lista');
+    const nomeItemSpan = document.getElementById('item-customizacao-nome');
+
+    if (!lista || !itemEmCustomizacao || !nomeItemSpan) return;
+
     lista.innerHTML = '';
-    
+    nomeItemSpan.textContent = itemEmCustomizacao.nome;
+
     adicionaisGlobais.forEach(adicional => {
-        const selecionado = itemEmCustomizacao.adicionais.find(a => a.nome === adicional.nome);
-        const quantidade = selecionado ? selecionado.quantidade : 0;
+        const itemAtual = itemEmCustomizacao.adicionais.find(ad => ad.id === adicional.id) || { quantidade: 0 };
+        const precoFormatado = adicional.preco.toFixed(2).replace('.', ',');
         
-        const div = document.createElement('div');
-        div.className = 'adicional-item-opcao';
-        
-        div.innerHTML = `
-            <div>
-                <span>${adicional.nome}</span> 
-                <small>(R$ ${adicional.preco.toFixed(2).replace('.', ',')})</small>
-            </div>
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'adicional-item-opcao';
+        itemDiv.innerHTML = `
+            <span>${adicional.nome} (R$ ${precoFormatado})</span>
             <div class="adicional-contador">
-                <button class="btn-diminuir-adicional" data-nome="${adicional.nome}">-</button>
-                <span class="quantidade-adicional">${quantidade}</span>
-                <button class="btn-aumentar-adicional" data-nome="${adicional.nome}">+</button>
+                <button class="btn-diminuir" data-id="${adicional.id}">-</button>
+                <span data-id="${adicional.id}" id="count-${adicional.id}">${itemAtual.quantidade}</span>
+                <button class="btn-aumentar" data-id="${adicional.id}">+</button>
             </div>
         `;
-        lista.appendChild(div);
+        lista.appendChild(itemDiv);
     });
-    
-    adicionarListenersContador();
+
+    // Adiciona listeners para os botões de contar
+    lista.querySelectorAll('.btn-aumentar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            alterarQuantidadeAdicional(id, 1);
+        });
+    });
+
+    lista.querySelectorAll('.btn-diminuir').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            alterarQuantidadeAdicional(id, -1);
+        });
+    });
+
     atualizarResumoCustomizacao();
 }
 
-function adicionarListenersContador() {
-    // É importante remover os listeners antigos antes de adicionar os novos
-    document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
-    });
-    
-    document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
-        btn.onclick = null; // Limpa para evitar duplicidade
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
-    });
-}
+function alterarQuantidadeAdicional(id, mudanca) {
+    const adicionalIndex = itemEmCustomizacao.adicionais.findIndex(ad => ad.id === id);
+    const adicionalOriginal = adicionaisGlobais.find(ad => ad.id === id);
 
-function gerenciarAdicional(nomeAdicional, delta) {
-    const adicionalData = adicionaisGlobais.find(a => a.nome === nomeAdicional);
-    if (!adicionalData) return;
+    if (!adicionalOriginal) return;
 
-    let adicionalSelecionado = itemEmCustomizacao.adicionais.find(a => a.nome === nomeAdicional);
+    let novaQuantidade = (adicionalIndex !== -1 ? itemEmCustomizacao.adicionais[adicionalIndex].quantidade : 0) + mudanca;
 
-    if (!adicionalSelecionado) {
-        if (delta > 0) {
-            itemEmCustomizacao.adicionais.push({
-                ...adicionalData,
-                quantidade: 1
-            });
+    if (novaQuantidade < 0) novaQuantidade = 0;
+
+    if (adicionalIndex !== -1) {
+        if (novaQuantidade === 0) {
+            itemEmCustomizacao.adicionais.splice(adicionalIndex, 1); // Remove se for 0
+        } else {
+            itemEmCustomizacao.adicionais[adicionalIndex].quantidade = novaQuantidade;
         }
-    } else {
-        adicionalSelecionado.quantidade += delta;
-        
-        if (adicionalSelecionado.quantidade <= 0) {
-            itemEmCustomizacao.adicionais = itemEmCustomizacao.adicionais.filter(a => a.nome !== nomeAdicional);
-        }
+    } else if (novaQuantidade > 0) {
+        itemEmCustomizacao.adicionais.push({
+            id: id,
+            nome: adicionalOriginal.nome,
+            preco: adicionalOriginal.preco,
+            quantidade: novaQuantidade
+        });
     }
-    
-    renderizarOpcoesAdicionais(); // Re-renderiza para atualizar a UI
+
+    // Atualiza o contador na modal
+    const countSpan = document.getElementById(`count-${id}`);
+    if (countSpan) countSpan.textContent = novaQuantidade;
+
+    atualizarResumoCustomizacao();
 }
 
 function atualizarResumoCustomizacao() {
+    const precoBaseSpan = document.getElementById('preco-base-customizacao');
+    const precoAdicionaisSpan = document.getElementById('preco-adicionais-customizacao');
+    const precoTotalSpan = document.getElementById('preco-total-customizacao');
+
+    if (!itemEmCustomizacao || !precoBaseSpan || !precoAdicionaisSpan || !precoTotalSpan) return;
+
+    const precoBase = itemEmCustomizacao.preco;
     let precoAdicionais = 0;
-    
+
     itemEmCustomizacao.adicionais.forEach(ad => {
         precoAdicionais += ad.preco * ad.quantidade;
     });
 
-    const precoBase = itemEmCustomizacao.preco;
     const precoTotal = precoBase + precoAdicionais;
-
-    document.getElementById('preco-adicionais-customizacao').textContent = precoAdicionais.toFixed(2).replace('.', ',');
-    document.getElementById('preco-total-customizacao').textContent = precoTotal.toFixed(2).replace('.', ',');
-    
     itemEmCustomizacao.precoFinal = precoTotal;
+
+    precoBaseSpan.textContent = precoBase.toFixed(2).replace('.', ',');
+    precoAdicionaisSpan.textContent = precoAdicionais.toFixed(2).replace('.', ',');
+    precoTotalSpan.textContent = precoTotal.toFixed(2).replace('.', ',');
 }
 
 // =======================================================
-// FUNÇÕES DE CARREGAMENTO
+// FUNÇÃO PRINCIPAL DE CARREGAMENTO
 // =======================================================
 
-function criarItemCardapio(item, categoria) {
-    const divItem = document.createElement('div');
-    divItem.className = 'item-card';
-
-    const img = document.createElement('img');
-    img.src = `imagem_cardapio/${item.imagem}`;
-    img.alt = item.nome;
-    divItem.appendChild(img);
-
-    const h3 = document.createElement('h3');
-    h3.textContent = item.nome;
-    divItem.appendChild(h3);
-
-    if (item.descricao) {
-        const pDescricao = document.createElement('p');
-        pDescricao.textContent = item.descricao;
-        divItem.appendChild(pDescricao);
-    }
-
-    const pPreco = document.createElement('p');
-    pPreco.className = 'price';
-    pPreco.textContent = `R$ ${item.preco.toFixed(2).replace('.', ',')}`;
-    divItem.appendChild(pPreco);
-
-    const btnAdicionar = document.createElement('button');
-    btnAdicionar.className = 'btn-add';
-    
-    // Lógica para Customizar ou Adicionar Direto
-    if (categoriasCustomizaveis.includes(categoria)) {
-        btnAdicionar.textContent = 'Customizar e Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            abrirModalCustomizacao(item);
-        });
-    } else {
-        btnAdicionar.textContent = 'Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            adicionarAoCarrinho(item); 
-        });
-    }
-
-    divItem.appendChild(btnAdicionar);
-    return divItem;
-}
-
-
-function criarSecaoCardapio(titulo, itens) {
-    let containerId = '';
-    switch(titulo) {
-        case 'Hambúrgueres Artesanais': containerId = 'hamburgueres-artesanais-grid'; break;
-        case 'Combos e Família': containerId = 'combos-e-familia-grid'; break;
-        case 'Acompanhamentos': containerId = 'acompanhamentos-grid'; break;
-        case 'Bebidas': containerId = 'bebidas-grid'; break;
-        default: console.warn(`Categoria desconhecida: ${titulo}`); return;
-    }
-    
-    const container = document.getElementById(containerId);
-    if (!container) {
-        console.error(`Contêiner não encontrado para a categoria: ${titulo}`);
-        return;
-    }
-
-    itens.forEach(item => {
-        const itemElemento = criarItemCardapio(item, titulo); 
-        container.appendChild(itemElemento);
-    });
-}
-
-async function carregarCardapio() {
-    try {
-        const response = await fetch('./cardapio.json');
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-        }
-        
-        const cardapioData = await response.json();
-        
-        const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
-        
-        if (adicionaisCategoria) {
-            adicionaisGlobais = adicionaisCategoria.itens || []; 
-        }
-
-        cardapioData.forEach(categoriaObj => {
-            if (categoriaObj.id !== 'adicionais-extras') {
-                criarSecaoCardapio(categoriaObj.nome, categoriaObj.itens);
+function carregarCardapio() {
+    fetch('cardapio.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            adicionaisGlobais = data.adicionais_opcoes || []; // Carrega adicionais
+
+            const main = document.querySelector('main');
+            if (!main) return;
+
+            // Renderiza cada seção
+            for (const categoria in data) {
+                if (categoria === "adicionais_opcoes") continue; // Pula os adicionais
+                
+                const section = document.createElement('section');
+                section.className = 'menu-section';
+                section.id = categoria.toLowerCase().replace(/ /g, '-').replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i').replace(/ó/g, 'o').replace(/ú/g, 'u');
+                
+                section.innerHTML = `<h2>${categoria}</h2><div class="item-grid"></div>`;
+                const grid = section.querySelector('.item-grid');
+
+                data[categoria].forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.setAttribute('data-id', item.id);
+                    card.setAttribute('data-categoria', categoria);
+
+                    const precoFormatado = item.preco.toFixed(2).replace('.', ',');
+
+                    card.innerHTML = `
+                        <img src="imagem_cardapio/${item.imagem}" alt="${item.nome}">
+                        <h3>${item.nome}</h3>
+                        <p>${item.descricao}</p>
+                        <div class="price">R$ ${precoFormatado}</div>
+                        <button class="btn-add" data-id="${item.id}" data-categoria="${categoria}">
+                            Adicionar
+                        </button>
+                    `;
+                    grid.appendChild(card);
+                });
+                main.appendChild(section);
+            }
+
+            // Adiciona listeners aos botões "Adicionar"
+            document.querySelectorAll('.btn-add').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.dataset.id);
+                    const categoria = e.target.dataset.categoria;
+                    
+                    const itemData = data[categoria].find(item => item.id === itemId);
+                    
+                    if (!itemData) return;
+
+                    // Verifica se o item é um hambúrguer artesanal para permitir customização
+                    if (categoria === "Hambúrgueres Artesanais") {
+                        // Inicializa o itemEmCustomizacao com dados do item
+                        itemEmCustomizacao = {
+                            ...itemData,
+                            precoFinal: itemData.preco,
+                            adicionais: [] // Começa sem adicionais
+                        };
+                        abrirModalCustomizacao();
+                    } else {
+                        // Para outros itens, adiciona diretamente ao carrinho
+                        const itemSimples = {
+                            nome: itemData.nome,
+                            preco: itemData.preco,
+                            nomeExibicao: itemData.nome, // Sem customização, nome simples
+                            quantidade: 1
+                        };
+                        adicionarAoCarrinho(itemSimples);
+                    }
+                });
+            });
+
+        })
+        .catch(error => {
+            console.error('Erro ao carregar ou renderizar o cardápio:', error);
+            // Poderia adicionar uma mensagem de erro na tela para o usuário aqui.
         });
-    } catch (error) {
-        console.error('Erro ao carregar o cardápio:', error);
-        const main = document.querySelector('main');
-        if (main) {
-            main.innerHTML = `<h1>Erro ao carregar o cardápio. Verifique o console para mais detalhes.</h1>`;
-        }
-    }
 }
+
+function abrirModalCustomizacao() {
+    if (!customizacaoModal) return;
+    
+    renderizarOpcoesAdicionais();
+
+    // CORREÇÃO: Abre com display: flex para centralizar
+    customizacaoModal.style.display = 'flex'; 
+}
+
 
 // =======================================================
 // EVENT LISTENERS DE INICIALIZAÇÃO
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Se estiver na página do cardápio, carrega os dados
+    if (document.querySelector('main')) {
+        carregarCardapio();
+    }
     
-    // CORREÇÃO CRÍTICA PARA IMPEDIR POP-UPS AO CARREGAR A PÁGINA
-    if (carrinhoModal) {
-        carrinhoModal.style.display = 'none';
-    }
-    if (customizacaoModal) {
-        customizacaoModal.style.display = 'none';
-    }
-
-    // Inicia o carregamento do cardápio
-    carregarCardapio();
-
     // 1. ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.style.display = 'block';
+            // CORREÇÃO: Mudar de 'block' para 'flex'
+            carrinhoModal.style.display = 'flex'; 
             atualizarModalCarrinho(); 
         });
     }
@@ -350,25 +362,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. ADICIONAR ITEM CUSTOMIZADO AO CARRINHO (Botão da Modal de Customização)
+    // 4. Lógica do Botão "Adicionar ao Carrinho" da Customização
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
-            if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
-                 alert("Erro na customização. Tente novamente.");
-                 return;
-            }
-            
-            // Monta o nome customizado para exibição no carrinho
+            if (!itemEmCustomizacao) return;
+
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
+            // Cria um nome de exibição mais descritivo
             const nomeFinal = `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`;
 
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
                 nomeExibicao: nomeFinal,
-                adicionais: itemEmCustomizacao.adicionais
+                adicionais: itemEmCustomizacao.adicionais,
+                quantidade: 1 // Adiciona apenas uma unidade do item customizado de uma vez
             };
             
             adicionarAoCarrinho(itemFinal); 
@@ -384,32 +394,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const nomeCliente = document.getElementById('nome-cliente').value;
-            const enderecoCliente = document.getElementById('endereco-cliente').value;
-            const telefoneCliente = document.getElementById('telefone-cliente').value;
+            const nome = document.getElementById('nome-cliente').value;
+            const endereco = document.getElementById('endereco-cliente').value;
+            const telefone = document.getElementById('telefone-cliente').value;
             
-            if (!nomeCliente || !enderecoCliente || !telefoneCliente) {
-                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido.");
-                return;
-            }
-
-            let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
-            mensagem += `*Nome:* ${nomeCliente}\n`;
-            mensagem += `*Endereço:* ${enderecoCliente}\n`;
-            mensagem += `*Telefone:* ${telefoneCliente}\n\n`;
-            mensagem += `*ITENS DO PEDIDO (${carrinho.length}):*\n`;
+            let mensagem = `*PEDIDO JottaV Burguer*\n\n`;
+            mensagem += `*Cliente:* ${nome || 'Não Informado'}\n`;
+            mensagem += `*Endereço:* ${endereco || 'Não Informado'}\n`;
+            mensagem += `*Telefone:* ${telefone || 'Não Informado'}\n\n`;
+            mensagem += `*ITENS:*\n`;
             
-            carrinho.forEach((item, index) => {
-                const precoFormatado = item.preco.toFixed(2).replace('.', ',');
-                mensagem += `${index + 1}. ${item.nomeExibicao || item.nome} - R$ ${precoFormatado}\n`;
+            carrinho.forEach(item => {
+                const precoTotalItem = (item.preco * item.quantidade).toFixed(2).replace('.', ',');
+                mensagem += `- ${item.nomeExibicao} (${item.quantidade}x) = R$ ${precoTotalItem}\n`;
             });
             
-            mensagem += `\n*TOTAL: R$ ${carrinhoTotalSpan.textContent}*`;
+            const total = calcularTotalCarrinho();
+            mensagem += `\n*TOTAL DO PEDIDO: R$ ${total.toFixed(2).replace('.', ',')}*`;
             
-            const numeroWhatsApp = '5586981147596'; 
-            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-            
+            const linkWhatsApp = `https://wa.me/5586981147596?text=${encodeURIComponent(mensagem)}`;
             window.open(linkWhatsApp, '_blank');
+            
+            // Limpa o carrinho
+            carrinho = [];
+            atualizarContadorCarrinho();
+            carrinhoModal.style.display = 'none';
         });
     }
 
@@ -417,8 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelector('.nav-links');
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active'); 
+            navLinks.classList.toggle('active');
         });
     }
-
 });
