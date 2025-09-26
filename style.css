@@ -291,7 +291,7 @@ main {
 
 /* --- Modais (Pop-ups) --- */
 .modal {
-    display: none; /* O JS deve alterar para 'flex' ao abrir */
+    display: none;
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -299,11 +299,10 @@ main {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Garante a centralização vertical e horizontal */
+    /* Centralização com Flexbox */
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    overflow-y: auto; 
 }
 
 .modal-content {
@@ -314,6 +313,8 @@ main {
     position: relative;
     max-width: 600px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .fechar-modal, .fechar-customizacao {
@@ -330,6 +331,7 @@ main {
     color: var(--primary-color);
 }
 
+/* AJUSTES PARA NOVA ESTRUTURA DE CUSTOMIZAÇÃO NO HTML/JS */
 .adicionais-opcoes { 
     margin-top: 15px;
 }
@@ -498,14 +500,17 @@ footer {
         margin-bottom: 1rem;
     }
 
-    /* Layout de 2 colunas para mobile */
+    /* ************************************************* */
+    /* ** CORREÇÃO: LAYOUT DE 2 COLUNAS PARA MOBILE ** */
+    /* ************************************************* */
     .item-grid {
+        /* Define duas colunas de tamanho igual com espaçamento de 1rem */
         grid-template-columns: repeat(2, 1fr); 
         gap: 1rem;
     }
 
     .item-card {
-        padding: 0.5rem; 
+        padding: 0.5rem; /* Reduz o padding interno do card */
         flex-direction: column; 
         text-align: center; 
         gap: 0;
@@ -513,41 +518,44 @@ footer {
     
     .item-card img {
         width: 100%; 
-        height: 100px; 
+        height: 100px; /* Reduz a altura da imagem para caber no grid de 2 colunas */
         object-fit: cover;
-        margin: 0 0 0.5rem 0; 
+        margin: 0 0 0.5rem 0; /* Espaçamento abaixo da imagem */
         border-radius: 8px;
     }
 
     .item-card h3 {
-        font-size: 0.9rem; 
+        font-size: 0.9rem; /* Reduz o tamanho da fonte do título */
         margin: 0;
         text-align: center; 
+        /* Limita o título a duas linhas para evitar quebra de layout */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; 
     }
 
     .item-card p {
-        display: none; 
+        /* Mantemos a descrição invisível para economizar espaço nas 2 colunas */
+        display: none;
     }
 
     .item-card .price {
-        font-size: 0.85rem; 
+        font-size: 0.85rem; /* Reduz o tamanho da fonte do preço */
         margin: 0.2rem 0;
         text-align: center; 
     }
     
     .btn-add {
-        padding: 0.5rem; 
-        font-size: 0.8rem; 
+        padding: 0.5rem; /* Ajusta o padding do botão */
+        font-size: 0.8rem; /* Reduz o tamanho da fonte do botão */
         margin: 0.5rem 0 0;
         width: 100%;
     }
+    /* ************************************************* */
     
     /* Ajustes da Modal no Mobile */
     .modal-content {
-        margin: 10px; 
+        margin: 0 10px;
         width: calc(100% - 20px);
         padding: 1rem;
     }
