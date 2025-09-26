@@ -1,0 +1,149 @@
+/* Configuração Global */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #e53935;
+    --secondary-color: #212121;
+    --background-color: #f5f5f5;
+    --card-background: #fff;
+    --text-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- ESTILOS: CARTÃO DE VISITA (index.html) --- */
+
+.landing-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.landing-card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    display: flex;
+    max-width: 900px;
+    width: 90%;
+    overflow: hidden;
+}
+
+.card-left, .card-right {
+    padding: 3rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card-left {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.logo-landing {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.slogan {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.card-right {
+    gap: 1.5rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.social-btn i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.instagram {
+    background-color: #E1306C; /* Cor do Instagram */
+    color: white;
+}
+
+.whatsapp {
+    background-color: #25D366; /* Cor do WhatsApp */
+    color: white;
+}
+
+.cardapio {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* --- Responsividade da Landing Page --- */
+@media (max-width: 768px) {
+    .landing-page-container {
+        padding: 1rem;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+
+    .landing-card {
+        flex-direction: column;
+        width: 100%;
+        max-width: none;
+    }
+
+    .card-left, .card-right {
+        padding: 2rem 1rem;
+    }
+
+    .card-left {
+        border-radius: 15px 15px 0 0;
+    }
+
+    .card-right {
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .logo-landing {
+        width: 120px;
+        height: 120px;
+    }
+}
