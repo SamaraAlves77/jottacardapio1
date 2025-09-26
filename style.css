@@ -254,7 +254,9 @@ main {
 
 /* --- ESTILOS: JANELAS FLUTUANTES (MODAIS) --- */
 .modal {
+    /* ESTA LINHA É A CHAVE para a sua correção: Garante que a modal comece OCULTA */
     display: none;
+    
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -265,6 +267,11 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* O JavaScript irá adicionar esta classe para MOSTRAR a modal */
+.modal.mostrar {
+    display: flex;
 }
 
 .modal-content {
