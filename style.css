@@ -1,188 +1,246 @@
-/* =======================================================
-// VARIÁVEIS GLOBAIS
-// ======================================================= */
+/* Importação da fonte (opcional, adicione a sua se desejar) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 :root {
-    --primary-color: #A8201A; /* Vermelho principal (JottaV Burguer) */
-    --secondary-color: #333333; /* Cinza escuro/Preto */
-    --text-color: #333333; /* Cor primária do texto */
-    --light-text-color: #F8F8F8; /* Cor do texto em fundos escuros */
-    --card-background: #FFFFFF; /* Fundo dos cards */
-    --background-color: #F8F8F8; /* Fundo geral da página */
-    --accent-color: #FCA311; /* Amarelo/Laranja de destaque */
-    --whatsapp-green: #25D366; /* Verde do WhatsApp */
-    --instagram-purple: #C13584; /* Roxo do Instagram */
+    --primary-color: #e53935; /* Vermelho JottaV Burguer */
+    --secondary-color: #212121; /* Preto */
+    --background-color: #f5f5f5; /* Cinza claro */
+    --card-background: #fff; /* Branco para os cards */
+    --text-color: #333; /* Cor do texto */
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* =======================================================
-// REGRAS BÁSICAS
-// ======================================================= */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
+}
+
+/* --- ESTILOS PARA A PÁGINA DE ENTRADA (Cartão de Visita) --- */
+
+.landing-page-container {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    padding: 2rem;
+}
+
+.landing-card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    padding: 2rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    width: 100%;
 }
 
-main {
-    flex-grow: 1; 
-    padding-bottom: 3rem;
+.card-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-a {
+.logo-landing {
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.slogan {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.card-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 10px;
     text-decoration: none;
-    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-a:hover {
-    opacity: 0.8;
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2, h3 {
-    color: var(--secondary-color);
-    margin-bottom: 0.5rem;
+.social-btn i {
+    margin-right: 0.5rem;
 }
 
-/* =======================================================
-// HEADER E NAVEGAÇÃO
-// ======================================================= */
+.instagram {
+    background: #E1306C;
+    color: white;
+}
+
+.whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.cardapio {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Responsividade para a página de entrada */
+@media (min-width: 768px) {
+    .landing-card {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 3rem;
+    }
+
+    .card-left, .card-right {
+        width: 45%;
+    }
+
+    .card-left {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .logo-landing {
+        max-width: 200px;
+    }
+}
+
+/* --- ESTILOS DO CARDÁPIO (Navbar e Layout) --- */
 header {
-    background-color: var(--secondary-color);
-    color: var(--light-text-color);
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--card-background);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    /* Linha que você estava ajustando no diff () */
-    min-height: 60px; /* Ajuste para caber na tela sem o header/footer */
-}
-
-.logo-header {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--accent-color);
+.logo img {
+    height: 60px;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-}
-
-.nav-links li {
-    margin-left: 20px;
+    gap: 1.5rem;
 }
 
 .nav-links a {
-    color: var(--light-text-color);
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 700;
+    transition: color 0.3s ease;
 }
 
-.nav-links a:hover {
-    background-color: var(--primary-color);
-    opacity: 1;
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
 }
 
-/* Botão do carrinho */
-#carrinho-btn {
-    position: relative;
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.carrinho-btn {
     background: none;
     border: none;
-    color: var(--light-text-color);
-    font-size: 1.5rem;
     cursor: pointer;
-    margin-left: 20px;
+    font-size: 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: var(--secondary-color); /* Garante a cor no mobile */
 }
 
 #contador-carrinho {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
     position: absolute;
     top: -5px;
     right: -10px;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 0.75rem;
-    line-height: 1;
+    min-width: 25px; /* Evita que o círculo desapareça */
+    text-align: center;
 }
 
-/* Botão Hamburger Menu (Oculto por padrão no desktop) */
 .hamburger-menu-btn {
     display: none;
+    font-size: 2rem;
     background: none;
     border: none;
-    color: var(--light-text-color);
-    font-size: 1.5rem;
     cursor: pointer;
+    color: var(--secondary-color);
 }
 
-/* =======================================================
-// SECTION HEADER DO CARDÁPIO
-// ======================================================= */
-.section-header {
-    text-align: center;
-    padding: 2rem 0;
-    background-color: var(--background-color);
-}
-
-.section-header h2 {
-    color: var(--primary-color);
-    font-size: 2rem;
-    border-bottom: 2px solid var(--accent-color);
-    display: inline-block;
-    padding-bottom: 5px;
-    margin-bottom: 0;
-}
-
-/* =======================================================
-// CONTAINER GERAL DO CARDÁPIO E GRID
-// ======================================================= */
-.cardapio-container {
+main {
+    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
-.grid-container {
+.menu-section {
+    margin-bottom: 3rem;
+}
+
+.menu-section h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Layout de Cardápio (Desktop) */
+.item-grid {
     display: grid;
-    /* Desktop: 3 colunas padrão */
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 30px;
-    padding: 2rem 0;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-content: center;
 }
 
-/* =======================================================
-// ITEM CARD (DISPLAY DE CADA ITEM)
-// ======================================================= */
+/* Estilo do Card (item-card) */
 .item-card {
     background-color: var(--card-background);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
     text-align: center;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
 }
 
 .item-card:hover {
@@ -191,313 +249,109 @@ header {
 
 .item-card img {
     width: 100%;
-    max-height: 200px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    object-position: center;
 }
 
 .item-card h3 {
-    font-size: 1.25rem;
-    min-height: 3.5rem; 
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 1.5rem;
+    margin: 1rem 0 0.5rem;
+    padding: 0 1rem;
+    text-align: center;
 }
 
 .item-card p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #666;
-    margin-bottom: 10px;
+    padding: 0 1rem;
+    flex-grow: 1;
 }
 
 .item-card .price {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: auto; 
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 1rem;
+    text-align: center;
 }
 
 .btn-add {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    width: 100%;
+    transition: background-color 0.3s ease;
+    margin: 1rem;
+    border-radius: 8px;
+    width: calc(100% - 2rem);
 }
 
 .btn-add:hover {
-    background-color: #8c1a15; 
+    background-color: #d32f2f;
 }
 
-
-/* =======================================================
-// LANDING PAGE (index.html)
-// ======================================================= */
-.landing-page-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Min-height corrigido para funcionar bem com o header/footer */
-    min-height: calc(100vh - 80px); 
-    padding: 20px;
-}
-
-.landing-card {
-    background-color: var(--card-background);
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    display: flex;
-    max-width: 800px;
-    width: 100%;
-    overflow: hidden;
-}
-
-.card-left {
-    background-color: var(--primary-color);
-    color: var(--light-text-color);
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-}
-
-.logo-landing {
-    width: 80%;
-    max-width: 200px;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.slogan {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--accent-color);
-}
-
-.card-right {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-}
-
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    font-weight: bold;
-    color: white;
-    transition: opacity 0.3s;
-}
-
-.social-btn i {
-    margin-right: 10px;
-    font-size: 1.2rem;
-}
-
-.whatsapp {
-    background-color: var(--whatsapp-green);
-}
-
-.instagram {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-}
-
-.cardapio {
-    background-color: var(--accent-color);
-    color: var(--secondary-color);
-}
-
-
-/* =======================================================
-// FOOTER
-// ======================================================= */
-.footer {
-    background-color: var(--secondary-color);
-    color: var(--light-text-color);
-    text-align: center;
-    padding: 1rem;
-    margin-top: 2rem;
-    width: 100%;
-}
-
-
-/* =======================================================
-// MODAL GERAL (CARRINHO E CUSTOMIZAÇÃO)
-// ======================================================= */
-.modal-overlay {
+/* --- Modais (Janelas Flutuantes) --- */
+.modal {
+    display: none;
     position: fixed;
-    top: 0;
+    z-index: 2000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
 }
 
 .modal-content {
     background-color: var(--card-background);
-    padding: 30px;
+    padding: 2rem;
     border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .fechar-modal, .fechar-customizacao {
+    color: #aaa;
     position: absolute;
     top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--secondary-color);
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.modal-content h2 {
-    color: var(--primary-color);
-    border-bottom: 2px solid var(--accent-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-/* Notificação "Item adicionado" */
-#notificacao {
-    position: fixed;
-    bottom: 20px;
     right: 20px;
-    background-color: var(--whatsapp-green);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    transform: translateY(20px);
-    z-index: 3000;
-}
-
-#notificacao.mostrar {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* =======================================================
-// ITENS DO CARRINHO
-// ======================================================= */
-.carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed #DDD;
-}
-
-.carrinho-item-nome {
-    flex-grow: 1;
-    font-size: 0.9rem;
-}
-
-.carrinho-item-preco {
+    font-size: 2rem;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.fechar-modal:hover, .fechar-customizacao:hover {
     color: var(--primary-color);
-    margin-right: 15px;
 }
 
-.btn-remover {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 0.7rem;
-    cursor: pointer;
-}
-
-/* Total do carrinho */
-.carrinho-total {
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 2px solid var(--accent-color);
-    font-size: 1.3rem;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Formulário de Finalização */
-.formulario-finalizar {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #CCC;
-}
-
-.formulario-finalizar label, .formulario-finalizar input {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.formulario-finalizar input {
-    padding: 8px;
-    border: 1px solid #CCC;
-    border-radius: 4px;
-}
-
-#btn-finalizar-pedido {
-    background-color: var(--whatsapp-green);
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+/* Estilos de Customização */
+.adicionais-opcoes { 
     margin-top: 15px;
-    width: 100%;
-    transition: background-color 0.3s;
 }
 
-#btn-finalizar-pedido:hover {
-    background-color: #1eab56;
-}
-
-
-/* =======================================================
-// MODAL DE CUSTOMIZAÇÃO
-// ======================================================= */
 .adicional-item-opcao {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px dashed #EEE;
+    border-bottom: 1px dashed #eee;
 }
 
 .adicional-contador {
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .adicional-contador button {
@@ -506,169 +360,216 @@ header {
     border: none;
     width: 25px;
     height: 25px;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1rem;
     line-height: 1;
     transition: background-color 0.2s;
 }
 
 .adicional-contador button:hover {
-    background-color: var(--accent-color);
+    background-color: #d32f2f;
 }
 
-.quantidade-adicional {
-    margin: 0 15px;
-    font-weight: bold;
+/* Estilos do Carrinho */
+.carrinho-itens {
+    max-height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-/* Resumo da Customização */
-.resumo-customizacao {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #CCC;
-}
-
-.resumo-customizacao div {
+.carrinho-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    align-items: flex-start;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #eee;
 }
 
-.resumo-customizacao .preco-total {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    margin-top: 10px;
-}
-
-#btn-adicionar-customizado {
-    background-color: var(--accent-color);
-    color: var(--secondary-color);
-    padding: 12px;
+.btn-remover {
+    background: none;
     border: none;
-    border-radius: 5px;
+    color: var(--primary-color);
     cursor: pointer;
     font-weight: bold;
-    margin-top: 15px;
-    width: 100%;
+    font-size: 1rem;
+    padding: 0 5px;
+    margin-left: 10px;
 }
 
+.carrinho-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
 
-/* =======================================================
-// @MEDIA QUERIES (RESPONSIVIDADE PARA MOBILE)
-// ======================================================= */
-@media screen and (max-width: 768px) {
-    /* HEADER (Mobile) */
-    .nav-container {
-        padding: 0;
+.carrinho-finalizar input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#btn-finalizar-pedido, #btn-adicionar-customizado {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#btn-finalizar-pedido:hover, #btn-adicionar-customizado:hover {
+    background-color: #d32f2f;
+}
+
+/* --- Notificação --- */
+.notificacao {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+    z-index: 3000;
+}
+
+.notificacao.mostrar {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
+/* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
+
+/* Telas Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+        flex-wrap: wrap; /* Permite que o menu desça no mobile */
     }
 
-    .hamburger-menu-btn {
-        display: block; 
+    .logo {
+        flex-grow: 1; /* Empurra os botões para a direita */
+    }
+
+    .header-actions {
+        order: 2; /* Move a barra de ações para baixo (opcional, mas limpa o layout) */
+        width: 100%;
+        justify-content: flex-end; /* Alinha botões à direita */
     }
 
     .nav-links {
-        /* REGRAS CRÍTICAS PARA O MENU HAMBURGER (FECHADO) */
-        display: none; 
+        /* Correção para o menu hamburguer */
+        display: none;
         flex-direction: column;
-        position: absolute;
-        top: 60px; 
-        right: 0;
         width: 100%;
-        background-color: var(--secondary-color);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        padding: 10px 0;
+        position: absolute;
+        top: 81px; /* Altura do header (ajustado) */
+        left: 0;
+        background-color: var(--card-background);
+        box-shadow: 0 2px 4px var(--shadow-color);
         text-align: center;
-        z-index: 999;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
     }
     
-    .nav-links.active {
-        /* MOSTRA o menu quando a classe 'active' é adicionada pelo JS */
-        display: flex; 
-    }
-
     .nav-links li {
-        margin: 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 0;
     }
 
     .nav-links a {
+        color: var(--secondary-color);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger-menu-btn {
         display: block;
-        padding: 15px 20px;
-        color: var(--light-text-color);
+        color: var(--secondary-color);
+        margin-left: 1rem; /* Espaço entre o carrinho e o menu */
     }
     
-    /* LANDING PAGE (index.html) */
-    .landing-card {
-        flex-direction: column; 
-        max-width: 400px;
+    main {
+        padding: 1rem 0.5rem;
     }
 
-    .card-left {
-        padding: 20px;
-        order: 1;
+    .menu-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
     }
 
-    .card-right {
-        padding: 20px;
-        order: 2;
-    }
-
-    .logo-landing {
-        width: 70%;
-    }
-
-    /* CARDÁPIO (cardapio.html) */
-    .grid-container {
-        /* Corrige a grid para 2 colunas no mobile */
+    /* Layout de 2 COLUNAS para Mobile */
+    .item-grid {
         grid-template-columns: repeat(2, 1fr); 
-        gap: 15px;
+        gap: 0.8rem;
     }
-    
+
     .item-card {
-        padding: 10px;
-    }
-
-    .item-card img {
-        height: 100px; 
-        margin-bottom: 5px;
+        padding: 0.5rem; 
+        gap: 0;
     }
     
-    .item-card h3 {
-        font-size: 1rem;
-        min-height: 2.5rem;
+    .item-card img {
+        width: 100%; 
+        height: 100px; 
+        margin: 0 0 0.5rem 0; 
+        border-radius: 8px;
     }
 
-    .item-card p:not(.price) {
-        /* Oculta a descrição dos itens menores para melhor layout */
-        display: none; 
+    .item-card h3 {
+        font-size: 0.9rem; 
+        margin: 0;
+        text-align: center; 
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; 
+    }
+
+    .item-card p {
+        display: none; /* Esconde a descrição para mobile */
     }
 
     .item-card .price {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
+        font-size: 0.85rem; 
+        margin: 0.2rem 0;
     }
     
     .btn-add {
-        padding: 8px 10px;
-        font-size: 0.9rem;
-    }
-}
-
-/* @MEDIA QUERIES para telas muito pequenas (ex: iPhones SE) */
-@media screen and (max-width: 480px) {
-    .grid-container {
-        /* Garante 1 coluna para telas extremamente pequenas */
-        grid-template-columns: 1fr; 
+        padding: 0.5rem; 
+        font-size: 0.8rem; 
+        margin: 0.5rem 0 0;
+        width: 100%;
     }
     
-    .logo-header {
-        font-size: 1.2rem;
-    }
-
-    .slogan {
-        font-size: 1.2rem;
+    /* Ajustes da Modal no Mobile */
+    .modal-content {
+        margin: 0 10px;
+        width: calc(100% - 20px);
+        padding: 1rem;
     }
 }
