@@ -1,0 +1,479 @@
+/* Configuração Global */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #e53935;
+    --secondary-color: #212121;
+    --background-color: #f5f5f5;
+    --card-background: #fff;
+    --text-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- ESTILOS: NAVBAR/HEADER --- */
+header {
+    background-color: var(--card-background);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 700;
+    padding: 0.5rem 0;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.carrinho-btn, .hamburger-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    position: relative;
+    padding: 0.5rem;
+}
+
+#contador-carrinho {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    padding: 0.1rem 0.4rem;
+    line-height: 1;
+}
+
+.hamburger-menu-btn {
+    display: none; /* Escondido no Desktop */
+}
+
+
+/* --- ESTILOS: SEÇÕES DO CARDÁPIO --- */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    min-height: calc(100vh - 100px); /* Garante que o footer fique abaixo */
+}
+
+.menu-section {
+    margin-bottom: 3rem;
+    padding-top: 50px; /* Para fixar a navegação */
+}
+
+.menu-section h2 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+/* --- ESTILOS: CARDÁPIO E CARDS (Desktop/Padrão) --- */
+
+.cardapio-grid { /* CLASSE CORRIGIDA! Antes era .item-grid */
+    display: grid;
+    /* Layout dinâmico para telas maiores (mínimo de 280px) */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.item-card {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    overflow: hidden;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.item-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.item-card h3 {
+    padding: 1rem 1rem 0.5rem;
+    font-size: 1.25rem;
+    color: var(--primary-color);
+}
+
+.item-card p {
+    padding: 0 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    flex-grow: 1; /* Faz a descrição ocupar o espaço */
+}
+
+.item-card .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    padding: 0.5rem 1rem;
+}
+
+.btn-add {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background-color 0.2s;
+    margin-top: auto; /* Garante que o botão fique na base */
+}
+
+.btn-add:hover {
+    background-color: #c62828;
+}
+
+/* --- ESTILOS: MODAL GERAL (Carrinho e Customização) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+    animation: fadeIn 0.3s;
+}
+
+.modal.ativo {
+    display: block;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: 10% auto; /* Centraliza verticalmente e horizontalmente */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.fechar-modal, .fechar-customizacao {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fechar-modal:hover, .fechar-customizacao:hover {
+    color: #333;
+}
+
+/* --- ESTILOS: MODAL CARRINHO --- */
+.carrinho-itens {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 10px;
+}
+
+.carrinho-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.carrinho-item-nome {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.btn-remover {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    margin-left: 10px;
+}
+
+.carrinho-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 0;
+    border-top: 2px solid var(--secondary-color);
+}
+
+.carrinho-finalizar input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#btn-finalizar-pedido {
+    width: 100%;
+    background-color: #25D366; /* Cor do WhatsApp */
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* --- ESTILOS: MODAL CUSTOMIZAÇÃO --- */
+
+.adicional-item-opcao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.adicional-contador button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 5px;
+}
+
+.adicional-contador span {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+.customizacao-resumo {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
+}
+
+.customizacao-resumo h4 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+#btn-adicionar-customizado {
+    width: 100%;
+    margin-top: 1rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* --- ESTILOS: NOTIFICAÇÃO --- */
+
+.notificacao {
+    position: fixed;
+    bottom: -50px; /* Escondida inicialmente */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 5000;
+    transition: bottom 0.5s ease-out;
+    font-weight: 700;
+}
+
+.notificacao.mostrar {
+    bottom: 70px; /* Elevada para mobile */
+}
+
+
+/* --- ESTILOS: FOOTER --- */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--secondary-color);
+    color: white;
+    font-size: 0.9rem;
+}
+
+
+/* --- ESTILOS: RESPONSIVIDADE (MOBILE) --- */
+
+/* Oculta a barra fixa no desktop */
+.mobile-fixed-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    
+    /* Navbar no Mobile */
+    header {
+        padding: 1rem 1rem;
+    }
+    
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Abaixo do header */
+        left: 0;
+        width: 100%;
+        background-color: var(--card-background);
+        box-shadow: 0 4px 5px var(--shadow-color);
+        padding: 1rem 0;
+        z-index: 1000;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 0.75rem 0;
+        border-bottom: none;
+    }
+
+    .header-actions {
+        /* Esconde o botão de carrinho do desktop e mostra o menu hamburguer */
+        gap: 0.5rem;
+    }
+
+    #carrinho-btn {
+        display: none; /* Esconde o botão de carrinho no header */
+    }
+
+    .hamburger-menu-btn {
+        display: block; /* Mostra o menu hamburguer no mobile */
+    }
+
+    main {
+        margin: 1rem auto 5rem; /* Adiciona margem inferior para a barra fixa */
+        padding: 0 1rem;
+    }
+
+    .menu-section {
+        padding-top: 0;
+    }
+
+    /* Ajuste para a notificação em mobile */
+    .notificacao.mostrar {
+        bottom: 70px;
+        width: calc(100% - 2rem);
+    }
+    
+    /* OTIMIZAÇÃO: Estilização da Barra Fixa Mobile (Mostrada no mobile) */
+    .mobile-fixed-bar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--card-background);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        padding: 0.5rem 0;
+        z-index: 2500;
+    }
+
+    .bar-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #666;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0.2rem;
+        position: relative;
+    }
+
+    .bar-link i {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+    
+    .bar-link.active, .bar-link:hover {
+        color: var(--primary-color);
+    }
+}
