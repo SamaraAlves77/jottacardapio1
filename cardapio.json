@@ -47,23 +47,24 @@
         "itens": [
             { "id": 25, "nome": "Coca-Cola lata", "descricao": "Refrigerante lata de Coca-Cola.", "preco": 7.00, "imagem": "cocalata.png" },
             { "id": 26, "nome": "Guaraná lata", "descricao": "Refrigerante lata de Guaraná.", "preco": 6.00, "imagem": "guaranalata.png" },
-            { "id": 27, "nome": "Guaraná 1L", "descricao": "Refrigerante de Guaraná de 1 litro.", "preco": 9.00, "imagem": "guarana1l.jpg" }
+            { "id": 27, "nome": "Guaraná 1L", "descricao": "Refrigerante de Guaraná de 1 litro.", "preco": 9.00, "imagem": "guarana1l.jpg" },
+            { "id": 28, "nome": "Pepsi 1L", "descricao": "Refrigerante Pepsi de 1 litro.", "preco": 8.00, "imagem": "pespi1l.jpeg" }
         ]
     },
     {
         "nome": "Adicionais e Opções",
         "id": "adicionais-extras",
         "itens": [
-            { "id": 28, "nome": "Creme de Requeijão", "preco": 4.00, "imagem": "creme_requeijao.jpeg" },
-            { "id": 29, "nome": "Queijo Muçarela", "preco": 4.00, "imagem": "queijo_mucarela.jpeg" },
-            { "id": 30, "nome": "Bacon", "preco": 4.00, "imagem": "bacon.jpeg" },
-            { "id": 31, "nome": "Farofa de bacon", "preco": 3.00, "imagem": "farofa_bacon.jpeg" },
-            { "id": 32, "nome": "Farofa de alho", "preco": 3.00, "imagem": "farofa_alho.jpeg" },
-            { "id": 33, "nome": "Molho barbecue", "preco": 2.00, "imagem": "molho_barbecue.jpeg" },
-            { "id": 34, "nome": "Molho da casa", "preco": 2.00, "imagem": "molho_da_casa.jpeg" },
-            { "id": 35, "nome": "Calabresa", "preco": 5.00, "imagem": "calabresa.jpeg" },
-            { "id": 36, "nome": "Salame", "preco": 7.00, "imagem": "salame.jpeg" },
-            { "id": 37, "nome": "Requeijão", "preco": 4.00, "imagem": "requeijao.jpeg" }
+            { "id": 29, "nome": "Creme de Requeijão", "preco": 4.00, "imagem": "creme_requeijao.jpeg" },
+            { "id": 30, "nome": "Queijo Muçarela", "preco": 4.00, "imagem": "queijo_mucarela.jpeg" },
+            { "id": 31, "nome": "Bacon", "preco": 4.00, "imagem": "bacon.jpeg" },
+            { "id": 32, "nome": "Farofa de bacon", "preco": 3.00, "imagem": "farofa_bacon.jpeg" },
+            { "id": 33, "nome": "Farofa de alho", "preco": 3.00, "imagem": "farofa_alho.jpeg" },
+            { "id": 34, "nome": "Molho barbecue", "preco": 2.00, "imagem": "molho_barbecue.jpeg" },
+            { "id": 35, "nome": "Molho da casa", "preco": 2.00, "imagem": "molho_da_casa.jpeg" },
+            { "id": 36, "nome": "Calabresa", "preco": 5.00, "imagem": "calabresa.jpeg" },
+            { "id": 37, "nome": "Salame", "preco": 7.00, "imagem": "salame.jpeg" },
+            { "id": 38, "nome": "Requeijão", "preco": 4.00, "imagem": "requeijao.jpeg" }
         ]
     }
 ]
