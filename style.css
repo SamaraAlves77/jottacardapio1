@@ -58,6 +58,13 @@ body {
     width: 100%;
 }
 
+.card-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
 .logo-landing {
     max-width: 250px;
     height: auto;
@@ -227,6 +234,7 @@ main {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    text-align: center;
     transition: transform 0.3s ease;
 }
 
@@ -244,6 +252,7 @@ main {
 .item-card h3 {
     font-size: 1.5rem;
     padding: 0 1rem;
+    margin: 1rem 0 0.5rem;
 }
 
 .item-card p {
@@ -280,9 +289,12 @@ main {
     display: none;
     position: fixed;
     z-index: 2000;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semitransparente */
+    display: flex; 
     justify-content: center; 
     align-items: center; 
 }
@@ -291,6 +303,7 @@ main {
     background-color: var(--card-background);
     padding: 2rem;
     border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     max-width: 600px;
     width: 90%;
@@ -341,7 +354,8 @@ main {
 }
 
 /* Campos do formulário de finalização */
-.carrinho-finalizar input {
+.carrinho-finalizar input,
+.carrinho-finalizar select {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
@@ -355,6 +369,8 @@ main {
     background-color: var(--primary-color);
     color: white;
     font-weight: 700;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -376,6 +392,15 @@ main {
     transform: translateX(-50%) translateY(0); /* Faz a notificação aparecer */
 }
 
+/* --- Footer --- */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
 /* ======================================================= */
 /* MEDIA QUERIES (RESPONSIVIDADE PARA MOBILE) */
 /* ======================================================= */
@@ -384,26 +409,32 @@ main {
     
     /* --- Header no Mobile --- */
     header {
-        position: relative; /* Ajusta a posição para o menu hamburger */
+        position: relative; 
+        min-height: 80px; 
     }
 
     .nav-links {
-        display: none; /* Oculta links no mobile por padrão */
+        display: none; 
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 100%; /* Posiciona o menu abaixo do header */
+        top: 100%; 
         left: 0;
         background-color: var(--card-background);
         z-index: 990; 
     }
     
+    .nav-links li a {
+        padding: 10px; 
+        display: block; 
+    }
+    
     .nav-links.active {
-        display: flex; /* Exibe o menu quando a classe 'active' é adicionada pelo JS */
+        display: flex; 
     }
 
     .hamburger-menu-btn {
-        display: block; /* Mostra o ícone de menu no mobile */
+        display: block; 
     }
 
     /* --- Grid de Itens no Mobile (2 Colunas) --- */
@@ -417,19 +448,18 @@ main {
     }
     
     .item-card img {
-        height: 100px; /* Altura menor para se adequar ao mobile */
+        height: 100px; 
     }
 
     .item-card h3 {
         font-size: 0.9rem;
-        /* Três regras para cortar o texto que exceder e adicionar '...' */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; 
     }
 
     .item-card p {
-        display: none; /* Oculta a descrição para economizar espaço */
+        display: none; 
     }
 
     .item-card .price {
