@@ -125,7 +125,9 @@ function renderizarOpcoesAdicionais() {
     nomeItemSpan.textContent = itemEmCustomizacao.nome;
 
     adicionaisGlobais.forEach(adicional => {
-        const itemAtual = itemEmCustomizacao.adicionais.find(ad => ad.id === adicional.id) || { quantidade: 0 };
+        // Verifica se o ID do adicional é uma string (como no seu JSON) ou um número
+        const adicionalId = adicional.id; 
+        const itemAtual = itemEmCustomizacao.adicionais.find(ad => ad.id === adicionalId) || { quantidade: 0 };
         const precoFormatado = adicional.preco.toFixed(2).replace('.', ',');
         
         const itemDiv = document.createElement('div');
@@ -133,9 +135,9 @@ function renderizarOpcoesAdicionais() {
         itemDiv.innerHTML = `
             <span>${adicional.nome} (R$ ${precoFormatado})</span>
             <div class="adicional-contador">
-                <button class="btn-diminuir" data-id="${adicional.id}">-</button>
-                <span data-id="${adicional.id}" id="count-${adicional.id}">${itemAtual.quantidade}</span>
-                <button class="btn-aumentar" data-id="${adicional.id}">+</button>
+                <button class="btn-diminuir" data-id="${adicionalId}">-</button>
+                <span data-id="${adicionalId}" id="count-${adicionalId}">${itemAtual.quantidade}</span>
+                <button class="btn-aumentar" data-id="${adicionalId}">+</button>
             </div>
         `;
         lista.appendChild(itemDiv);
@@ -144,14 +146,14 @@ function renderizarOpcoesAdicionais() {
     // Adiciona listeners para os botões de contar
     lista.querySelectorAll('.btn-aumentar').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.dataset.id);
+            const id = e.target.dataset.id; // ID pode ser string ou number
             alterarQuantidadeAdicional(id, 1);
         });
     });
 
     lista.querySelectorAll('.btn-diminuir').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.dataset.id);
+            const id = e.target.dataset.id; // ID pode ser string ou number
             alterarQuantidadeAdicional(id, -1);
         });
     });
@@ -162,8 +164,10 @@ function renderizarOpcoesAdicionais() {
 function alterarQuantidadeAdicional(id, mudanca) {
     if (!itemEmCustomizacao) return;
     
-    const adicionalIndex = itemEmCustomizacao.adicionais.findIndex(ad => ad.id === id);
-    const adicionalOriginal = adicionaisGlobais.find(ad => ad.id === id);
+    // Converte para string para garantir que a comparação funcione corretamente, já que IDs podem ser strings.
+    const adicionalId = String(id); 
+    const adicionalIndex = itemEmCustomizacao.adicionais.findIndex(ad => String(ad.id) === adicionalId);
+    const adicionalOriginal = adicionaisGlobais.find(ad => String(ad.id) === adicionalId);
 
     if (!adicionalOriginal) return;
 
@@ -179,7 +183,7 @@ function alterarQuantidadeAdicional(id, mudanca) {
         }
     } else if (novaQuantidade > 0) {
         itemEmCustomizacao.adicionais.push({
-            id: id,
+            id: adicionalOriginal.id, // Mantém o ID original (string ou number)
             nome: adicionalOriginal.nome,
             preco: adicionalOriginal.preco,
             quantidade: novaQuantidade
@@ -187,7 +191,7 @@ function alterarQuantidadeAdicional(id, mudanca) {
     }
 
     // Atualiza o contador na modal
-    const countSpan = document.getElementById(`count-${id}`);
+    const countSpan = document.getElementById(`count-${adicionalId}`);
     if (countSpan) countSpan.textContent = novaQuantidade;
 
     atualizarResumoCustomizacao();
@@ -228,29 +232,31 @@ function carregarCardapio() {
             return response.json();
         })
         .then(data => {
-            // Guarda as opções de adicionais para uso posterior
+            // GUARDA AS OPÇÕES DE ADICIONAIS
             adicionaisGlobais = data.adicionais_opcoes || []; 
 
             const main = document.querySelector('main');
             if (!main) return;
 
-            // Renderiza cada seção
-            for (const categoria in data) {
-                if (categoria === "adicionais_opcoes") continue;
-                
+            // RENDERIZA CADA CATEGORIA DA LISTA (data.categorias)
+            data.categorias.forEach(categoriaData => {
+                const categoriaNome = categoriaData.nome;
+                const itens = categoriaData.itens;
+
                 const section = document.createElement('section');
                 section.className = 'menu-section';
-                // Cria um ID amigável para navegação
-                section.id = categoria.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+                // Cria um ID amigável para navegação (usa o ID do JSON se houver)
+                const sectionId = categoriaData.id || categoriaNome.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                section.id = sectionId;
                 
-                section.innerHTML = `<h2>${categoria}</h2><div class="item-grid"></div>`;
+                section.innerHTML = `<h2>${categoriaNome}</h2><div class="item-grid"></div>`;
                 const grid = section.querySelector('.item-grid');
 
-                data[categoria].forEach(item => {
+                itens.forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'item-card';
                     card.setAttribute('data-id', item.id);
-                    card.setAttribute('data-categoria', categoria);
+                    card.setAttribute('data-categoria', categoriaNome); // Usa o nome completo da categoria
 
                     const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
@@ -259,27 +265,31 @@ function carregarCardapio() {
                         <h3>${item.nome}</h3>
                         <p>${item.descricao}</p>
                         <div class="price">R$ ${precoFormatado}</div>
-                        <button class="btn-add" data-id="${item.id}" data-categoria="${categoria}">
+                        <button class="btn-add" data-item-id="${item.id}" data-categoria-id="${categoriaData.id}">
                             Adicionar
                         </button>
                     `;
                     grid.appendChild(card);
                 });
                 main.appendChild(section); 
-            }
+            });
 
             // Adiciona listeners aos botões "Adicionar"
             document.querySelectorAll('.btn-add').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const itemId = parseInt(e.target.dataset.id);
-                    const categoria = e.target.dataset.categoria;
+                    const itemId = e.target.dataset.itemId;
+                    const categoriaId = e.target.dataset.categoriaId;
                     
-                    const itemData = data[categoria].find(item => item.id === itemId);
-                    
+                    // Encontra a categoria no JSON
+                    const categoria = data.categorias.find(c => c.id === categoriaId);
+                    if (!categoria) return;
+
+                    // Encontra o item dentro da categoria
+                    const itemData = categoria.itens.find(item => item.id === itemId);
                     if (!itemData) return;
 
-                    // Verifica se é um item customizável (ex: Hambúrgueres Artesanais)
-                    if (categoria === "Hambúrgueres Artesanais") {
+                    // Verifica se é um item customizável (ex: Hambúrgueres Artesanais - ID 'hamburgueres')
+                    if (categoriaId === "hamburgueres") {
                         itemEmCustomizacao = {
                             ...itemData,
                             precoFinal: itemData.preco,
@@ -303,7 +313,7 @@ function carregarCardapio() {
             console.error('Erro ao carregar ou renderizar o cardápio:', error);
             const main = document.querySelector('main');
             if(main) {
-                 main.innerHTML = `<p style="text-align: center; color: var(--primary-color);">Não foi possível carregar o cardápio. Verifique se o arquivo cardapio.json existe.</p>`;
+                 main.innerHTML = `<p style="text-align: center; color: var(--primary-color);">Não foi possível carregar o cardápio. Verifique se o arquivo cardapio.json existe e está com a estrutura correta.</p>`;
             }
         });
 }
