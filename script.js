@@ -1,31 +1,32 @@
 // =======================================================
 // VARIÁVEIS DE ESTADO E REFERÊNCIAS DO DOM
-// (Mantido, garante a funcionalidade de customização e carrinho)
 // =======================================================
 let carrinho = [];
 let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
+// Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 
 // =======================================================
 // FUNÇÕES DE CARREGAMENTO DINÂMICO DE HTML (Fetch)
-// (Mantido, agora usado apenas para navbar e modal)
 // =======================================================
 
 async function loadHTML(url, elementId) {
     const element = document.getElementById(elementId);
     if (!element) {
-        console.error(`Contêiner de destino '${elementId}' não encontrado em cardapio.html.`);
+        console.error(`Contêiner de destino '${elementId}' não encontrado. Verifique se o cardapio.html possui este ID.`);
         return false;
     }
     
     try {
+        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
+            // Se der erro 404, avisa o usuário diretamente
             element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
@@ -51,7 +52,7 @@ function rebindElements() {
     carrinhoTotalSpan = document.getElementById('carrinho-total');
     notificacao = document.getElementById('notificacao');
     btnFinalizar = document.getElementById('btn-finalizar-pedido');
-    navLinks = document.querySelector('.nav-links');
+    navLinks = document.querySelector('.nav-links'); // Ajustado para pegar o menu principal injetado
     hamburgerBtn = document.getElementById('hamburger-menu-btn');
     mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
     customizacaoModal = document.getElementById('customizacao-modal');
@@ -62,7 +63,6 @@ function rebindElements() {
 
 // =======================================================
 // FUNÇÕES DE LÓGICA (CARRINHO, CUSTOMIZAÇÃO, CRIAÇÃO DE CARDS)
-// (Mantido, código está completo e funcional com o JSON)
 // =======================================================
 
 function adicionarAoCarrinho(item) {
@@ -236,6 +236,7 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
+    // Busca o ID do div que está dentro da seção em cardapio.html
     const container = document.getElementById(idContainer + '-grid'); 
     if (!container) {
         console.error(`Contêiner de grid não encontrado para a categoria: ${titulo} (ID esperado: ${idContainer}-grid)`);
@@ -258,15 +259,16 @@ async function carregarCardapio() {
         
         const cardapioData = await response.json(); 
 
+        // Encontra a categoria de adicionais para a customização
         const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
         
         if (adicionaisCategoria) {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
+        // Popula as seções do cardápio na tela
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
-                // O ID da seção é o id da categoria, e o container é id-grid
                 criarSecaoCardapio(categoriaObj.nome, categoriaObj.id, categoriaObj.itens);
             }
         });
@@ -282,31 +284,37 @@ async function carregarCardapio() {
 
 // =======================================================
 // EVENT LISTENERS E INICIALIZAÇÃO
-// (Mantido, garante interação)
 // =======================================================
 
 function setupEventListeners() {
+    // Eventos de abrir e fechar modais
     if (carrinhoBtn && carrinhoModal) carrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
     if (mobileCarrinhoBtn && carrinhoModal) mobileCarrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
     if (fecharModalBtn && carrinhoModal) fecharModalBtn.addEventListener('click', () => carrinhoModal.classList.remove('ativo'));
     if (fecharCustomizacaoBtn && customizacaoModal) fecharCustomizacaoBtn.addEventListener('click', () => customizacaoModal.classList.remove('ativo'));
+    
+    // Fechar modais ao clicar fora
     window.addEventListener('click', (event) => {
         if (event.target === carrinhoModal) event.target.classList.remove('ativo');
         else if (event.target === customizacaoModal) event.target.classList.remove('ativo');
     });
 
+    // Lógica para adicionar item customizado
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
                 alert("Erro na customização. Tente novamente."); return;
             }
+            // Formata o nome para exibição no carrinho e WhatsApp
             const adicionaisSelecionados = itemEmCustomizacao.adicionais.map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
-            const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
+            const nomeFinal = `${itemEmCustomizacao.nome} (${itemEmCustomizacao.adicionais.length} adicionais)`;
+            
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
                 nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
-                nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
+                // Nome mais detalhado para o WhatsApp
+                nomeWhatsApp: `${itemEmCustomizacao.nome} (Adicionais: ${adicionaisSelecionados || 'Nenhum'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
             adicionarAoCarrinho(itemFinal);
@@ -314,9 +322,12 @@ function setupEventListeners() {
         });
     }
     
+    // Lógica para finalizar pedido e gerar link do WhatsApp
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             if (carrinho.length === 0) { alert("Seu carrinho está vazio."); return; }
+            
+            // Pega dados do cliente
             const nomeCliente = document.getElementById('nome-cliente').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
@@ -347,30 +358,38 @@ function setupEventListeners() {
         });
     }
 
+    // Lógica para abrir/fechar menu hamburguer (Desktop e Mobile)
     if (hamburgerBtn && navLinks) hamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
     if (mobileHamburgerBtn && navLinks) mobileHamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
     
+    // Fecha o menu mobile ao clicar em um link
     if (navLinks) {
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) navLinks.classList.remove('active');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
             });
         });
     }
 }
 
 
-// FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL
+// =======================================================
+// FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL (CORRIGIDA)
+// =======================================================
+
 document.addEventListener('DOMContentLoaded', async () => {
     
     // 1. Carrega os únicos HTMLs injetáveis (Navbar e Modal)
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // 2. O contêiner do cardápio está fixo no cardapio.html
+    // O conteúdo principal (cardápio) é fixo no cardapio.html.
     const mainContentContainer = document.getElementById('main-content-container');
     
-    // 3. Só prossegue se tudo o que é essencial tiver sido carregado/existir
+    // 2. Só prossegue se os arquivos HTML injetados e o container principal existem
+    // **NÃO TENTA MAIS CARREGAR conteudo_cardapio.html!**
     if (navbarOK && modalOK && mainContentContainer) {
         
         rebindElements(); 
@@ -378,6 +397,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupEventListeners();
         
     } else {
-        console.error("Não foi possível carregar as partes essenciais do HTML. O cardápio está incompleto.");
+        console.error("Não foi possível carregar as partes essenciais do HTML. Verifique navbar.html ou modal_carrinho.html.");
     }
 });
