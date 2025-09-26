@@ -51,7 +51,8 @@ async function carregarCardapio() {
         renderizarCardapio(cardapioData);
     } catch (error) {
         console.error('Erro ao carregar o cardápio:', error);
-        cardapioContainer.innerHTML = '<p>Erro ao carregar o cardápio. Tente novamente mais tarde.</p>';
+        // CRÍTICO: Se o erro for de sintaxe no JSON, ele para aqui.
+        cardapioContainer.innerHTML = '<p>Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json está correto e na pasta certa.</p>';
     }
 }
 
@@ -60,6 +61,9 @@ function renderizarCardapio(data) {
     cardapioContainer.innerHTML = '';
 
     data.forEach(secao => {
+        // Ignora a seção de adicionais extras, pois ela não é um item de cardápio padrão
+        if (secao.id === 'adicionais-extras') return; 
+
         const section = document.createElement('section');
         section.className = 'menu-section';
         section.id = `secao-${secao.id}`;
@@ -191,11 +195,31 @@ function encontrarItem(secaoId, itemId) {
     return null;
 }
 
+/**
+ * Retorna a lista de itens da seção de adicionais globais.
+ * @returns {Array} Lista de adicionais.
+ */
+function obterListaAdicionaisGlobais() {
+    const secaoAdicionais = cardapioData.find(s => s.id === 'adicionais-extras');
+    return secaoAdicionais ? secaoAdicionais.itens : [];
+}
+
+
 function abrirModalCustomizacao(secaoId, itemId) {
     const item = encontrarItem(secaoId, itemId);
+    // CRÍTICO: Obtém a lista de adicionais globais (molhos, queijos, etc.)
+    const listaAdicionais = obterListaAdicionaisGlobais(); 
+
     if (!item || !customizacaoModal || !adicionaisLista) return;
 
-    itemIdCustomizando = { secaoId: secaoId, itemId: itemId, adicionaisSelecionados: {}, precoBase: item.preco };
+    // Define o estado inicial da customização
+    itemIdCustomizando = { 
+        secaoId: secaoId, 
+        itemId: itemId, 
+        adicionaisSelecionados: {}, 
+        precoBase: item.preco,
+        listaAdicionaisGlobal: listaAdicionais // Salva a lista de adicionais para uso posterior
+    };
 
     const modalTitle = customizacaoModal.querySelector('h3');
     modalTitle.textContent = item.nome;
@@ -203,9 +227,9 @@ function abrirModalCustomizacao(secaoId, itemId) {
     // Reseta a lista de adicionais
     adicionaisLista.innerHTML = '';
 
-    // Renderiza Adicionais
-    if (item.adicionais && item.adicionais.length > 0) {
-        item.adicionais.forEach(adicional => {
+    // Renderiza Adicionais (usando a lista global)
+    if (listaAdicionais && listaAdicionais.length > 0) {
+        listaAdicionais.forEach(adicional => {
             const div = document.createElement('div');
             div.className = 'adicional-item-opcao';
             div.setAttribute('data-adicional-id', adicional.id);
@@ -229,16 +253,17 @@ function abrirModalCustomizacao(secaoId, itemId) {
             button.addEventListener('click', (e) => {
                 const id = e.target.dataset.adicionalId;
                 const tipo = e.target.classList.contains('btn-aumentar-adicional') ? 'aumentar' : 'diminuir';
-                atualizarAdicional(id, tipo, item.adicionais);
+                // Passa a lista global de adicionais
+                atualizarAdicional(id, tipo, listaAdicionais); 
             });
         });
 
     } else {
-        adicionaisLista.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Este item não possui adicionais.</p>';
+        adicionaisLista.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Este item não possui adicionais customizáveis.</p>';
     }
 
     // Exibe o preço base e calcula o total inicial (apenas o preço base)
-    atualizarResumoCustomizacao();
+    atualizarResumoCustomizacao(listaAdicionais);
     customizacaoModal.style.display = 'flex';
 }
 
@@ -287,9 +312,12 @@ function calcularTotalAdicionais(listaAdicionais) {
     return totalAdicionais;
 }
 
-function atualizarResumoCustomizacao(listaAdicionais) {
+function atualizarResumoCustomizacao() {
+    // Usa a lista global que foi salva no estado da customização
+    const listaAdicionais = itemIdCustomizando.listaAdicionaisGlobal || []; 
+    
     const precoBase = itemIdCustomizando ? itemIdCustomizando.precoBase : 0;
-    const totalAdicionais = listaAdicionais ? calcularTotalAdicionais(listaAdicionais) : 0;
+    const totalAdicionais = calcularTotalAdicionais(listaAdicionais);
     const totalGeral = precoBase + totalAdicionais;
 
     if (resumoPrecoTotal) {
@@ -308,7 +336,7 @@ function atualizarResumoCustomizacao(listaAdicionais) {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 💥 CORREÇÃO CRÍTICA: Força o fechamento das modais no carregamento
+    // CRÍTICO: Força o fechamento das modais no carregamento
     const carrinhoModal = document.getElementById('carrinho-modal');
     const customizacaoModal = document.getElementById('customizacao-modal');
     
@@ -318,8 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (customizacaoModal) {
         customizacaoModal.style.display = 'none';
     }
-    // ⬆️ FIM DO CÓDIGO DE CORREÇÃO
-
 
     // 1. Inicia o carregamento do cardápio
     carregarCardapio();
@@ -353,9 +379,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!itemIdCustomizando) return;
 
             const itemOriginal = encontrarItem(itemIdCustomizando.secaoId, itemIdCustomizando.itemId);
+            // Pega a lista de adicionais do estado salvo
+            const listaAdicionais = itemIdCustomizando.listaAdicionaisGlobal || [];
+            
             if (!itemOriginal) return;
 
-            const listaAdicionais = itemOriginal.adicionais || [];
             const precoAdicionais = calcularTotalAdicionais(listaAdicionais);
             const precoBase = itemOriginal.preco;
             const precoTotal = precoBase + precoAdicionais;
@@ -407,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Aqui você deve integrar com o WhatsApp ou sistema de pedidos
             alert("A função de Finalizar Pedido precisa ser implementada para enviar o pedido.");
         });
     }
