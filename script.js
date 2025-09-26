@@ -8,10 +8,10 @@ let itemEmCustomizacao = null;
 // Elementos do Carrinho
 const carrinhoModal = document.getElementById('carrinho-modal');
 const fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
-const carrinhoBtn = document.getElementById('carrinho-btn'); // Botão do header (Desktop)
-const mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn'); // Botão da barra fixa (Mobile)
-const contadorCarrinho = document.getElementById('contador-carrinho'); // Contador do header (Desktop)
-const mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho'); // Contador da barra fixa (Mobile)
+const carrinhoBtn = document.getElementById('carrinho-btn');
+const mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn');
+const contadorCarrinho = document.getElementById('contador-carrinho');
+const mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
 const carrinhoItensContainer = document.getElementById('carrinho-itens');
 const carrinhoTotalSpan = document.getElementById('carrinho-total');
 const notificacao = document.getElementById('notificacao');
@@ -19,8 +19,8 @@ const btnFinalizar = document.getElementById('btn-finalizar-pedido');
 const navLinks = document.querySelector('.nav-links');
 
 // Elementos do Menu Mobile
-const hamburgerBtn = document.getElementById('hamburger-menu-btn'); // Botão do header (Desktop)
-const mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn'); // Botão da barra fixa (Mobile)
+const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+const mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
 
 // Elementos da Customização (Modal Flutuante)
 const customizacaoModal = document.getElementById('customizacao-modal');
@@ -35,7 +35,7 @@ const listaAdicionaisContainer = document.getElementById('adicionais-opcoes-list
 function adicionarAoCarrinho(item) {
     carrinho.push(item);
     
-    // Atualiza contadores do header e da barra fixa
+    // Atualiza contadores
     if (contadorCarrinho) {
         contadorCarrinho.textContent = carrinho.length;
     }
@@ -56,7 +56,7 @@ function adicionarAoCarrinho(item) {
 function removerDoCarrinho(index) {
     carrinho.splice(index, 1);
     
-    // Atualiza contadores do header e da barra fixa
+    // Atualiza contadores
     if (contadorCarrinho) {
         contadorCarrinho.textContent = carrinho.length;
     }
@@ -209,6 +209,7 @@ function criarItemCardapio(item, categoriaNome) {
     divItem.className = 'item-card';
 
     const img = document.createElement('img');
+    // IMPORTANTE: O nome do arquivo no JSON DEVE bater exatamente com o arquivo na pasta!
     img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
     divItem.appendChild(img);
@@ -248,7 +249,8 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
-    const container = document.getElementById(idContainer);
+    // CORREÇÃO: Busca o contêiner pelo ID correto (ex: "hamburgueres-artesanais-grid")
+    const container = document.getElementById(idContainer); 
     if (!container) {
         console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
         return;
@@ -262,7 +264,7 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
 
 async function carregarCardapio() {
     try {
-        // Caminho garantido para carregar o JSON
+        // CORREÇÃO: Garante o caminho relativo correto para o JSON
         const response = await fetch('./cardapio.json');
         
         if (!response.ok) {
@@ -289,7 +291,7 @@ async function carregarCardapio() {
         const main = document.querySelector('main');
         if (main) {
             main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">
-                ❌ Erro ao carregar o cardápio. Verifique o formato do seu cardapio.json.
+                ❌ Erro ao carregar o cardápio. Verifique o formato do seu cardapio.json e se ele existe.
             </h1>`;
         }
     }
