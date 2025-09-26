@@ -23,7 +23,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- ESTILOS PARA A PÁGINA DE ENTRADA (Cartão de Visita) --- */
+/* --- ESTILOS PARA A PÁGINA DE ENTRADA (Card de Visita) --- */
 
 .landing-page-container {
     background-color: var(--background-color);
@@ -47,30 +47,10 @@ body {
     width: 100%;
 }
 
-.card-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
 .logo-landing {
     max-width: 250px;
     height: auto;
     margin-bottom: 1rem;
-}
-
-.slogan {
-    font-size: 1.2rem;
-    color: #666;
-    margin-top: 1rem;
-}
-
-.card-right {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
 }
 
 .social-btn {
@@ -83,51 +63,21 @@ body {
     font-weight: 700;
     font-size: 1.1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
 }
 
-.social-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
+.instagram { background: #E1306C; color: white; }
+.whatsapp { background: #25D366; color: white; }
+.cardapio { background: var(--primary-color); color: white; }
 
-.social-btn i {
-    margin-right: 0.5rem;
-}
-
-.instagram {
-    background: #E1306C;
-    color: white;
-}
-
-.whatsapp {
-    background: #25D366;
-    color: white;
-}
-
-.cardapio {
-    background: var(--primary-color);
-    color: white;
-}
-
-/* Responsividade para a página de entrada */
 @media (min-width: 768px) {
     .landing-card {
         flex-direction: row;
         justify-content: space-between;
         padding: 3rem;
     }
-
     .card-left, .card-right {
         width: 45%;
-    }
-
-    .card-left {
-        align-items: flex-start;
-        text-align: left;
-    }
-    
-    .logo-landing {
-        max-width: 200px;
     }
 }
 
@@ -158,18 +108,6 @@ header {
     text-decoration: none;
     color: var(--secondary-color);
     font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--primary-color);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
 }
 
 .carrinho-btn {
@@ -178,9 +116,7 @@ header {
     cursor: pointer;
     font-size: 1.5rem;
     position: relative;
-    display: flex;
-    align-items: center;
-    color: var(--secondary-color); /* Garante a cor no mobile */
+    color: var(--secondary-color);
 }
 
 #contador-carrinho {
@@ -193,12 +129,12 @@ header {
     position: absolute;
     top: -5px;
     right: -10px;
-    min-width: 25px; /* Evita que o círculo desapareça */
+    min-width: 25px;
     text-align: center;
 }
 
 .hamburger-menu-btn {
-    display: none;
+    display: none; /* Escondido no Desktop */
     font-size: 2rem;
     background: none;
     border: none;
@@ -210,10 +146,6 @@ main {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.menu-section {
-    margin-bottom: 3rem;
 }
 
 .menu-section h2 {
@@ -228,7 +160,6 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
-    justify-content: center;
 }
 
 /* Estilo do Card (item-card) */
@@ -243,29 +174,10 @@ main {
     transition: transform 0.3s ease;
 }
 
-.item-card:hover {
-    transform: translateY(-5px);
-}
-
 .item-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    object-position: center;
-}
-
-.item-card h3 {
-    font-size: 1.5rem;
-    margin: 1rem 0 0.5rem;
-    padding: 0 1rem;
-    text-align: center;
-}
-
-.item-card p {
-    font-size: 0.9rem;
-    color: #666;
-    padding: 0 1rem;
-    flex-grow: 1;
 }
 
 .item-card .price {
@@ -273,7 +185,6 @@ main {
     font-weight: 700;
     color: var(--primary-color);
     margin-top: 1rem;
-    text-align: center;
 }
 
 .btn-add {
@@ -284,14 +195,9 @@ main {
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     margin: 1rem;
     border-radius: 8px;
     width: calc(100% - 2rem);
-}
-
-.btn-add:hover {
-    background-color: #d32f2f;
 }
 
 /* --- Modais (Janelas Flutuantes) --- */
@@ -313,7 +219,6 @@ main {
     background-color: var(--card-background);
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     max-width: 600px;
     width: 90%;
@@ -331,15 +236,6 @@ main {
     cursor: pointer;
 }
 
-.fechar-modal:hover, .fechar-customizacao:hover {
-    color: var(--primary-color);
-}
-
-/* Estilos de Customização */
-.adicionais-opcoes { 
-    margin-top: 15px;
-}
-
 .adicional-item-opcao {
     display: flex;
     justify-content: space-between;
@@ -354,61 +250,7 @@ main {
     gap: 8px;
 }
 
-.adicional-contador button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
-    line-height: 1;
-    transition: background-color 0.2s;
-}
-
-.adicional-contador button:hover {
-    background-color: #d32f2f;
-}
-
-/* Estilos do Carrinho */
-.carrinho-itens {
-    max-height: 300px;
-    overflow-y: auto;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-}
-
-.carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed #eee;
-}
-
-.btn-remover {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0 5px;
-    margin-left: 10px;
-}
-
-.carrinho-total-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    padding: 10px 0;
-    margin-bottom: 10px;
-}
-
+/* Campos de entrada e botão de finalização */
 .carrinho-finalizar input {
     width: 100%;
     padding: 0.8rem;
@@ -425,102 +267,40 @@ main {
     border: none;
     border-radius: 5px;
     font-size: 1.1rem;
-    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#btn-finalizar-pedido:hover, #btn-adicionar-customizado:hover {
-    background-color: #d32f2f;
-}
-
-/* --- Notificação --- */
-.notificacao {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(150%);
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.5s ease-in-out;
-    z-index: 3000;
-}
-
-.notificacao.mostrar {
-    transform: translateX(-50%) translateY(0);
-}
-
-/* --- Footer --- */
-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
 }
 
 /* --- MEDIA QUERIES (RESPONSIVIDADE) --- */
 
-/* Telas Mobile (max-width: 768px) */
 @media (max-width: 768px) {
     header {
         padding: 1rem;
-        flex-wrap: wrap; /* Permite que o menu desça no mobile */
-    }
-
-    .logo {
-        flex-grow: 1; /* Empurra os botões para a direita */
-    }
-
-    .header-actions {
-        order: 2; /* Move a barra de ações para baixo (opcional, mas limpa o layout) */
-        width: 100%;
-        justify-content: flex-end; /* Alinha botões à direita */
+        flex-wrap: wrap; 
     }
 
     .nav-links {
-        /* Correção para o menu hamburguer */
-        display: none;
+        display: none; /* Escondido por padrão no Mobile */
         flex-direction: column;
         width: 100%;
         position: absolute;
-        top: 81px; /* Altura do header (ajustado) */
+        top: 81px; 
         left: 0;
         background-color: var(--card-background);
         box-shadow: 0 2px 4px var(--shadow-color);
-        text-align: center;
         padding: 1rem 0;
-        border-top: 1px solid #eee;
     }
     
-    .nav-links li {
-        padding: 0.5rem 0;
-    }
-
-    .nav-links a {
-        color: var(--secondary-color);
-    }
-
     .nav-links.active {
-        display: flex;
+        display: flex; /* Exibido quando a classe 'active' é adicionada pelo JS */
     }
 
     .hamburger-menu-btn {
-        display: block;
-        color: var(--secondary-color);
-        margin-left: 1rem; /* Espaço entre o carrinho e o menu */
+        display: block; /* Exibido no Mobile */
+        margin-left: 1rem; 
     }
     
     main {
         padding: 1rem 0.5rem;
-    }
-
-    .menu-section h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
     }
 
     /* Layout de 2 COLUNAS para Mobile */
@@ -529,22 +309,12 @@ footer {
         gap: 0.8rem;
     }
 
-    .item-card {
-        padding: 0.5rem; 
-        gap: 0;
-    }
-    
     .item-card img {
-        width: 100%; 
         height: 100px; 
-        margin: 0 0 0.5rem 0; 
-        border-radius: 8px;
     }
 
     .item-card h3 {
         font-size: 0.9rem; 
-        margin: 0;
-        text-align: center; 
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis; 
@@ -554,22 +324,10 @@ footer {
         display: none; /* Esconde a descrição para mobile */
     }
 
-    .item-card .price {
-        font-size: 0.85rem; 
-        margin: 0.2rem 0;
-    }
-    
     .btn-add {
         padding: 0.5rem; 
         font-size: 0.8rem; 
         margin: 0.5rem 0 0;
         width: 100%;
-    }
-    
-    /* Ajustes da Modal no Mobile */
-    .modal-content {
-        margin: 0 10px;
-        width: calc(100% - 20px);
-        padding: 1rem;
     }
 }
