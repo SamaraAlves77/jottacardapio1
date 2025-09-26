@@ -15,24 +15,12 @@ const carrinhoTotalSpan = document.getElementById('carrinho-total');
 const notificacao = document.getElementById('notificacao');
 const btnFinalizar = document.getElementById('btn-finalizar-pedido');
 const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+const navLinks = document.querySelector('.nav-links'); // Referência para o menu
 
-// Elementos da Customização
+// Elementos da Customização (NOVOS)
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
-
-
-// =======================================================
-// UTILS
-// =======================================================
-const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-});
-
-function formatarPreco(valor) {
-    return formatter.format(valor); 
-}
 
 
 // =======================================================
@@ -52,6 +40,7 @@ function adicionarAoCarrinho(item) {
 
     atualizarModalCarrinho();
     
+    // Mostra a notificação de item adicionado
     if (notificacao) {
         notificacao.classList.add('mostrar');
         
@@ -89,19 +78,20 @@ function atualizarModalCarrinho() {
         
         // Usa nomeExibicao se existir (para itens customizados) ou o nome normal
         const nomeExibicao = item.nomeExibicao || item.nome;
+        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
         itemDiv.innerHTML = `
             <span class="carrinho-item-nome">${nomeExibicao}</span>
-            <span class="carrinho-item-preco">${formatarPreco(item.preco)}</span>
+            <span class="carrinho-item-preco">R$ ${precoFormatado}</span>
             <button class="btn-remover" data-index="${index}">X</button>
         `;
         carrinhoItensContainer.appendChild(itemDiv);
         total += item.preco;
     });
 
-    // CORREÇÃO 1: Usa a função formatarPreco para manter a consistência R$ X.XXX,XX
-    carrinhoTotalSpan.textContent = formatarPreco(total);
+    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
 
+    // Adiciona listeners para os botões de remover dentro do modal
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const index = e.target.getAttribute('data-index'); 
@@ -112,12 +102,16 @@ function atualizarModalCarrinho() {
 
 
 // =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO
+// FUNÇÕES DE CUSTOMIZAÇÃO (JANELA FLUTUANTE)
 // =======================================================
-// Apenas Hambúrgueres Artesanais são customizáveis, conforme sua definição.
-const categoriasCustomizaveis = ['Hambúrgueres Artesanais'];
+// Apenas itens desta categoria podem ser customizados
+const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais';
 
 
+/**
+ * Abre a modal de customização para um item específico.
+ * @param {object} item - O objeto do item base (ex: Smash Original).
+ */
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
 
@@ -130,13 +124,11 @@ function abrirModalCustomizacao(item) {
 
     // Atualiza os títulos e preços base na modal
     document.getElementById('item-customizacao-nome').textContent = item.nome;
-    
-    // CORREÇÃO 2: Usa a função formatarPreco para o preço base
-    document.getElementById('preco-base-customizacao').textContent = formatarPreco(item.preco); 
+    document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
     
     // Renderiza e atualiza a modal
     renderizarOpcoesAdicionais();
-    customizacaoModal.style.display = 'flex'; // Mudado para 'flex' para usar centralização
+    customizacaoModal.style.display = 'flex'; // Usamos flex para centralizar
 }
 
 function renderizarOpcoesAdicionais() {
@@ -153,7 +145,7 @@ function renderizarOpcoesAdicionais() {
         div.innerHTML = `
             <div>
                 <span>${adicional.nome}</span> 
-                <small>(${formatarPreco(adicional.preco)})</small>
+                <small>(R$ ${adicional.preco.toFixed(2).replace('.', ',')})</small>
             </div>
             <div class="adicional-contador">
                 <button class="btn-diminuir-adicional" data-nome="${adicional.nome}">-</button>
@@ -169,9 +161,8 @@ function renderizarOpcoesAdicionais() {
 }
 
 function adicionarListenersContador() {
-    // É importante remover os listeners antigos antes de adicionar os novos
+    // Adiciona listeners de clique dinamicamente
     document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
-        // Usa `onclick = null` e depois atribui para garantir que não haja duplicidade
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
     });
     
@@ -214,23 +205,22 @@ function atualizarResumoCustomizacao() {
     const precoBase = itemEmCustomizacao.preco;
     const precoTotal = precoBase + precoAdicionais;
 
-    // CORREÇÃO 3: Usa a função formatarPreco para manter a consistência
-    document.getElementById('preco-adicionais-customizacao').textContent = formatarPreco(precoAdicionais);
-    document.getElementById('preco-total-customizacao').textContent = formatarPreco(precoTotal);
+    document.getElementById('preco-adicionais-customizacao').textContent = precoAdicionais.toFixed(2).replace('.', ',');
+    document.getElementById('preco-total-customizacao').textContent = precoTotal.toFixed(2).replace('.', ',');
     
     itemEmCustomizacao.precoFinal = precoTotal;
 }
 
 // =======================================================
-// FUNÇÕES DE CARREGAMENTO
+// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO
 // =======================================================
 
-function criarItemCardapio(item, categoria) {
+function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
 
     const img = document.createElement('img');
-    img.src = `imagem_cardapio/${item.imagem}`;
+    img.src = `imagem_cardapio/${item.imagem}`; // Caminho da imagem
     img.alt = item.nome;
     divItem.appendChild(img);
 
@@ -246,14 +236,14 @@ function criarItemCardapio(item, categoria) {
 
     const pPreco = document.createElement('p');
     pPreco.className = 'price';
-    pPreco.textContent = formatarPreco(item.preco); // Usa função de formatação
+    pPreco.textContent = `R$ ${item.preco.toFixed(2).replace('.', ',')}`;
     divItem.appendChild(pPreco);
 
     const btnAdicionar = document.createElement('button');
     btnAdicionar.className = 'btn-add';
     
-    // Lógica para Customizar ou Adicionar Direto
-    if (categoriasCustomizaveis.includes(categoria)) {
+    // Lógica para Customizar (se for Hambúrguer Artesanal) ou Adicionar Direto
+    if (categoriaNome === CATEGORIA_CUSTOMIZAVEL) {
         btnAdicionar.textContent = 'Customizar e Adicionar';
         btnAdicionar.addEventListener('click', () => {
             abrirModalCustomizacao(item);
@@ -269,21 +259,16 @@ function criarItemCardapio(item, categoria) {
     return divItem;
 }
 
-
-function criarSecaoCardapio(titulo, itens) {
-    let containerId = '';
-    // Mapeamento dos nomes de categoria para os IDs dos grids no HTML
-    switch(titulo) {
-        case 'Hambúrgueres Artesanais': containerId = 'hamburgueres-artesanais-grid'; break;
-        case 'Combos e Família': containerId = 'combos-e-familia-grid'; break;
-        case 'Acompanhamentos': containerId = 'acompanhamentos-grid'; break;
-        case 'Bebidas': containerId = 'bebidas-grid'; break;
-        default: console.warn(`Categoria desconhecida: ${titulo}`); return;
-    }
-    
-    const container = document.getElementById(containerId);
+/**
+ * Cria a seção do cardápio e carrega os itens.
+ * @param {string} titulo - Título da categoria (ex: Hambúrgueres Artesanais).
+ * @param {string} idContainer - O ID do elemento div-grid no HTML (ex: hamburgueres-artesanais-grid).
+ * @param {Array<Object>} itens - Lista de itens da categoria.
+ */
+function criarSecaoCardapio(titulo, idContainer, itens) {
+    const container = document.getElementById(idContainer);
     if (!container) {
-        console.error(`Contêiner não encontrado para a categoria: ${titulo}`);
+        console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
         return;
     }
 
@@ -293,6 +278,9 @@ function criarSecaoCardapio(titulo, itens) {
     });
 }
 
+/**
+ * Carrega e processa o arquivo JSON do cardápio.
+ */
 async function carregarCardapio() {
     try {
         const response = await fetch('./cardapio.json');
@@ -300,29 +288,28 @@ async function carregarCardapio() {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         
-        const cardapioData = await response.json();
+        const cardapioData = await response.json(); // Espera um Array de Categorias
+
+        // Separa os adicionais e o restante do cardápio
+        const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
         
-        // CORREÇÃO CRÍTICA 1: Acessa a propriedade direta 'adicionais_opcoes'
-        if (cardapioData.adicionais_opcoes) {
-            adicionaisGlobais = cardapioData.adicionais_opcoes;
-        } else {
-             console.warn("Propriedade 'adicionais_opcoes' não encontrada no JSON.");
+        if (adicionaisCategoria) {
+            adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
-        // CORREÇÃO CRÍTICA 2: Itera sobre o array DENTRO da propriedade 'categorias'
-        if (cardapioData.categorias && Array.isArray(cardapioData.categorias)) {
-            cardapioData.categorias.forEach(categoriaObj => {
-                criarSecaoCardapio(categoriaObj.nome, categoriaObj.itens);
-            });
-        } else {
-             console.error("Propriedade 'categorias' é inválida ou não encontrada no JSON.");
-        }
-        
+        // Renderiza cada seção
+        cardapioData.forEach(categoriaObj => {
+            if (categoriaObj.id !== 'adicionais-extras') {
+                // O HTML usa o ID do objeto + '-grid'
+                const idContainerGrid = categoriaObj.id + '-grid'; 
+                criarSecaoCardapio(categoriaObj.nome, idContainerGrid, categoriaObj.itens);
+            }
+        });
     } catch (error) {
-        console.error('Erro ao carregar o cardápio:', error);
+        console.error('Erro CRÍTICO ao carregar o cardápio. Verifique o JSON:', error);
         const main = document.querySelector('main');
         if (main) {
-            main.innerHTML = `<h1>Erro ao carregar o cardápio. Verifique o console para mais detalhes.</h1>`;
+            main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">Erro ao carregar o cardápio. Verifique o formato do seu cardapio.json.</h1>`;
         }
     }
 }
@@ -333,21 +320,15 @@ async function carregarCardapio() {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Garante que os modais estejam ocultos ao carregar a página
-    if (carrinhoModal) {
-        carrinhoModal.style.display = 'none';
-    }
-    if (customizacaoModal) {
-        customizacaoModal.style.display = 'none';
-    }
-
     // Inicia o carregamento do cardápio
-    carregarCardapio();
-
+    if (document.querySelector('main')) {
+        carregarCardapio();
+    }
+    
     // 1. ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.style.display = 'flex'; // Mudado para 'flex' para usar centralização
+            carrinhoModal.style.display = 'flex'; // Garante o display flex para centralizar
             atualizarModalCarrinho(); 
         });
     }
@@ -375,20 +356,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
-                 alert("Erro na customização. Tente novamente.");
-                 return;
+                alert("Erro na customização. Tente novamente.");
+                return;
             }
             
             // Monta o nome customizado para exibição no carrinho
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
-            const nomeFinal = `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`;
+            // Ajuste do nome final para ser mais curto
+            const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
 
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
-                nomeExibicao: nomeFinal,
+                // Nome completo para o WhatsApp, Nome curto para o carrinho
+                nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
+                nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
             
@@ -397,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 5. Lógica do Finalizar Pedido (Simulação)
+    // 5. Lógica do Finalizar Pedido (Geração do Link WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
             if (carrinho.length === 0) {
@@ -422,14 +406,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             carrinho.forEach((item, index) => {
                 const precoFormatado = item.preco.toFixed(2).replace('.', ',');
-                // Usa o nomeExibicao formatado ou o nome base
-                mensagem += `${index + 1}. ${item.nomeExibicao || item.nome} - R$ ${precoFormatado}\n`; 
+                // Usa nomeWhatsApp se existir (para customizados) ou o nome normal
+                const nomeItem = item.nomeWhatsApp || item.nome; 
+                mensagem += `${index + 1}. ${nomeItem} - R$ ${precoFormatado}\n`;
             });
             
-            // Pega o valor total do span, que está no formato R$ X.XXX,XX
-            mensagem += `\n*TOTAL: ${carrinhoTotalSpan.textContent}*`; 
+            const totalFinal = carrinhoTotalSpan.textContent;
+            mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
-            const numeroWhatsApp = '5586981147596'; 
+            const numeroWhatsApp = '5586981147596'; // Seu número
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
             window.open(linkWhatsApp, '_blank');
@@ -437,10 +422,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 6. Lógica do Hamburger Menu
-    const navLinks = document.querySelector('.nav-links');
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active'); 
+        });
+        
+        // Fecha o menu mobile ao clicar em um link (âncora)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
         });
     }
 
