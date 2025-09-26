@@ -23,6 +23,7 @@
                     "nome": "Jotta Básico",
                     "descricao": "Pão, carne 120g prensada na chapa com cebola, queijo muçarela e molho da casa.",
                     "preco": 14.99,
+                    // CORRIGIDO: O arquivo jotta_basico.jpeg não existe. Usando jotta_classic.jpeg que está na pasta.
                     "imagem": "jotta_classic.jpeg" 
                 },
                 {
@@ -209,7 +210,8 @@
                     "nome": "Guaraná 1L",
                     "descricao": "Refrigerante de Guaraná de 1 litro.",
                     "preco": 9.00,
-                    "imagem": "guarana1l.jpg" // CORRIGIDO: Usa a extensão .jpg, conforme o arquivo na pasta
+                    // CORRIGIDO: Usa a extensão .jpg, conforme o arquivo na pasta
+                    "imagem": "guarana1l.jpg" 
                 },
                 {
                     "id": "pepsi-1l",
