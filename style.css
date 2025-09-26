@@ -1,482 +1,671 @@
-/* ======================================================= */
-/* CONFIGURAÇÕES GLOBAIS E VARIÁVEIS CSS */
-/* ======================================================= */
-
-/* Importação da fonte (Recomendado para consistência visual) */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-/* Define variáveis de cores e tamanhos na raiz do documento */
+/* =======================================================
+// VARIÁVEIS GLOBAIS
+// ======================================================= */
 :root {
-    --primary-color: #e53935; /* Vermelho JottaV Burguer: Destaque, botões e preços */
-    --secondary-color: #212121; /* Preto: Usado para texto principal e footer */
-    --background-color: #f5f5f5; /* Cinza claro: Fundo da página e containers */
-    --card-background: #fff; /* Branco: Fundo dos cards e modais */
-    --text-color: #333; /* Cor do texto geral, escuro */
-    --shadow-color: rgba(0, 0, 0, 0.1); /* Cor padrão para sombras suaves */
+    --primary-color: #A8201A; /* Vermelho principal (JottaV Burguer) */
+    --secondary-color: #333333; /* Cinza escuro/Preto */
+    --text-color: #333333; /* Cor primária do texto */
+    --light-text-color: #F8F8F8; /* Cor do texto em fundos escuros */
+    --card-background: #FFFFFF; /* Fundo dos cards */
+    --background-color: #F8F8F8; /* Fundo geral da página */
+    --accent-color: #FCA311; /* Amarelo/Laranja de destaque */
+    --whatsapp-green: #25D366; /* Verde do WhatsApp */
+    --instagram-purple: #C13584; /* Roxo do Instagram */
 }
 
-/* Reset CSS para remover margens/paddings padrão dos navegadores */
+/* =======================================================
+// REGRAS BÁSICAS
+// ======================================================= */
 * {
-    /* Define o modelo de caixa: padding e border são incluídos na largura/altura */
-    box-sizing: border-box; 
-    /* Remove margens e preenchimentos padrão */
     margin: 0;
     padding: 0;
-    /* Aplica a fonte principal a todos os elementos */
-    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 body {
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6; /* Espaçamento de linha para melhor leitura */
-}
-
-/* ======================================================= */
-/* ESTILOS PARA A PÁGINA DE ENTRADA (index.html) */
-/* ======================================================= */
-
-.landing-page-container {
-    background-color: var(--background-color);
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    min-height: 100vh; /* Ocupa a altura total da tela */
-    padding: 2rem;
-}
-
-.landing-card {
-    background-color: var(--card-background);
-    border-radius: 15px;
-    box-shadow: 0 10px 20px var(--shadow-color);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column; /* Empilha no mobile (padrão) */
-    align-items: center;
-    gap: 2rem;
-    max-width: 800px;
-    width: 100%;
-}
-
-.card-left {
+    line-height: 1.6;
+    min-height: 100vh; /* Garante que o body ocupa a altura total */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
-.logo-landing {
-    max-width: 250px;
-    height: auto;
-    margin-bottom: 1rem;
+main {
+    flex-grow: 1; /* Permite que o conteúdo principal ocupe o espaço restante */
+    padding-bottom: 3rem; /* Espaço para o footer */
 }
 
-.slogan {
-    font-size: 1.2rem;
-    color: #666;
-    margin-top: 1rem;
-}
-
-.card-right {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 1rem;
-}
-
-/* Botões de Mídia Social e Cardápio */
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    border-radius: 10px;
+a {
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--primary-color);
 }
 
-.social-btn:hover {
-    transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+a:hover {
+    opacity: 0.8;
 }
 
-.social-btn i {
-    margin-right: 0.5rem; /* Espaçamento entre o ícone e o texto */
+h1, h2, h3 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
 }
 
-/* Cores específicas dos botões */
-.instagram { background: #E1306C; color: white; }
-.whatsapp { background: #25D366; color: white; }
-.cardapio { background: var(--primary-color); color: white; }
-
-/* Responsividade para a página de entrada (Desktop/Tablet) */
-@media (min-width: 768px) {
-    .landing-card {
-        flex-direction: row; /* Coloca os elementos lado a lado */
-        justify-content: space-between;
-        padding: 3rem;
-    }
-    .card-left, .card-right {
-        width: 45%;
-    }
-}
-
-/* ======================================================= */
-/* ESTILOS DO CARDÁPIO (cardapio.html) */
-/* ======================================================= */
-
-/* --- Header e Navegação --- */
+/* =======================================================
+// HEADER E NAVEGAÇÃO
+// ======================================================= */
 header {
-    background-color: var(--card-background);
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky; /* Fixa o header no topo ao rolar */
+    background-color: var(--secondary-color);
+    color: var(--light-text-color);
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.logo img {
-    height: 60px;
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 1.5rem;
+}
+
+.nav-links li {
+    margin-left: 20px;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: var(--secondary-color);
-    font-weight: 700;
-    transition: color 0.3s ease;
+    color: var(--light-text-color);
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--primary-color); /* Destaque ao passar o mouse ou na aba ativa */
+.nav-links a:hover {
+    background-color: var(--primary-color);
+    opacity: 1;
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-/* Botão do Carrinho */
-.carrinho-btn {
+/* Botão do carrinho */
+#carrinho-btn {
+    position: relative;
     background: none;
     border: none;
-    cursor: pointer;
+    color: var(--light-text-color);
     font-size: 1.5rem;
-    position: relative;
-    display: flex;
-    align-items: center;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 #contador-carrinho {
-    /* O círculo vermelho com a contagem de itens */
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 50%;
-    padding: 0.2rem 0.5rem;
     position: absolute;
     top: -5px;
     right: -10px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    line-height: 1;
 }
 
+/* Botão Hamburger Menu (Oculto por padrão no desktop) */
 .hamburger-menu-btn {
-    display: none; /* Oculto por padrão no desktop. Aparece no mobile via media query. */
-    font-size: 2rem;
+    display: none;
     background: none;
     border: none;
+    color: var(--light-text-color);
+    font-size: 1.5rem;
     cursor: pointer;
-    color: var(--secondary-color);
 }
 
-/* --- Conteúdo Principal e Cards --- */
-main {
-    padding: 2rem;
+/* =======================================================
+// SECTION HEADER DO CARDÁPIO
+// ======================================================= */
+.section-header {
+    text-align: center;
+    padding: 2rem 0;
+    background-color: var(--background-color);
+}
+
+.section-header h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    border-bottom: 2px solid var(--accent-color);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 0;
+}
+
+/* =======================================================
+// CONTAINER GERAL DO CARDÁPIO E GRID
+// ======================================================= */
+.cardapio-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
-.menu-section {
-    margin-bottom: 3rem;
-}
-
-.menu-section h2 {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.item-grid {
-    /* Cria o layout de grade com colunas flexíveis */
+.grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    justify-content: center;
+    /* Desktop: 3 colunas padrão */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    padding: 2rem 0;
 }
 
+/* =======================================================
+// ITEM CARD (DISPLAY DE CADA ITEM)
+// ======================================================= */
 .item-card {
     background-color: var(--card-background);
     border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s;
 }
 
 .item-card:hover {
-    transform: translateY(-5px); /* Efeito de elevação no hover */
+    transform: translateY(-5px);
 }
 
 .item-card img {
     width: 100%;
-    height: 200px;
+    max-height: 200px;
     object-fit: cover;
-    object-position: center;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
 .item-card h3 {
-    font-size: 1.5rem;
-    padding: 0 1rem;
-    margin: 1rem 0 0.5rem;
+    font-size: 1.25rem;
+    min-height: 3.5rem; /* Garante que a altura do título seja consistente */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .item-card p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #666;
-    padding: 0 1rem;
-    flex-grow: 1;
+    margin-bottom: 10px;
 }
 
 .item-card .price {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-top: 1rem;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: auto; /* Empurra o preço e o botão para baixo */
+    margin-bottom: 15px;
 }
 
 .btn-add {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 0.8rem;
-    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    margin: 1rem;
-    border-radius: 8px;
-    width: calc(100% - 2rem);
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
 }
 
-/* ======================================================= */
-/* ESTILOS DOS MODAIS (Pop-ups) */
-/* ======================================================= */
+.btn-add:hover {
+    background-color: #8c1a15; /* Tom mais escuro do primary-color */
+}
 
-.modal {
-    display: none;
+
+/* =======================================================
+// LANDING PAGE (index.html)
+// ======================================================= */
+.landing-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Ajusta para caber na tela sem o header/footer */
+    padding: 20px;
+}
+
+.landing-card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    max-width: 800px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.card-left {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.logo-landing {
+    width: 80%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.slogan {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--accent-color);
+}
+
+.card-right {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    transition: opacity 0.3s;
+}
+
+.social-btn i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.whatsapp {
+    background-color: var(--whatsapp-green);
+}
+
+.instagram {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.cardapio {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+
+/* =======================================================
+// FOOTER
+// ======================================================= */
+.footer {
+    background-color: var(--secondary-color);
+    color: var(--light-text-color);
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+
+/* =======================================================
+// MODAL GERAL (CARRINHO E CUSTOMIZAÇÃO)
+// ======================================================= */
+.modal-overlay {
     position: fixed;
-    z-index: 2000;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semitransparente */
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
 }
 
 .modal-content {
     background-color: var(--card-background);
-    padding: 2rem;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-    max-width: 600px;
+    max-width: 500px;
     width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Botões de Fechar Modal */
 .fechar-modal, .fechar-customizacao {
-    color: #aaa;
     position: absolute;
     top: 10px;
-    right: 20px;
-    font-size: 2rem;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
     cursor: pointer;
+    background: none;
+    border: none;
 }
 
-/* --- Conteúdo do Carrinho (Modal) --- */
-.carrinho-itens {
-    max-height: 300px;
-    overflow-y: auto; /* Adiciona barra de rolagem se muitos itens */
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+.modal-content h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
+/* Notificação "Item adicionado" */
+#notificacao {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--whatsapp-green);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(20px);
+    z-index: 3000;
+}
+
+#notificacao.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =======================================================
+// ITENS DO CARRINHO
+// ======================================================= */
 .carrinho-item {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed #eee;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #DDD;
 }
 
 .carrinho-item-nome {
     flex-grow: 1;
-    margin-right: 10px;
-    white-space: normal;
-    word-break: break-word;
+    font-size: 0.9rem;
 }
 
-.carrinho-total-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
+.carrinho-item-preco {
     font-weight: bold;
-    padding: 10px 0;
+    color: var(--primary-color);
+    margin-right: 15px;
 }
 
-/* Campos do formulário de finalização */
-.carrinho-finalizar input,
-.carrinho-finalizar select {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#btn-finalizar-pedido, #btn-adicionar-customizado {
-    width: 100%;
-    padding: 1rem;
+.btn-remover {
     background-color: var(--primary-color);
     color: white;
-    font-weight: 700;
     border: none;
-    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
     cursor: pointer;
 }
 
-/* --- Notificação de Adicionado --- */
-.notificacao {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(150%); /* Oculta na parte inferior */
+/* Total do carrinho */
+.carrinho-total {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 2px solid var(--accent-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Formulário de Finalização */
+.formulario-finalizar {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #CCC;
+}
+
+.formulario-finalizar label, .formulario-finalizar input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.formulario-finalizar input {
+    padding: 8px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+}
+
+#btn-finalizar-pedido {
+    background-color: var(--whatsapp-green);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+#btn-finalizar-pedido:hover {
+    background-color: #1eab56;
+}
+
+
+/* =======================================================
+// MODAL DE CUSTOMIZAÇÃO
+// ======================================================= */
+.adicional-item-opcao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #EEE;
+}
+
+.adicional-contador {
+    display: flex;
+    align-items: center;
+}
+
+.adicional-contador button {
     background-color: var(--primary-color);
     color: white;
-    padding: 1rem 2rem;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background-color 0.2s;
+}
+
+.adicional-contador button:hover {
+    background-color: var(--accent-color);
+}
+
+.quantidade-adicional {
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+/* Resumo da Customização */
+.resumo-customizacao {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #CCC;
+}
+
+.resumo-customizacao div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.resumo-customizacao .preco-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-top: 10px;
+}
+
+#btn-adicionar-customizado {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    padding: 12px;
+    border: none;
     border-radius: 5px;
-    transition: transform 0.5s ease-in-out;
-    z-index: 3000;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    width: 100%;
 }
 
-.notificacao.mostrar {
-    transform: translateX(-50%) translateY(0); /* Faz a notificação aparecer */
-}
 
-/* --- Footer --- */
-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 3rem;
-}
-
-/* ======================================================= */
-/* MEDIA QUERIES (RESPONSIVIDADE PARA MOBILE) */
-/* ======================================================= */
-
-@media (max-width: 768px) {
-    
-    /* --- Header no Mobile --- */
-    header {
-        position: relative; 
-        min-height: 80px; 
-    }
-
-    .nav-links {
-        display: none; 
-        flex-direction: column;
-        width: 100%;
-        position: absolute;
-        top: 100%; 
-        left: 0;
-        background-color: var(--card-background);
-        z-index: 990; 
-    }
-    
-    .nav-links li a {
-        padding: 10px; 
-        display: block; 
-    }
-    
-    .nav-links.active {
-        display: flex; 
+/* =======================================================
+// @MEDIA QUERIES (RESPONSIVIDADE PARA MOBILE)
+// ======================================================= */
+@media screen and (max-width: 768px) {
+    /* HEADER (Mobile) */
+    .nav-container {
+        padding: 0;
     }
 
     .hamburger-menu-btn {
-        display: block; 
+        display: block; /* MOSTRA o botão do menu hamburger */
     }
 
-    /* --- Grid de Itens no Mobile (2 Colunas) --- */
-    .item-grid {
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1rem;
-    }
-
-    .item-card {
-        padding: 0.5rem;
+    .nav-links {
+        /* REGRAS CRÍTICAS PARA O MENU HAMBURGER (FECHADO) */
+        display: none; /* Oculta as links por padrão */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Ajuste para descer após o cabeçalho */
+        right: 0;
+        width: 100%;
+        background-color: var(--secondary-color);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        padding: 10px 0;
+        text-align: center;
+        z-index: 999;
     }
     
+    .nav-links.active {
+        /* MOSTRA o menu quando a classe 'active' é adicionada pelo JS */
+        display: flex; 
+    }
+
+    .nav-links li {
+        margin: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 15px 20px;
+        color: var(--light-text-color);
+    }
+    
+    /* LANDING PAGE (index.html) */
+    .landing-card {
+        flex-direction: column; /* Coloca a imagem e botões um em cima do outro */
+        max-width: 400px;
+    }
+
+    .card-left {
+        padding: 20px;
+        order: 1;
+    }
+
+    .card-right {
+        padding: 20px;
+        order: 2;
+    }
+
+    .logo-landing {
+        width: 70%;
+    }
+
+    /* CARDÁPIO (cardapio.html) */
+    .grid-container {
+        /* Corrige a grid para 2 colunas no mobile */
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
+    }
+    
+    .item-card {
+        padding: 10px;
+    }
+
     .item-card img {
-        height: 100px; 
+        height: 100px; /* Reduz a altura da imagem para economizar espaço */
+        margin-bottom: 5px;
     }
-
+    
     .item-card h3 {
-        font-size: 0.9rem;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis; 
+        font-size: 1rem;
+        min-height: 2.5rem;
     }
 
-    .item-card p {
+    .item-card p:not(.price) {
+        /* Oculta a descrição dos itens menores para melhor layout */
         display: none; 
     }
 
     .item-card .price {
-        font-size: 0.85rem;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
     }
     
     .btn-add {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-        margin: 0.5rem 0 0;
-        width: 100%;
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* @MEDIA QUERIES para telas muito pequenas (ex: iPhones SE) */
+@media screen and (max-width: 480px) {
+    .grid-container {
+        /* Garante 1 coluna para telas extremamente pequenas */
+        grid-template-columns: 1fr; 
     }
     
-    /* Ajustes para Modais no Mobile */
-    .modal-content {
-        margin: 0 10px;
-        width: calc(100% - 20px);
-        padding: 1rem;
+    .logo-header {
+        font-size: 1.2rem;
+    }
+
+    .slogan {
+        font-size: 1.2rem;
     }
 }
