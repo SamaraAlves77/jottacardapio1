@@ -254,9 +254,8 @@ main {
 
 /* --- ESTILOS: JANELAS FLUTUANTES (MODAIS) --- */
 .modal {
-    /* CORREÇÃO CRÍTICA: display: none; e display: flex; não podem estar no mesmo bloco. */
-    /* MANTIDO o display: none; para esconder no início. */
-    display: none; 
+    /* CORREÇÃO CRÍTICA APLICADA: display: none; é a única regra de exibição aqui. */
+    display: none;
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -264,12 +263,11 @@ main {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* O display: flex; que estava aqui foi REMOVIDO para que o modal não apareça no carregamento */
     justify-content: center;
     align-items: center;
 }
 
-/* Esta classe deve ser adicionada pelo JavaScript para MOSTRAR o modal */
+/* Esta classe é usada pelo JavaScript para MOSTRAR o modal */
 .modal.mostrar {
     display: flex; 
 }
