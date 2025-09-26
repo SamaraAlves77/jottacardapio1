@@ -1,33 +1,32 @@
 // =======================================================
 // VARIÁVEIS DE ESTADO E REFERÊNCIAS DO DOM
+// (Mantido, garante a funcionalidade de customização e carrinho)
 // =======================================================
 let carrinho = [];
 let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
-const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; // Garante que apenas Artesanais possam ser customizados
+const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
-// Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 
 // =======================================================
 // FUNÇÕES DE CARREGAMENTO DINÂMICO DE HTML (Fetch)
+// (Mantido, agora usado apenas para navbar e modal)
 // =======================================================
 
 async function loadHTML(url, elementId) {
     const element = document.getElementById(elementId);
     if (!element) {
-        console.error(`Contêiner de destino '${elementId}' não encontrado. Verifique se o cardapio.html possui este ID.`);
+        console.error(`Contêiner de destino '${elementId}' não encontrado em cardapio.html.`);
         return false;
     }
     
     try {
-        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
-            // Se der erro 404, avisa o usuário diretamente na tela
-            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome.</h3>`;
+            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
         
@@ -41,7 +40,7 @@ async function loadHTML(url, elementId) {
 }
 
 function rebindElements() {
-    // ⚠️ Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM ⚠️
+    // Liga as variáveis globais aos elementos injetados (navbar e modal) e aos fixos (barra móvel)
     carrinhoModal = document.getElementById('carrinho-modal');
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
@@ -62,51 +61,36 @@ function rebindElements() {
 }
 
 // =======================================================
-// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
+// FUNÇÕES DE LÓGICA (CARRINHO, CUSTOMIZAÇÃO, CRIAÇÃO DE CARDS)
+// (Mantido, código está completo e funcional com o JSON)
 // =======================================================
 
 function adicionarAoCarrinho(item) {
     carrinho.push(item);
-    
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-    if (mobileContadorCarrinho) { 
-        mobileContadorCarrinho.textContent = carrinho.length;
-    }
-
+    if (contadorCarrinho) contadorCarrinho.textContent = carrinho.length;
+    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = carrinho.length;
     atualizarModalCarrinho();
-    
     if (notificacao) {
         notificacao.classList.add('mostrar');
-        setTimeout(() => {
-            notificacao.classList.remove('mostrar');
-        }, 3000);
+        setTimeout(() => { notificacao.classList.remove('mostrar'); }, 3000);
     }
 }
 
 function removerDoCarrinho(index) {
     carrinho.splice(index, 1);
-    
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-    if (mobileContadorCarrinho) { 
-        mobileContadorCarrinho.textContent = carrinho.length;
-    }
+    if (contadorCarrinho) contadorCarrinho.textContent = carrinho.length;
+    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = carrinho.length;
     atualizarModalCarrinho();
 }
 
 function atualizarModalCarrinho() {
     if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
-
     carrinhoItensContainer.innerHTML = '';
     let total = 0;
 
     carrinho.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
-        
         const nomeExibicao = item.nomeExibicao || item.nome;
         const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
@@ -123,37 +107,22 @@ function atualizarModalCarrinho() {
 
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index');
-            removerDoCarrinho(index);
+            removerDoCarrinho(e.target.getAttribute('data-index'));
         });
     });
 }
 
-
-// =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO
-// =======================================================
-
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
-
-    // Cria uma cópia do item para customização
-    itemEmCustomizacao = { 
-        ...item,
-        adicionais: [], 
-        precoFinal: item.preco 
-    };
-
+    itemEmCustomizacao = { ...item, adicionais: [], precoFinal: item.preco };
     document.getElementById('item-customizacao-nome').textContent = item.nome;
     document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
-    
     renderizarOpcoesAdicionais();
     customizacaoModal.classList.add('ativo'); 
 }
 
 function renderizarOpcoesAdicionais() {
     if (!listaAdicionaisContainer) return;
-
     listaAdicionaisContainer.innerHTML = '';
     
     adicionaisGlobais.forEach(adicional => {
@@ -177,11 +146,6 @@ function renderizarOpcoesAdicionais() {
         listaAdicionaisContainer.appendChild(div);
     });
     
-    adicionarListenersContador();
-    atualizarResumoCustomizacao();
-}
-
-function adicionarListenersContador() {
     document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
     });
@@ -189,6 +153,8 @@ function adicionarListenersContador() {
     document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
     });
+
+    atualizarResumoCustomizacao();
 }
 
 function gerenciarAdicional(nomeAdicional, delta) {
@@ -199,25 +165,19 @@ function gerenciarAdicional(nomeAdicional, delta) {
 
     if (!adicionalSelecionado) {
         if (delta > 0) {
-            itemEmCustomizacao.adicionais.push({
-                ...adicionalData,
-                quantidade: 1
-            });
+            itemEmCustomizacao.adicionais.push({ ...adicionalData, quantidade: 1 });
         }
     } else {
         adicionalSelecionado.quantidade += delta;
-        
         if (adicionalSelecionado.quantidade <= 0) {
             itemEmCustomizacao.adicionais = itemEmCustomizacao.adicionais.filter(a => a.nome !== nomeAdicional);
         }
     }
-    
     renderizarOpcoesAdicionais();
 }
 
 function atualizarResumoCustomizacao() {
     let precoAdicionais = 0;
-    
     itemEmCustomizacao.adicionais.forEach(ad => {
         precoAdicionais += ad.preco * ad.quantidade;
     });
@@ -231,15 +191,11 @@ function atualizarResumoCustomizacao() {
     itemEmCustomizacao.precoFinal = precoTotal;
 }
 
-// =======================================================
-// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO E CRIAÇÃO DE CARDS
-// =======================================================
 
 function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
 
-    // ATENÇÃO: Confirme que o nome do arquivo da imagem está correto no JSON e na pasta!
     const img = document.createElement('img');
     img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
@@ -280,10 +236,9 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
-    // O ID deve ser o nome da seção + '-grid' (ex: hamburgueres-artesanais-grid)
-    const container = document.getElementById(idContainer); 
+    const container = document.getElementById(idContainer + '-grid'); 
     if (!container) {
-        console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
+        console.error(`Contêiner de grid não encontrado para a categoria: ${titulo} (ID esperado: ${idContainer}-grid)`);
         return;
     }
 
@@ -295,7 +250,6 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
 
 async function carregarCardapio() {
     try {
-        // Busca o cardapio.json na raiz
         const response = await fetch('./cardapio.json');
         
         if (!response.ok) {
@@ -310,20 +264,17 @@ async function carregarCardapio() {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
-        // Popula as seções do cardápio
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
-                const idContainerGrid = categoriaObj.id + '-grid'; 
-                criarSecaoCardapio(categoriaObj.nome, idContainerGrid, categoriaObj.itens);
+                // O ID da seção é o id da categoria, e o container é id-grid
+                criarSecaoCardapio(categoriaObj.nome, categoriaObj.id, categoriaObj.itens);
             }
         });
     } catch (error) {
         console.error('Erro CRÍTICO ao carregar o cardápio. Verifique o JSON:', error);
         const main = document.querySelector('#main-content-container');
         if (main) {
-            main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">
-                ❌ Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json existe e está formatado corretamente.
-            </h1>`;
+            main.innerHTML = `<h1 style="text-align:center; color: red;">❌ Erro ao carregar o cardápio.</h1>`;
         }
     }
 }
@@ -331,55 +282,26 @@ async function carregarCardapio() {
 
 // =======================================================
 // EVENT LISTENERS E INICIALIZAÇÃO
+// (Mantido, garante interação)
 // =======================================================
 
 function setupEventListeners() {
-    // ABRIR MODAL DO CARRINHO (Desktop e Mobile)
-    if (carrinhoBtn && carrinhoModal) {
-        carrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.classList.add('ativo');
-            atualizarModalCarrinho();
-        });
-    }
-    if (mobileCarrinhoBtn && carrinhoModal) {
-        mobileCarrinhoBtn.addEventListener('click', () => {
-            carrinhoModal.classList.add('ativo');
-            atualizarModalCarrinho();
-        });
-    }
-
-    // FECHAR MODAIS PELO 'X' E CLICANDO FORA
-    if (fecharModalBtn && carrinhoModal) {
-        fecharModalBtn.addEventListener('click', () => {
-            carrinhoModal.classList.remove('ativo');
-        });
-    }
-    if (fecharCustomizacaoBtn && customizacaoModal) {
-        fecharCustomizacaoBtn.addEventListener('click', () => {
-            customizacaoModal.classList.remove('ativo');
-        });
-    }
+    if (carrinhoBtn && carrinhoModal) carrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
+    if (mobileCarrinhoBtn && carrinhoModal) mobileCarrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
+    if (fecharModalBtn && carrinhoModal) fecharModalBtn.addEventListener('click', () => carrinhoModal.classList.remove('ativo'));
+    if (fecharCustomizacaoBtn && customizacaoModal) fecharCustomizacaoBtn.addEventListener('click', () => customizacaoModal.classList.remove('ativo'));
     window.addEventListener('click', (event) => {
-        if (event.target === carrinhoModal) {
-            event.target.classList.remove('ativo');
-        } else if (event.target === customizacaoModal) {
-            event.target.classList.remove('ativo');
-        }
+        if (event.target === carrinhoModal) event.target.classList.remove('ativo');
+        else if (event.target === customizacaoModal) event.target.classList.remove('ativo');
     });
 
-    // ADICIONAR ITEM CUSTOMIZADO AO CARRINHO
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
-                alert("Erro na customização. Tente novamente.");
-                return;
+                alert("Erro na customização. Tente novamente."); return;
             }
-            
-            const adicionaisSelecionados = itemEmCustomizacao.adicionais
-                .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
-            
+            const adicionaisSelecionados = itemEmCustomizacao.adicionais.map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
-
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
@@ -387,27 +309,20 @@ function setupEventListeners() {
                 nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
-            
             adicionarAoCarrinho(itemFinal);
             customizacaoModal.classList.remove('ativo');
         });
     }
     
-    // Lógica do Finalizar Pedido (Geração do Link WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
-            if (carrinho.length === 0) {
-                alert("Seu carrinho está vazio.");
-                return;
-            }
-            
+            if (carrinho.length === 0) { alert("Seu carrinho está vazio."); return; }
             const nomeCliente = document.getElementById('nome-cliente').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
             
             if (!nomeCliente || !enderecoCliente || !telefoneCliente) {
-                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido.");
-                return;
+                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido."); return;
             }
 
             let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
@@ -425,7 +340,6 @@ function setupEventListeners() {
             const totalFinal = carrinhoTotalSpan.textContent;
             mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
-            // SUBSTITUA ESTE NÚMERO PELO NÚMERO CORRETO DO SEU WHATSAPP
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
@@ -433,56 +347,37 @@ function setupEventListeners() {
         });
     }
 
-    // Lógica do Hamburger Menu
-    if (hamburgerBtn && navLinks) {
-        hamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    }
+    if (hamburgerBtn && navLinks) hamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+    if (mobileHamburgerBtn && navLinks) mobileHamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
     
-    if (mobileHamburgerBtn && navLinks) {
-        mobileHamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    }
-    
-    // Fecha o menu mobile ao clicar em um link
     if (navLinks) {
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                }
+                if (navLinks.classList.contains('active')) navLinks.classList.remove('active');
             });
         });
     }
 }
 
 
-// =======================================================
 // FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL
-// =======================================================
-
 document.addEventListener('DOMContentLoaded', async () => {
     
-    // 1. Carrega o HTML dinamicamente. **VERIFIQUE O NOME DESTES ARQUIVOS!**
+    // 1. Carrega os únicos HTMLs injetáveis (Navbar e Modal)
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
-    const conteudoOK = await loadHTML('conteudo_cardapio.html', 'main-content-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
-    if (navbarOK && conteudoOK && modalOK) {
+    // 2. O contêiner do cardápio está fixo no cardapio.html
+    const mainContentContainer = document.getElementById('main-content-container');
+    
+    // 3. Só prossegue se tudo o que é essencial tiver sido carregado/existir
+    if (navbarOK && modalOK && mainContentContainer) {
         
-        // Re-liga os elementos injetados às variáveis JS
         rebindElements(); 
-        
-        // Carrega os dados do JSON e popula o cardápio
-        await carregarCardapio(); 
-        
-        // Configura os Listeners de botões e modais
+        await carregarCardapio(); // Popula o cardápio
         setupEventListeners();
         
     } else {
-        console.error("Não foi possível carregar todas as partes do HTML. Verifique os erros acima.");
+        console.error("Não foi possível carregar as partes essenciais do HTML. O cardápio está incompleto.");
     }
 });
