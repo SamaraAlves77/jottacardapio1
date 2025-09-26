@@ -21,7 +21,7 @@ const navLinks = document.querySelector('.nav-links'); 
 const customizacaoModal = document.getElementById('customizacao-modal');
 const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
 const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
-const listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista'); // ID essencial
+const listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
 
 // =======================================================
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
@@ -104,7 +104,7 @@ function abrirModalCustomizacao(item) {
     document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
     
     renderizarOpcoesAdicionais();
-    // CORREÇÃO: Abre o modal adicionando a classe 'ativo'
+    // CORRIGIDO: Usa classList para mostrar
     customizacaoModal.classList.add('ativo'); 
 }
 
@@ -291,27 +291,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // ABRIR MODAL DO CARRINHO
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
-            // CORREÇÃO: Abre o modal adicionando a classe 'ativo'
+            // CORRIGIDO: Usa classList
             carrinhoModal.classList.add('ativo'); 
-            actualizarModalCarrinho(); 
+            atualizarModalCarrinho(); 
         });
     }
 
     // FECHAR MODAIS (CARRINHO E CUSTOMIZAÇÃO) PELO 'X' E CLICANDO FORA
     if (fecharModalBtn && carrinhoModal) {
         fecharModalBtn.addEventListener('click', () => {
-            // CORREÇÃO: Esconde o modal removendo a classe 'ativo'
+            // CORRIGIDO: Usa classList
             carrinhoModal.classList.remove('ativo');
         });
     }
     if (fecharCustomizacaoBtn && customizacaoModal) {
         fecharCustomizacaoBtn.addEventListener('click', () => {
-            // CORREÇÃO: Esconde o modal removendo a classe 'ativo'
+            // CORRIGIDO: Usa classList
             customizacaoModal.classList.remove('ativo');
         });
     }
     window.addEventListener('click', (event) => {
-        // CORREÇÃO: Esconde o modal ao clicar fora, removendo a classe 'ativo'
+        // CORRIGIDO: Usa classList e verifica qual modal fechar
         if (event.target === carrinhoModal) {
             event.target.classList.remove('ativo');
         } else if (event.target === customizacaoModal) {
@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             adicionarAoCarrinho(itemFinal); 
-            // CORREÇÃO: Esconde o modal removendo a classe 'ativo'
+            // CORRIGIDO: Usa classList
             customizacaoModal.classList.remove('ativo');
         });
     }
