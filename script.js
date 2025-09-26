@@ -1,312 +1,75 @@
 // =======================================================
-// VARIÁVEIS DE ESTADO E REFERÊNCIAS DO DOM
-// =======================================================
-let carrinho = [];
-let adicionaisGlobais = [];
-let itemEmCustomizacao = null;
-
-// Elementos do Carrinho
-const carrinhoModal = document.getElementById('carrinho-modal');
-const fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
-const carrinhoBtn = document.getElementById('carrinho-btn');
-const mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn');
-const contadorCarrinho = document.getElementById('contador-carrinho');
-const mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
-const carrinhoItensContainer = document.getElementById('carrinho-itens');
-const carrinhoTotalSpan = document.getElementById('carrinho-total');
-const notificacao = document.getElementById('notificacao');
-const btnFinalizar = document.getElementById('btn-finalizar-pedido');
-const navLinks = document.querySelector('.nav-links');
-
-// Elementos do Menu Mobile
-const hamburgerBtn = document.getElementById('hamburger-menu-btn');
-const mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
-
-// Elementos da Customização (Modal Flutuante)
-const customizacaoModal = document.getElementById('customizacao-modal');
-const fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
-const btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
-const listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
-
-// =======================================================
-// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO
+// FUNÇÕES DE CARREGAMENTO DINÂMICO DE HTML
 // =======================================================
 
-function adicionarAoCarrinho(item) {
-    carrinho.push(item);
-    
-    // Atualiza contadores
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-    if (mobileContadorCarrinho) { 
-        mobileContadorCarrinho.textContent = carrinho.length;
-    }
-
-    atualizarModalCarrinho();
-    
-    if (notificacao) {
-        notificacao.classList.add('mostrar');
-        setTimeout(() => {
-            notificacao.classList.remove('mostrar');
-        }, 3000);
-    }
-}
-
-function removerDoCarrinho(index) {
-    carrinho.splice(index, 1);
-    
-    // Atualiza contadores
-    if (contadorCarrinho) {
-        contadorCarrinho.textContent = carrinho.length;
-    }
-    if (mobileContadorCarrinho) { 
-        mobileContadorCarrinho.textContent = carrinho.length;
-    }
-    atualizarModalCarrinho();
-}
-
-function atualizarModalCarrinho() {
-    if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
-
-    carrinhoItensContainer.innerHTML = '';
-    let total = 0;
-
-    carrinho.forEach((item, index) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'carrinho-item';
-        
-        const nomeExibicao = item.nomeExibicao || item.nome;
-        const precoFormatado = item.preco.toFixed(2).replace('.', ',');
-
-        itemDiv.innerHTML = `
-            <span class="carrinho-item-nome">${nomeExibicao}</span>
-            <span class="carrinho-item-preco">R$ ${precoFormatado}</span>
-            <button class="btn-remover" data-index="${index}">X</button>
-        `;
-        carrinhoItensContainer.appendChild(itemDiv);
-        total += item.preco;
-    });
-
-    carrinhoTotalSpan.textContent = total.toFixed(2).replace('.', ',');
-
-    document.querySelectorAll('.btn-remover').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const index = e.target.getAttribute('data-index');
-            removerDoCarrinho(index);
-        });
-    });
-}
-
-
-// =======================================================
-// FUNÇÕES DE CUSTOMIZAÇÃO (JANELA FLUTUANTE)
-// =======================================================
-const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais';
-
-function abrirModalCustomizacao(item) {
-    if (!customizacaoModal) return;
-
-    itemEmCustomizacao = { 
-        ...item,
-        adicionais: [], 
-        precoFinal: item.preco 
-    };
-
-    document.getElementById('item-customizacao-nome').textContent = item.nome;
-    document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
-    
-    renderizarOpcoesAdicionais();
-    customizacaoModal.classList.add('ativo'); 
-}
-
-function renderizarOpcoesAdicionais() {
-    if (!listaAdicionaisContainer) return;
-
-    listaAdicionaisContainer.innerHTML = '';
-    
-    adicionaisGlobais.forEach(adicional => {
-        const selecionado = itemEmCustomizacao.adicionais.find(a => a.nome === adicional.nome);
-        const quantidade = selecionado ? selecionado.quantidade : 0;
-        
-        const div = document.createElement('div');
-        div.className = 'adicional-item-opcao';
-        
-        div.innerHTML = `
-            <div>
-                <span>${adicional.nome}</span> 
-                <small>(R$ ${adicional.preco.toFixed(2).replace('.', ',')})</small>
-            </div>
-            <div class="adicional-contador">
-                <button class="btn-diminuir-adicional" data-nome="${adicional.nome}">-</button>
-                <span class="quantidade-adicional">${quantidade}</span>
-                <button class="btn-aumentar-adicional" data-nome="${adicional.nome}">+</button>
-            </div>
-        `;
-        listaAdicionaisContainer.appendChild(div);
-    });
-    
-    adicionarListenersContador();
-    atualizarResumoCustomizacao();
-}
-
-function adicionarListenersContador() {
-    document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
-    });
-    
-    document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
-        btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
-    });
-}
-
-function gerenciarAdicional(nomeAdicional, delta) {
-    const adicionalData = adicionaisGlobais.find(a => a.nome === nomeAdicional);
-    if (!adicionalData) return;
-
-    let adicionalSelecionado = itemEmCustomizacao.adicionais.find(a => a.nome === nomeAdicional);
-
-    if (!adicionalSelecionado) {
-        if (delta > 0) {
-            itemEmCustomizacao.adicionais.push({
-                ...adicionalData,
-                quantidade: 1
-            });
-        }
-    } else {
-        adicionalSelecionado.quantidade += delta;
-        
-        if (adicionalSelecionado.quantidade <= 0) {
-            itemEmCustomizacao.adicionais = itemEmCustomizacao.adicionais.filter(a => a.nome !== nomeAdicional);
-        }
-    }
-    
-    renderizarOpcoesAdicionais();
-}
-
-function atualizarResumoCustomizacao() {
-    let precoAdicionais = 0;
-    
-    itemEmCustomizacao.adicionais.forEach(ad => {
-        precoAdicionais += ad.preco * ad.quantidade;
-    });
-
-    const precoBase = itemEmCustomizacao.preco;
-    const precoTotal = precoBase + precoAdicionais;
-
-    document.getElementById('preco-adicionais-customizacao').textContent = precoAdicionais.toFixed(2).replace('.', ',');
-    document.getElementById('preco-total-customizacao').textContent = precoTotal.toFixed(2).replace('.', ',');
-    
-    itemEmCustomizacao.precoFinal = precoTotal;
-}
-
-// =======================================================
-// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO
-// =======================================================
-
-function criarItemCardapio(item, categoriaNome) {
-    const divItem = document.createElement('div');
-    divItem.className = 'item-card';
-
-    const img = document.createElement('img');
-    // IMPORTANTE: O nome do arquivo no JSON DEVE bater exatamente com o arquivo na pasta!
-    img.src = `imagem_cardapio/${item.imagem}`; 
-    img.alt = item.nome;
-    divItem.appendChild(img);
-
-    const h3 = document.createElement('h3');
-    h3.textContent = item.nome;
-    divItem.appendChild(h3);
-
-    if (item.descricao) {
-        const pDescricao = document.createElement('p');
-        pDescricao.textContent = item.descricao;
-        divItem.appendChild(pDescricao);
-    }
-
-    const pPreco = document.createElement('p');
-    pPreco.className = 'price';
-    pPreco.textContent = `R$ ${item.preco.toFixed(2).replace('.', ',')}`;
-    divItem.appendChild(pPreco);
-
-    const btnAdicionar = document.createElement('button');
-    btnAdicionar.className = 'btn-add';
-    
-    if (categoriaNome === CATEGORIA_CUSTOMIZAVEL) {
-        btnAdicionar.textContent = 'Customizar e Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            abrirModalCustomizacao(item);
-        });
-    } else {
-        btnAdicionar.textContent = 'Adicionar';
-        btnAdicionar.addEventListener('click', () => {
-            adicionarAoCarrinho(item); 
-        });
-    }
-
-    divItem.appendChild(btnAdicionar);
-    return divItem;
-}
-
-function criarSecaoCardapio(titulo, idContainer, itens) {
-    // CORREÇÃO: Busca o contêiner pelo ID correto (ex: "hamburgueres-artesanais-grid")
-    const container = document.getElementById(idContainer); 
-    if (!container) {
-        console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
-        return;
-    }
-
-    itens.forEach(item => {
-        const itemElemento = criarItemCardapio(item, titulo); 
-        container.appendChild(itemElemento);
-    });
-}
-
-async function carregarCardapio() {
+async function loadHTML(url, elementId) {
     try {
-        // CORREÇÃO: Garante o caminho relativo correto para o JSON
-        const response = await fetch('./cardapio.json');
-        
+        const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}. Verifique se o cardapio.json está na raiz.`);
+            throw new Error(`Erro ao carregar ${url}: ${response.status}`);
         }
-        
-        const cardapioData = await response.json(); 
-
-        const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
-        
-        if (adicionaisCategoria) {
-            adicionaisGlobais = adicionaisCategoria.itens || []; 
-        }
-
-        cardapioData.forEach(categoriaObj => {
-            if (categoriaObj.id !== 'adicionais-extras') {
-                // A lógica para encontrar o contêiner ID está aqui: id-da-categoria-grid
-                const idContainerGrid = categoriaObj.id + '-grid'; 
-                criarSecaoCardapio(categoriaObj.nome, idContainerGrid, categoriaObj.itens);
-            }
-        });
+        const html = await response.text();
+        document.getElementById(elementId).innerHTML = html;
+        return true; // Sucesso
     } catch (error) {
-        console.error('Erro CRÍTICO ao carregar o cardápio. Verifique o JSON:', error);
-        const main = document.querySelector('main');
-        if (main) {
-            main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">
-                ❌ Erro ao carregar o cardápio. Verifique o formato do seu cardapio.json e se ele existe.
-            </h1>`;
-        }
+        console.error(error);
+        return false; // Falha
     }
 }
 
 // =======================================================
-// EVENT LISTENERS DE INICIALIZAÇÃO
+// EVENT LISTENERS DE INICIALIZAÇÃO (NOVO ORDENAMENTO)
 // =======================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
+    // 1. Carregar as partes do HTML sequencialmente
+    await loadHTML('navbar.html', 'navbar-container');
+    await loadHTML('conteudo_cardapio.html', 'main-content-container');
+    await loadHTML('modal_carrinho.html', 'modal-container');
+    
+    // 2. Após o carregamento de todo o HTML, carregar os dados do cardápio e iniciar os listeners
+    
+    // CORREÇÃO: As variáveis de DOM (como carrinhoModal, carrinhoBtn) precisam ser redefinidas
+    // porque o conteúdo foi carregado DEPOIS do DOMContentLoaded.
+    
+    // Re-referencia os elementos que foram injetados:
+    const rebindElements = () => {
+        // Elementos do Carrinho
+        window.carrinhoModal = document.getElementById('carrinho-modal');
+        window.fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
+        window.carrinhoBtn = document.getElementById('carrinho-btn');
+        window.mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn');
+        window.contadorCarrinho = document.getElementById('contador-carrinho');
+        window.mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
+        window.carrinhoItensContainer = document.getElementById('carrinho-itens');
+        window.carrinhoTotalSpan = document.getElementById('carrinho-total');
+        
+        // Elementos do Menu Mobile
+        window.hamburgerBtn = document.getElementById('hamburger-menu-btn');
+        window.mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
+        window.navLinks = document.querySelector('.nav-links');
+        
+        // Elementos da Customização
+        window.customizacaoModal = document.getElementById('customizacao-modal');
+        window.fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
+        window.btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
+        window.listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
+        window.btnFinalizar = document.getElementById('btn-finalizar-pedido');
+    };
+    
+    rebindElements();
+    
+    // 3. Carregar os dados do JSON e popular o cardápio
     if (document.querySelector('main')) {
         carregarCardapio();
     }
     
+    // 4. Configurar todos os Listeners
+    setupEventListeners();
+});
+
+function setupEventListeners() {
     // ABRIR MODAL DO CARRINHO (Header - Desktop)
     if (carrinhoBtn && carrinhoModal) {
         carrinhoBtn.addEventListener('click', () => {
@@ -342,9 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ADICIONAR ITEM CUSTOMIZADO AO CARRINHO
+    // ADICIONAR ITEM CUSTOMIZADO AO CARRINHO (Mantido, mas usando window.btnAdicionarCustomizado)
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
+            // ... (Lógica de customização aqui, idêntica à versão anterior) ...
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
                 alert("Erro na customização. Tente novamente.");
                 return;
@@ -371,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lógica do Finalizar Pedido (Geração do Link WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
+            // ... (Lógica de finalização aqui, idêntica à versão anterior) ...
             if (carrinho.length === 0) {
                 alert("Seu carrinho está vazio.");
                 return;
@@ -407,14 +172,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lógica do Hamburger Menu (Header - Desktop)
+    // Lógica do Hamburger Menu
     if (hamburgerBtn && navLinks) {
         hamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
     }
     
-    // Lógica do Hamburger Menu (Barra Fixa - Mobile)
     if (mobileHamburgerBtn && navLinks) {
         mobileHamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -429,4 +193,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+}
+// OBS: MANTENHA O RESTANTE DAS FUNÇÕES DO script.js (adicionarAoCarrinho, carregarCardapio, criarItemCardapio, etc.) INTACTAS!
