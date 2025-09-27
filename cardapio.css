@@ -186,7 +186,7 @@ main {
 }
 
 /* ======================================= */
-/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO)     */
+/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - ATUALIZADO NEON */
 /* ======================================= */
 .modal {
     display: none; 
@@ -371,6 +371,7 @@ main {
 .adicional-item-opcao small {
     color: #ccc;
 }
+/* FIM DA SEÇÃO 4. MODAIS */
 
 
 /* ======================================= */
@@ -378,8 +379,7 @@ main {
 /* ======================================= */
 .carrinho-fab {
     position: fixed;
-    /* CORREÇÃO: Posição mais alta para evitar corte */
-    bottom: 40px; 
+    bottom: 20px; 
     right: 20px;
     width: 65px; 
     height: 65px;
@@ -435,7 +435,7 @@ main {
 }
 
 #notificacao.mostrar {
-    bottom: 110px; /* Acima do FAB */
+    bottom: 90px; /* Acima do FAB */
     opacity: 1;
 }
 
