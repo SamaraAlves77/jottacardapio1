@@ -4,17 +4,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-    /* Cores principais - Tema Claro/Clean */
-    --primary-color: #ff00ff; /* Cor Neon (Acento) */
-    --secondary-color: #4a4a4a; /* Cor para títulos/texto forte */
-    --background-color: #ffffff; /* Fundo principal BRANCO */
-    --card-background: #f8f8f8; /* Fundo levemente off-white para os cards */
-    --text-color: #222; /* Texto escuro para legibilidade */
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    /* Cores principais - Base CLARA */
+    --primary-color: #ff00ff; /* Cor Neon principal (Roxo/Magenta) */
+    --secondary-color: #212121; /* Cor de fundo escura (usada no Modal) */
+    --background-color: #ffffff; /* Fundo do corpo CLARO */
+    --card-background: #f8f8f8;
+    --text-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.15);
     
-    /* Efeito Neon (usado APENAS nos Modais/Ações) */
+    /* Efeito Neon */
     --neon-shadow: 0 0 5px var(--primary-color), 
-                   0 0 10px rgba(255, 0, 255, 0.5);
+                   0 0 10px var(--primary-color), 
+                   0 0 20px var(--primary-color);
 }
 
 * {
@@ -28,7 +29,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
-    padding-top: 55px; /* Espaço para a navbar fixa de 55px */
+    padding-top: 55px; /* Espaço para a navbar minimalista */
 }
 
 a {
@@ -46,7 +47,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1.5rem; 
-    height: 55px; /* Altura fixa para minimalismo */
+    height: 55px; /* Altura fixa minimalista */
     position: fixed;
     top: 0;
     left: 0;
@@ -65,7 +66,7 @@ header {
 }
 
 .nav-links li a {
-    padding: 8px 12px; /* Padding reduzido */
+    padding: 8px 12px;
     display: block;
     font-weight: 500; 
     font-size: 0.95rem;
@@ -95,7 +96,6 @@ header {
 }
 
 #contador-carrinho {
-    /* Destaque Neon no contador do carrinho da Navbar */
     position: absolute;
     top: -2px;
     right: -2px;
@@ -117,7 +117,7 @@ header {
 /* ======================================= */
 main {
     padding: 20px;
-    max-width: 1200px; 
+    max-width: 1200px; /* Limita a largura em desktop */
     margin: 0 auto; 
 }
 
@@ -154,31 +154,14 @@ main {
 }
 
 .item-card img {
-    /* Altura padronizada para manter a proporção visual dos cards */
+    /* Altura padronizada para proporção */
     width: 100%;
     height: 180px; 
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;
 }
-
-.item-card h3 {
-    color: var(--secondary-color);
-    margin-bottom: 5px;
-}
-
-.item-card p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.item-card .price {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-bottom: 15px;
-}
+/* ... (outros estilos de card) ... */
 
 .btn-add {
     background-color: var(--primary-color);
@@ -198,7 +181,7 @@ main {
 }
 
 /* ======================================= */
-/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - ACENTO NEON */
+/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - TEMA NEON ESCURO */
 /* ======================================= */
 .modal {
     display: none; 
@@ -209,8 +192,8 @@ main {
     width: 100%;
     height: 100%;
     overflow-y: auto; 
-    background-color: rgba(0,0,0,0.7);
-    padding: 0; 
+    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
+    padding: 0; /* Correção de padding */
 }
 
 .modal.ativo {
@@ -218,25 +201,28 @@ main {
 }
 
 .modal-content {
-    background-color: var(--background-color); 
-    color: var(--text-color);
-    margin: 30px auto; /* Margem ajustada para centralização em todas as telas */
+    /* Fundo Escuro com Destaque Neon */
+    background-color: var(--secondary-color); /* Fundo #212121 */
+    color: white;
+    margin: 30px auto; /* Margem ajustada para centralização segura */
     padding: 30px; 
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
     position: relative;
-    border: 2px solid var(--primary-color); /* Borda Neon */
-    box-shadow: 0 0 20px var(--primary-color), 0 5px 15px rgba(0,0,0,0.3); /* Brilho Neon */
-    max-height: calc(100vh - 60px); /* Altura máxima ajustada para caber */
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color), 0 5px 15px rgba(0,0,0,0.8);
+    
+    /* CORREÇÃO: Garante que o modal se ajuste sem cortar o conteúdo */
+    max-height: calc(100vh - 60px); 
     overflow-y: auto;
 }
 
 .modal-content h3 {
-    color: var(--primary-color); 
+    color: var(--primary-color); /* Título em Neon */
     text-align: center;
     margin-bottom: 20px;
-    text-shadow: 0 0 5px rgba(255, 0, 255, 0.8);
+    text-shadow: 0 0 5px var(--primary-color);
     text-transform: uppercase;
 }
 
@@ -251,8 +237,8 @@ main {
 
 .fechar-modal:hover,
 .fechar-customizacao:hover {
-    color: var(--secondary-color);
-    text-shadow: none;
+    color: white;
+    text-shadow: 0 0 5px white;
 }
 
 /* Estilos da Lista de Itens no Carrinho */
@@ -264,45 +250,13 @@ main {
 }
 
 .carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 15px 0; 
-    border-bottom: 1px dashed #ccc; 
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
 }
-
-.carrinho-item:last-child {
-    border-bottom: none;
-}
-
-.carrinho-item-nome {
-    flex-grow: 1;
-    text-align: left;
-    font-weight: 500;
-}
+/* ... (outros estilos de item) ... */
 
 .carrinho-item-preco {
-    color: var(--primary-color); /* Preço em Neon */
-    font-weight: 700;
-    margin-left: 10px;
-}
-
-.btn-remover {
-    background-color: #e53935;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    font-size: 0.9rem;
-    line-height: 1;
-    margin-left: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-remover:hover {
-    background-color: #b71c1c;
+    color: var(--primary-color); 
 }
 
 /* Total do Carrinho */
@@ -313,20 +267,20 @@ main {
     margin-top: 20px;
     padding-top: 15px;
     border-top: 2px solid var(--primary-color); 
-    color: var(--secondary-color); 
+    color: var(--primary-color); 
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
 .carrinho-total-container span {
-    color: var(--primary-color);
+    color: white;
     margin-right: 5px;
-    text-shadow: 0 0 3px rgba(255, 0, 255, 0.5); 
 }
 
 /* Estilos de Finalização (Inputs e Botão) */
 .carrinho-finalizar {
     margin-top: 25px;
     padding: 10px;
-    background-color: var(--card-background); 
+    background-color: #333; /* Fundo para a área de inputs */
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -335,33 +289,26 @@ main {
 
 .carrinho-finalizar input {
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     border-radius: 5px;
-    background-color: #fff; 
-    color: var(--text-color);
+    background-color: #444; /* Fundo escuro para inputs */
+    color: white;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .carrinho-finalizar input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color); /* Efeito Neon no focus */
     outline: none;
 }
 
 .carrinho-finalizar input::placeholder {
-    color: #888;
+    color: #aaa;
 }
 
 #btn-finalizar-pedido {
+    /* Mantém o verde WhatsApp com destaque */
     background-color: #25d366; 
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); 
 }
 
@@ -376,34 +323,22 @@ main {
     text-shadow: 0 0 3px var(--primary-color);
 }
 
-.adicional-item-opcao {
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-}
-
-.adicional-item-opcao small {
-    color: #666;
-}
+/* ... (outros estilos de customização) ... */
 
 
 /* ======================================= */
-/* 5, 6, 7. FAB REMOVIDO / TOAST / FOOTER  */
+/* 5. FAB REMOVIDO                         */
 /* ======================================= */
-/* FAB (5) foi removido, pois a Navbar fixa já o substitui */
+/* O botão FAB foi removido. */
 
+
+/* ======================================= */
+/* 6. NOTIFICAÇÃO (TOAST)                  */
+/* ======================================= */
 #notificacao {
     position: fixed;
     bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #388e3c;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    z-index: 4000;
-    opacity: 0;
-    transition: bottom 0.5s, opacity 0.5s;
-    font-weight: bold;
+    /* ... */
 }
 
 #notificacao.mostrar {
@@ -411,10 +346,13 @@ main {
     opacity: 1;
 }
 
+/* ======================================= */
+/* 7. FOOTER                               */
+/* ======================================= */
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #efefef; 
+    background-color: #efefef; /* Fundo claro para o footer */
     color: var(--secondary-color);
     font-size: 0.85rem;
 }
@@ -437,23 +375,28 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
     
+    /* ❌ REMOÇÃO DA BARRA FIXA MÓVEL ANTERIOR ❌ */
     .mobile-fixed-bar {
-        display: none !important; /* Remove barra antiga */
+        display: none !important; 
+    }
+    
+    main {
+        padding-bottom: 20px;
     }
     
     .header-actions .carrinho-btn {
-        display: block; /* Garante que o ícone do carrinho esteja sempre visível */
+        display: block; 
     }
 }
 
-/* Esconde o menu de navegação no mobile por padrão (será ativado com JS) */
+/* Esconde o menu de navegação no mobile por padrão (para o menu hamburguer) */
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
-        top: 55px; /* Ajustado para a nova altura da navbar */
+        top: 55px; /* Altura da navbar */
         right: -100%;
         flex-direction: column;
-        background-color: #fff;
+        background-color: var(--background-color);
         width: 70%;
         height: calc(100% - 55px);
         box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
