@@ -3,129 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio - JottaV Burguer</title>
+    <title>JottaV Burguer - Cardápio Online</title>
     
-    <link rel="stylesheet" href="cardapio.css">
-    <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="modal_carrinho.css">
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="navbar.css"> 
+    <link rel="stylesheet" href="modal_carrinho.css"> 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <div id="navbar-container">
-        <nav class="navbar">
-            <div class="logo"><a href="#">JottaV</a></div>
-            <ul class="nav-links">
-                <li><a href="#hamburgueres-artesanais">Hambúrgueres</a></li>
-                <li><a href="#combos-e-familia">Combos</a></li>
-                <li><a href="#bebidas">Bebidas</a></li>
-            </ul>
-            <div class="cart-icon" id="carrinho-desktop-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="contador-carrinho">0</span>
-            </div>
-            <button class="hamburger-menu-btn" id="menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
-    </div>
+        </div>
     
-    <main id="main-content-container">
-        <section class="menu-section" id="hamburgueres-artesanais">
+    <div id="main-content-container">
+        
+        <div id="hamburgueres-artesanais-secao" class="section-title-container">
             <h2>Hambúrgueres Artesanais</h2>
-            <div class="cardapio-grid" id="hamburgueres-artesanais-grid"></div>
-        </section>
+        </div>
+        <div class="item-card-grid" id="hamburgueres-artesanais-grid">
+            </div>
 
-        <section class="menu-section" id="combos-e-familia">
-            <h2>Combos e Família</h2>
-            <div class="cardapio-grid" id="combos-e-familia-grid"></div>
-        </section>
-
-        <section class="menu-section" id="acompanhamentos">
-            <h2>Acompanhamentos</h2>
-            <div class="cardapio-grid" id="acompanhamentos-grid"></div>
-        </section>
-
-        <section class="menu-section" id="bebidas">
+        <div id="porcoes-secao" class="section-title-container">
+            <h2>Porções</h2>
+        </div>
+        <div class="item-card-grid" id="porcoes-grid">
+            </div>
+        
+        <div id="bebidas-secao" class="section-title-container">
             <h2>Bebidas</h2>
-            <div class="cardapio-grid" id="bebidas-grid"></div>
-        </section>
-        
-    </main>
-
-    <div id="modal-container">
-        
-        <div id="customizacao-modal" class="modal">
-            <div class="modal-content">
-                <span class="fechar-customizacao">&times;</span>
-                <h3 id="customizacao-titulo">Personalizar Item</h3>
-                <p id="customizacao-descricao" style="color: #aaa; margin-bottom: 15px;"></p>
-                
-                <div class="adicionais-opcoes">
-                    </div>
-
-                <div class="customizacao-resumo">
-                    <p>Subtotal do Item: <span id="subtotal-item">R$ 0,00</span></p>
-                    <h4>Total: <span id="total-customizacao">R$ 0,00</span></h4>
-                    <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
-                </div>
-            </div>
         </div>
-
-        <div id="modal-carrinho" class="modal">
-            <div class="modal-content">
-                <span class="fechar-modal">&times;</span>
-                <h3>Seu Carrinho</h3>
-                
-                <div class="carrinho-itens">
-                    </div>
-                
-                <div class="carrinho-total-container">
-                    <span>Total do Pedido:</span>
-                    <span id="carrinho-total">R$ 0,00</span>
-                </div>
-
-                <div class="carrinho-finalizar">
-                    <h4>Informações de Contato e Entrega</h4>
-                    
-                    <button class="btn-secundario" id="btn-anexar-localizacao">
-                        <i class="fas fa-map-marker-alt"></i> Anexar Localização
-                    </button>
-                    
-                    <input type="text" id="campo-nome" placeholder="Seu Nome" required>
-                    <input type="tel" id="campo-telefone" placeholder="Telefone (WhatsApp)" required>
-                    <input type="text" id="campo-endereco" placeholder="Rua, Número e Bairro" required>
-                    
-                    <h4>Forma de Pagamento</h4>
-                    <select id="campo-pagamento">
-                        <option value="pix">PIX</option>
-                        <option value="cartao">Cartão de Crédito/Débito</option>
-                        <option value="dinheiro">Dinheiro (troco para...)</option>
-                    </select>
-                    
-                    <textarea id="campo-observacoes" placeholder="Observações (ex: Sem cebola, Troco para R$50)"></textarea>
-
-                    <button id="btn-finalizar-pedido">Finalizar Pedido (WhatsApp)</button>
-                </div>
+        <div class="item-card-grid" id="bebidas-grid">
             </div>
-        </div>
-
+        
     </div>
-    
+
     <div id="notificacao" class="notificacao">
         Item adicionado ao carrinho!
     </div>
 
-    <button class="carrinho-fab" id="fab-carrinho">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="fab-contador-carrinho">0</span>
-    </button>
+    <div id="fab-carrinho" class="fab-carrinho">
+        <i class="fas fa-shopping-basket"></i>
+        <span id="fab-contador-carrinho" class="fab-contador">0</span>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 JottaV Burguer. Todos os direitos reservados.</p>
-    </footer>
-
+    <div id="modal-container">
+        </div>
+    
     <script src="script.js"></script>
+
 </body>
 </html>
