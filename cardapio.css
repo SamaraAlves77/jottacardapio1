@@ -1,4 +1,4 @@
-/* Configuração Global (Mantida) */
+/* Configuração Global */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
@@ -9,7 +9,6 @@
     --text-color: #333;
     --shadow-color: rgba(0, 0, 0, 0.08); /* Sombra mais suave */
     --border-radius: 8px;
-    /* Variáveis para o Neon Suave */
     --neon-color: #00bcd4; /* Azul Turquesa Suave */
 }
 
@@ -27,7 +26,6 @@ body {
 }
 
 /* --- ESTILOS: NAVBAR/HEADER --- */
-/* (Estilos da Navbar mantidos) */
 header {
     background-color: var(--card-background);
     box-shadow: 0 2px 5px var(--shadow-color);
@@ -96,7 +94,7 @@ header {
 }
 
 
-/* --- ESTILOS: SEÇÕES DO CARDÁPIO (Mantido) --- */
+/* --- ESTILOS: SEÇÕES DO CARDÁPIO --- */
 main {
     max-width: 1200px;
     margin: 2rem auto;
@@ -117,6 +115,7 @@ main {
     padding-bottom: 0.5rem;
 }
 
+/* --- ESTILOS: CARDÁPIO E CARDS --- */
 .cardapio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -124,7 +123,6 @@ main {
     justify-content: center;
 }
 
-/* --- ESTILOS: CARDS (Mantido) --- */
 .item-card {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
@@ -183,10 +181,9 @@ main {
     background-color: #c62828;
 }
 
-
-/* --- ESTILOS: MODAL GERAL (Garantindo a Correção do Display) --- */
+/* --- ESTILOS: MODAL GERAL --- */
 .modal {
-    display: none; /* CORRETO: Esconde o modal por padrão */
+    display: none; 
     position: fixed;
     z-index: 3000;
     left: 0;
@@ -212,47 +209,274 @@ main {
     width: 95%;
     max-width: 650px;
     position: relative;
+    animation: slideIn 0.3s ease-out;
     max-height: 90vh; 
     overflow-y: auto;
 }
 
-/* ... Estilos internos do Modal (carrinho e customização) mantidos ... */
+.fechar-modal, .fechar-customizacao {
+    color: var(--secondary-color);
+    float: right;
+    font-size: 32px;
+    font-weight: 100;
+    cursor: pointer;
+    line-height: 1; /* Alinhamento melhor do "x" */
+}
 
+/* --- ESTILOS: MODAL CARRINHO --- */
+.carrinho-itens {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 10px;
+}
+
+.carrinho-item {
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.carrinho-item-nome {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.btn-remover {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1; /* Garante que o X fique centralizado */
+}
+
+.carrinho-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 0;
+    border-top: 2px solid var(--secondary-color);
+}
+
+.carrinho-finalizar input, 
+.carrinho-finalizar select, 
+.carrinho-finalizar textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    appearance: none; 
+}
+
+.carrinho-finalizar h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.opcoes-pedido {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #eee;
+}
+
+#btn-finalizar-pedido {
+    width: 100%;
+    background-color: #25D366; 
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.2s;
+}
+
+#btn-finalizar-pedido:hover {
+    background-color: #1aae4b;
+}
+
+.btn-secundario {
+    width: 100%;
+    background-color: #607d8b;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-secundario:hover {
+    background-color: #455a64;
+}
+
+.btn-secundario i {
+    margin-right: 8px;
+}
+
+.btn-sucesso {
+    background-color: #4CAF50 !important;
+}
+
+/* --- ESTILOS: MODAL CUSTOMIZAÇÃO --- */
+
+.adicionais-opcoes h4 {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.adicional-item-opcao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0; /* Mais espaçamento */
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.adicional-item-opcao:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+.adicional-item-opcao span {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.adicional-item-opcao small {
+    color: #777;
+    margin-left: 5px;
+}
+
+.adicional-contador {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaço entre botões e contador */
+}
+
+.adicional-contador button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem; /* Maior para melhor toque */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+.adicional-contador button:hover {
+    background-color: #c62828;
+    transform: translateY(-1px);
+}
+
+.adicional-contador button:active {
+    transform: translateY(0);
+}
+
+.adicional-contador span.quantidade-adicional {
+    display: inline-block;
+    width: 25px; /* Aumenta a largura para centralizar o número */
+    text-align: center;
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.customizacao-resumo {
+    margin-top: 1.5rem; /* Mais espaçamento */
+    padding-top: 1rem;
+    border-top: 1px solid #ccc;
+}
+
+.customizacao-resumo p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #555;
+}
+
+.customizacao-resumo h4 {
+    font-size: 1.6rem; /* Tamanho maior para o total */
+    color: var(--primary-color);
+    margin-top: 1rem;
+}
+
+#btn-adicionar-customizado {
+    width: 100%;
+    margin-top: 1.5rem; /* Mais espaçamento */
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px; /* Borda mais quadrada, como os outros botões */
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#btn-adicionar-customizado:hover {
+    background-color: #263238;
+}
 
 /* --- ESTILOS: NOTIFICAÇÃO (TOAST) --- */
-
 #notificacao {
-    /* Posição e Display */
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 4000; /* Acima de tudo */
-    display: none; /* Escondida por padrão (será alterado pelo JS) */
-    opacity: 0; /* Inicia transparente */
+    z-index: 4000;
+    display: none;
+    opacity: 0;
     
-    /* Estilo Neon Suave e Delicado */
-    background-color: rgba(255, 255, 255, 0.95); /* Fundo claro quase branco */
+    background-color: rgba(255, 255, 255, 0.95);
     color: var(--secondary-color);
     padding: 12px 25px;
-    border-radius: 50px; /* Borda bem arredondada */
+    border-radius: 50px; 
     font-weight: 700;
     font-size: 1rem;
-    box-shadow: 0 0 10px var(--neon-color), 0 0 20px rgba(0, 188, 212, 0.5); /* Efeito neon suave */
-    border: 1px solid var(--neon-color); /* Borda da cor neon */
+    box-shadow: 0 0 10px var(--neon-color), 0 0 20px rgba(0, 188, 212, 0.5);
+    border: 1px solid var(--neon-color);
 
-    /* Animação */
     transition: opacity 0.5s ease-in-out, bottom 0.5s ease-in-out;
 }
 
 #notificacao.mostrar {
-    display: block; /* Mostra o elemento */
-    opacity: 1; /* Torna visível */
-    bottom: 35px; /* Sobe um pouco para dar efeito de aparecer */
+    display: block; 
+    opacity: 1; 
+    bottom: 35px;
 }
 
 /* --- ESTILOS: RESPONSIVIDADE (MOBILE) --- */
-/* (Mantido) */
 @media (max-width: 768px) {
     
     #carrinho-btn {
@@ -270,12 +494,45 @@ main {
 
     .mobile-fixed-bar {
         display: flex;
-        /* ... outros estilos ... */
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--card-background);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        padding: 0.5rem 0;
+        z-index: 2500;
+    }
+
+    .bar-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #666;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0.2rem;
+        position: relative;
+    }
+    
+    .bar-link i {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+    
+    .bar-link.active, .bar-link:hover {
+        color: var(--primary-color);
     }
     
     /* Ajusta a notificação para não esconder atrás da barra mobile */
     #notificacao {
-        bottom: 80px; /* Sobe a notificação para aparecer acima da barra fixa */
+        bottom: 80px; 
     }
 
     #notificacao.mostrar {
