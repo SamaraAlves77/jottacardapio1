@@ -25,10 +25,13 @@
 }
 
 .logo a {
-    font-size: 1.8em;
+    /* CORREÇÃO AQUI: Reduzido para 1.5em para melhor proporção na barra */
+    font-size: 1.5em; 
     font-weight: bold;
     color: var(--primary-color);
     text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Efeito Neon leve */
+    /* Adicionando line-height para garantir que o texto esteja centralizado verticalmente */
+    line-height: 1; 
 }
 
 .nav-links {
@@ -92,6 +95,11 @@
 
 /* MEDIA QUERIES para Responsividade */
 @media (max-width: 768px) {
+    .logo a {
+        /* Garante que a logo não cresça demais em telas pequenas */
+        font-size: 1.4em; 
+    }
+
     .nav-links {
         display: none;
         flex-direction: column;
