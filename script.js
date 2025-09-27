@@ -4,12 +4,11 @@
 let carrinho = [];
 let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
-const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
-
-let localizacaoCliente = null; // Variável para armazenar o link da localização do cliente
+const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; // Garante que apenas Artesanais possam ser customizados
 
 // Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
-let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
+// ATENÇÃO: fabCarrinho e fabContadorCarrinho adicionados aqui
+let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 
 // =======================================================
@@ -24,10 +23,12 @@ async function loadHTML(url, elementId) {
     }
     
     try {
+        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
-            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado.</h3>`;
+            // Se der erro 404, avisa o usuário diretamente na tela
+            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
         
@@ -41,18 +42,23 @@ async function loadHTML(url, elementId) {
 }
 
 function rebindElements() {
-    // Liga as variáveis globais aos elementos injetados (navbar e modal) e aos fixos (barra móvel)
+    // ⚠️ Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM ⚠️
     carrinhoModal = document.getElementById('carrinho-modal');
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
     mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn');
     contadorCarrinho = document.getElementById('contador-carrinho');
     mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
+    
+    // NOVO: Referências do Botão Fixo (FAB)
+    fabCarrinho = document.getElementById('fab-carrinho');
+    fabContadorCarrinho = document.getElementById('fab-contador-carrinho');
+
     carrinhoItensContainer = document.getElementById('carrinho-itens');
     carrinhoTotalSpan = document.getElementById('carrinho-total');
     notificacao = document.getElementById('notificacao');
     btnFinalizar = document.getElementById('btn-finalizar-pedido');
-    navLinks = document.querySelector('.nav-links'); 
+    navLinks = document.querySelector('.nav-links');
     hamburgerBtn = document.getElementById('hamburger-menu-btn');
     mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
     customizacaoModal = document.getElementById('customizacao-modal');
@@ -62,35 +68,61 @@ function rebindElements() {
 }
 
 // =======================================================
-// FUNÇÕES DE LÓGICA (CARRINHO, CUSTOMIZAÇÃO, CRIAÇÃO DE CARDS)
+// FUNÇÕES DE MANIPULAÇÃO DO CARRINHO E UTILIDADE
 // =======================================================
+
+// NOVO: Função centralizada para atualizar todos os contadores
+function updateContadorCarrinho() {
+    const totalItens = carrinho.length;
+    if (contadorCarrinho) contadorCarrinho.textContent = totalItens;
+    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = totalItens;
+    if (fabContadorCarrinho) fabContadorCarrinho.textContent = totalItens; // NOVO: Atualiza o contador do FAB
+}
+
+// NOVO: Função centralizada para abrir o modal do carrinho
+function openCarrinhoModal() {
+    if (carrinhoModal) {
+        carrinhoModal.classList.add('ativo');
+        atualizarModalCarrinho();
+    }
+}
+
 
 function adicionarAoCarrinho(item) {
     carrinho.push(item);
-    if (contadorCarrinho) contadorCarrinho.textContent = carrinho.length;
-    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = carrinho.length;
+    
+    // Lógica de contador substituída pela nova função
+    updateContadorCarrinho();
+
     atualizarModalCarrinho();
+    
     if (notificacao) {
         notificacao.classList.add('mostrar');
-        setTimeout(() => { notificacao.classList.remove('mostrar'); }, 3000);
+        setTimeout(() => {
+            notificacao.classList.remove('mostrar');
+        }, 3000);
     }
 }
 
 function removerDoCarrinho(index) {
     carrinho.splice(index, 1);
-    if (contadorCarrinho) contadorCarrinho.textContent = carrinho.length;
-    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = carrinho.length;
+    
+    // Lógica de contador substituída pela nova função
+    updateContadorCarrinho();
+
     atualizarModalCarrinho();
 }
 
 function atualizarModalCarrinho() {
     if (!carrinhoItensContainer || !carrinhoTotalSpan) return;
+
     carrinhoItensContainer.innerHTML = '';
     let total = 0;
 
     carrinho.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'carrinho-item';
+        
         const nomeExibicao = item.nomeExibicao || item.nome;
         const precoFormatado = item.preco.toFixed(2).replace('.', ',');
 
@@ -107,22 +139,37 @@ function atualizarModalCarrinho() {
 
     document.querySelectorAll('.btn-remover').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            removerDoCarrinho(e.target.getAttribute('data-index'));
+            const index = e.target.getAttribute('data-index');
+            removerDoCarrinho(index);
         });
     });
 }
 
+
+// =======================================================
+// FUNÇÕES DE CUSTOMIZAÇÃO
+// =======================================================
+
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
-    itemEmCustomizacao = { ...item, adicionais: [], precoFinal: item.preco };
+
+    // Cria uma cópia do item para customização
+    itemEmCustomizacao = { 
+        ...item,
+        adicionais: [], 
+        precoFinal: item.preco 
+    };
+
     document.getElementById('item-customizacao-nome').textContent = item.nome;
     document.getElementById('preco-base-customizacao').textContent = item.preco.toFixed(2).replace('.', ',');
+    
     renderizarOpcoesAdicionais();
     customizacaoModal.classList.add('ativo'); 
 }
 
 function renderizarOpcoesAdicionais() {
     if (!listaAdicionaisContainer) return;
+
     listaAdicionaisContainer.innerHTML = '';
     
     adicionaisGlobais.forEach(adicional => {
@@ -146,6 +193,11 @@ function renderizarOpcoesAdicionais() {
         listaAdicionaisContainer.appendChild(div);
     });
     
+    adicionarListenersContador();
+    atualizarResumoCustomizacao();
+}
+
+function adicionarListenersContador() {
     document.querySelectorAll('.btn-aumentar-adicional').forEach(btn => {
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, 1); };
     });
@@ -153,8 +205,6 @@ function renderizarOpcoesAdicionais() {
     document.querySelectorAll('.btn-diminuir-adicional').forEach(btn => {
         btn.onclick = () => { gerenciarAdicional(btn.dataset.nome, -1); };
     });
-
-    atualizarResumoCustomizacao();
 }
 
 function gerenciarAdicional(nomeAdicional, delta) {
@@ -165,19 +215,25 @@ function gerenciarAdicional(nomeAdicional, delta) {
 
     if (!adicionalSelecionado) {
         if (delta > 0) {
-            itemEmCustomizacao.adicionais.push({ ...adicionalData, quantidade: 1 });
+            itemEmCustomizacao.adicionais.push({
+                ...adicionalData,
+                quantidade: 1
+            });
         }
     } else {
         adicionalSelecionado.quantidade += delta;
+        
         if (adicionalSelecionado.quantidade <= 0) {
             itemEmCustomizacao.adicionais = itemEmCustomizacao.adicionais.filter(a => a.nome !== nomeAdicional);
         }
     }
+    
     renderizarOpcoesAdicionais();
 }
 
 function atualizarResumoCustomizacao() {
     let precoAdicionais = 0;
+    
     itemEmCustomizacao.adicionais.forEach(ad => {
         precoAdicionais += ad.preco * ad.quantidade;
     });
@@ -191,11 +247,15 @@ function atualizarResumoCustomizacao() {
     itemEmCustomizacao.precoFinal = precoTotal;
 }
 
+// =======================================================
+// FUNÇÕES DE CARREGAMENTO DO CARDÁPIO E CRIAÇÃO DE CARDS
+// =======================================================
 
 function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
 
+    // ATENÇÃO: Confirme que o nome do arquivo da imagem está correto no JSON e na pasta!
     const img = document.createElement('img');
     img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
@@ -236,9 +296,10 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
-    const container = document.getElementById(idContainer + '-grid'); 
+    // O ID deve ser o nome da seção + '-grid' (ex: hamburgueres-artesanais-grid)
+    const container = document.getElementById(idContainer); 
     if (!container) {
-        console.error(`Contêiner de grid não encontrado para a categoria: ${titulo} (ID esperado: ${idContainer}-grid)`);
+        console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
         return;
     }
 
@@ -250,6 +311,7 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
 
 async function carregarCardapio() {
     try {
+        // Busca o cardapio.json na raiz
         const response = await fetch('./cardapio.json');
         
         if (!response.ok) {
@@ -264,16 +326,20 @@ async function carregarCardapio() {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
+        // Popula as seções do cardápio
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
-                criarSecaoCardapio(categoriaObj.nome, categoriaObj.id, categoriaObj.itens);
+                const idContainerGrid = categoriaObj.id + '-grid'; 
+                criarSecaoCardapio(categoriaObj.nome, idContainerGrid, categoriaObj.itens);
             }
         });
     } catch (error) {
         console.error('Erro CRÍTICO ao carregar o cardápio. Verifique o JSON:', error);
         const main = document.querySelector('#main-content-container');
         if (main) {
-            main.innerHTML = `<h1 style="text-align:center; color: red;">❌ Erro ao carregar o cardápio.</h1>`;
+            main.innerHTML = `<h1 style="text-align:center; color: var(--primary-color);">
+                ❌ Erro ao carregar o cardápio. Verifique se o arquivo cardapio.json existe e está formatado corretamente.
+            </h1>`;
         }
     }
 }
@@ -284,108 +350,84 @@ async function carregarCardapio() {
 // =======================================================
 
 function setupEventListeners() {
-    // Eventos de abrir e fechar modais
-    if (carrinhoBtn && carrinhoModal) carrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
-    if (mobileCarrinhoBtn && carrinhoModal) mobileCarrinhoBtn.addEventListener('click', () => { carrinhoModal.classList.add('ativo'); atualizarModalCarrinho(); });
-    if (fecharModalBtn && carrinhoModal) fecharModalBtn.addEventListener('click', () => carrinhoModal.classList.remove('ativo'));
-    if (fecharCustomizacaoBtn && customizacaoModal) fecharCustomizacaoBtn.addEventListener('click', () => customizacaoModal.classList.remove('ativo'));
-    
-    // Fechar modais ao clicar fora
+    // ABRIR MODAL DO CARRINHO (Desktop, Mobile e FAB)
+    if (carrinhoBtn) {
+        carrinhoBtn.addEventListener('click', openCarrinhoModal);
+    }
+    if (mobileCarrinhoBtn) {
+        mobileCarrinhoBtn.addEventListener('click', openCarrinhoModal);
+    }
+    // NOVO: Adiciona o listener para o Botão Fixo Neon (FAB)
+    if (fabCarrinho) {
+        fabCarrinho.addEventListener('click', openCarrinhoModal);
+    }
+
+    // FECHAR MODAIS PELO 'X' E CLICANDO FORA
+    if (fecharModalBtn && carrinhoModal) {
+        fecharModalBtn.addEventListener('click', () => {
+            carrinhoModal.classList.remove('ativo');
+        });
+    }
+    if (fecharCustomizacaoBtn && customizacaoModal) {
+        fecharCustomizacaoBtn.addEventListener('click', () => {
+            customizacaoModal.classList.remove('ativo');
+        });
+    }
     window.addEventListener('click', (event) => {
-        if (event.target === carrinhoModal) event.target.classList.remove('ativo');
-        else if (event.target === customizacaoModal) event.target.classList.remove('ativo');
+        if (event.target === carrinhoModal) {
+            event.target.classList.remove('ativo');
+        } else if (event.target === customizacaoModal) {
+            event.target.classList.remove('ativo');
+        }
     });
 
-    // Lógica para adicionar item customizado
+    // ADICIONAR ITEM CUSTOMIZADO AO CARRINHO
     if (btnAdicionarCustomizado) {
         btnAdicionarCustomizado.addEventListener('click', () => {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
-                alert("Erro na customização. Tente novamente."); return;
+                alert("Erro na customização. Tente novamente.");
+                return;
             }
             
-            const adicionaisSelecionados = itemEmCustomizacao.adicionais.map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
-            const nomeFinal = `${itemEmCustomizacao.nome} (${itemEmCustomizacao.adicionais.length} adicionais)`;
+            const adicionaisSelecionados = itemEmCustomizacao.adicionais
+                .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
+            const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
+
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
                 nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
-                nomeWhatsApp: `${itemEmCustomizacao.nome} (Adicionais: ${adicionaisSelecionados || 'Nenhum'})`,
+                nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
+            
             adicionarAoCarrinho(itemFinal);
             customizacaoModal.classList.remove('ativo');
         });
     }
     
-    // Lógica para anexar localização (NOVO)
-    const btnLocalizacao = document.getElementById('btn-anexar-localizacao');
-    if (btnLocalizacao) {
-        btnLocalizacao.addEventListener('click', () => {
-            if (navigator.geolocation) {
-                btnLocalizacao.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aguardando...';
-                btnLocalizacao.disabled = true;
-
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        localizacaoCliente = `https://maps.google.com/?q=${latitude},${longitude}`;
-                        
-                        btnLocalizacao.innerHTML = '<i class="fas fa-check"></i> Localização Anexada!';
-                        btnLocalizacao.classList.remove('btn-secundario');
-                        btnLocalizacao.classList.add('btn-sucesso');
-                        btnLocalizacao.disabled = false;
-                        alert("Localização anexada com sucesso!");
-                    },
-                    (error) => {
-                        console.error("Erro ao obter localização:", error);
-                        btnLocalizacao.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao Anexar Localização';
-                        btnLocalizacao.classList.remove('btn-sucesso');
-                        btnLocalizacao.classList.add('btn-secundario');
-                        btnLocalizacao.disabled = false;
-                        localizacaoCliente = null;
-                        alert("Não foi possível obter a localização. Verifique as permissões do navegador.");
-                    },
-                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                );
-            } else {
-                alert("Geolocalização não é suportada por este navegador.");
-            }
-        });
-    }
-
-    // Lógica para finalizar pedido e gerar link do WhatsApp (ATUALIZADO)
+    // Lógica do Finalizar Pedido (Geração do Link WhatsApp)
     if (btnFinalizar) {
         btnFinalizar.addEventListener('click', () => {
-            if (carrinho.length === 0) { alert("Seu carrinho está vazio."); return; }
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio.");
+                return;
+            }
             
-            // Pega dados do cliente
             const nomeCliente = document.getElementById('nome-cliente').value;
-            const formaPagamentoElement = document.getElementById('forma-pagamento');
-            const formaPagamento = formaPagamentoElement.value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
-            const observacoes = document.getElementById('observacoes-pedido').value;
             
-            if (!nomeCliente || !formaPagamento || !enderecoCliente || !telefoneCliente) {
-                alert("Por favor, preencha seu nome, forma de pagamento, endereço e telefone para finalizar o pedido."); 
+            if (!nomeCliente || !enderecoCliente || !telefoneCliente) {
+                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido.");
                 return;
             }
 
             let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
             mensagem += `*Nome:* ${nomeCliente}\n`;
-            mensagem += `*Forma de Pagamento:* ${formaPagamento.toUpperCase().replace('_', ' ')}\n`;
             mensagem += `*Endereço:* ${enderecoCliente}\n`;
             mensagem += `*Telefone:* ${telefoneCliente}\n\n`;
-            
-            if (observacoes) { 
-                mensagem += `*Observações:* ${observacoes}\n\n`;
-            }
-
-            if (localizacaoCliente) {
-                mensagem += `*Localização Anexada:* ${localizacaoCliente}\n\n`;
-            }
-            
             mensagem += `*ITENS DO PEDIDO (${carrinho.length}):*\n`;
             
             carrinho.forEach((item, index) => {
@@ -397,6 +439,7 @@ function setupEventListeners() {
             const totalFinal = carrinhoTotalSpan.textContent;
             mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
+            // SUBSTITUA ESTE NÚMERO PELO NÚMERO CORRETO DO SEU WHATSAPP
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
@@ -404,9 +447,18 @@ function setupEventListeners() {
         });
     }
 
-    // Lógica para abrir/fechar menu hamburguer (Desktop e Mobile)
-    if (hamburgerBtn && navLinks) hamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
-    if (mobileHamburgerBtn && navLinks) mobileHamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
+    // Lógica do Hamburger Menu
+    if (hamburgerBtn && navLinks) {
+        hamburgerBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+    
+    if (mobileHamburgerBtn && navLinks) {
+        mobileHamburgerBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
     
     // Fecha o menu mobile ao clicar em um link
     if (navLinks) {
@@ -427,20 +479,27 @@ function setupEventListeners() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     
-    // 1. Carrega os únicos HTMLs injetáveis (Navbar e Modal)
+    // 1. Carrega o HTML dinamicamente. **VERIFIQUE O NOME DESTES ARQUIVOS!**
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
+    const conteudoOK = await loadHTML('conteudo_cardapio.html', 'main-content-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    const mainContentContainer = document.getElementById('main-content-container');
-    
-    // 2. Só prossegue se os arquivos HTML injetados e o container principal existem
-    if (navbarOK && modalOK && mainContentContainer) {
+    // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
+    if (navbarOK && conteudoOK && modalOK) {
         
+        // Re-liga os elementos injetados às variáveis JS
         rebindElements(); 
-        await carregarCardapio(); // Popula o cardápio
+        
+        // Carrega os dados do JSON e popula o cardápio
+        await carregarCardapio(); 
+        
+        // Configura os Listeners de botões e modais
         setupEventListeners();
         
+        // Garante que o contador inicial seja 0 (incluindo o novo FAB)
+        updateContadorCarrinho();
+        
     } else {
-        console.error("Não foi possível carregar as partes essenciais do HTML. Verifique navbar.html ou modal_carrinho.html.");
+        console.error("Não foi possível carregar todas as partes do HTML. Verifique os erros acima.");
     }
 });
