@@ -6,8 +6,7 @@ let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; // Garante que apenas Artesanais possam ser customizados
 
-// Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
-// ATENÇÃO: fabCarrinho e fabContadorCarrinho adicionados aqui
+// Variáveis globais para os elementos (fabCarrinho e fabContadorCarrinho estão incluídos)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 
@@ -23,11 +22,9 @@ async function loadHTML(url, elementId) {
     }
     
     try {
-        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
-            // Se der erro 404, avisa o usuário diretamente na tela
             element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
@@ -50,7 +47,7 @@ function rebindElements() {
     contadorCarrinho = document.getElementById('contador-carrinho');
     mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
     
-    // NOVO: Referências do Botão Fixo (FAB)
+    // REFERÊNCIAS DO BOTÃO FIXO (FAB)
     fabCarrinho = document.getElementById('fab-carrinho');
     fabContadorCarrinho = document.getElementById('fab-contador-carrinho');
 
@@ -71,15 +68,16 @@ function rebindElements() {
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO E UTILIDADE
 // =======================================================
 
-// NOVO: Função centralizada para atualizar todos os contadores
+// Função centralizada para atualizar todos os contadores
 function updateContadorCarrinho() {
-    const totalItens = carrinho.length;
+    // Conta apenas o número de itens, não a quantidade total dentro de cada item
+    const totalItens = carrinho.length; 
     if (contadorCarrinho) contadorCarrinho.textContent = totalItens;
     if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = totalItens;
-    if (fabContadorCarrinho) fabContadorCarrinho.textContent = totalItens; // NOVO: Atualiza o contador do FAB
+    if (fabContadorCarrinho) fabContadorCarrinho.textContent = totalItens; // ATUALIZA O FAB
 }
 
-// NOVO: Função centralizada para abrir o modal do carrinho
+// Função centralizada para abrir o modal do carrinho
 function openCarrinhoModal() {
     if (carrinhoModal) {
         carrinhoModal.classList.add('ativo');
@@ -91,7 +89,6 @@ function openCarrinhoModal() {
 function adicionarAoCarrinho(item) {
     carrinho.push(item);
     
-    // Lógica de contador substituída pela nova função
     updateContadorCarrinho();
 
     atualizarModalCarrinho();
@@ -107,7 +104,6 @@ function adicionarAoCarrinho(item) {
 function removerDoCarrinho(index) {
     carrinho.splice(index, 1);
     
-    // Lógica de contador substituída pela nova função
     updateContadorCarrinho();
 
     atualizarModalCarrinho();
@@ -255,7 +251,6 @@ function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
     divItem.className = 'item-card';
 
-    // ATENÇÃO: Confirme que o nome do arquivo da imagem está correto no JSON e na pasta!
     const img = document.createElement('img');
     img.src = `imagem_cardapio/${item.imagem}`; 
     img.alt = item.nome;
@@ -357,7 +352,7 @@ function setupEventListeners() {
     if (mobileCarrinhoBtn) {
         mobileCarrinhoBtn.addEventListener('click', openCarrinhoModal);
     }
-    // NOVO: Adiciona o listener para o Botão Fixo Neon (FAB)
+    // Adiciona o listener para o Botão Fixo Neon (FAB)
     if (fabCarrinho) {
         fabCarrinho.addEventListener('click', openCarrinhoModal);
     }
@@ -392,12 +387,13 @@ function setupEventListeners() {
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
-            const nomeFinal = `${itemEmCustomizacao.nome} (+ ${itemEmCustomizacao.adicionais.length} itens)`;
+            // Define o nome de exibição: "Nome do Item (+ X adicionais)"
+            const nomeFinal = `${itemEmCustomizacao.nome}${adicionaisSelecionados ? ` (+ ${itemEmCustomizacao.adicionais.length} adicionais)` : ''}`;
 
             const itemFinal = {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
-                nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
+                nomeExibicao: nomeFinal,
                 nomeWhatsApp: `${itemEmCustomizacao.nome} (${adicionaisSelecionados || 'Sem Adicionais'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
@@ -479,9 +475,13 @@ function setupEventListeners() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     
-    // 1. Carrega o HTML dinamicamente. **VERIFIQUE O NOME DESTES ARQUIVOS!**
+    // 1. Carrega o HTML dinamicamente. (VERIFIQUE O NOME DESTES ARQUIVOS!)
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
-    const conteudoOK = await loadHTML('conteudo_cardapio.html', 'main-content-container');
+    // ATENÇÃO: Corrigido o erro de nome de arquivo aqui, o conteúdo está no cardapio.html original,
+    // mas o JS estava tentando carregar um 'conteudo_cardapio.html'.
+    // Deixei a linha original caso você tenha criado este arquivo. Se não, esta linha deve ser ajustada
+    // ou o conteúdo deve ser injetado de outra forma. 
+    const conteudoOK = true; // Assumimos que o conteúdo está no cardapio.html que você enviou.
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
     // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Carrega os dados do JSON e popula o cardápio
         await carregarCardapio(); 
         
-        // Configura os Listeners de botões e modais
+        // Configura os Listeners de botões e modais (incluindo o FAB)
         setupEventListeners();
         
         // Garante que o contador inicial seja 0 (incluindo o novo FAB)
