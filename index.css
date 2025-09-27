@@ -1,17 +1,16 @@
 /* ======================================================= */
-/* index.css - LANDING PAGE | DESIGN CORRIGIDO E MODERNO */
+/* index.css - LANDING PAGE | AJUSTE FINAL 60/30 E LINHA */
 /* ======================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
 
 :root {
     /* PALETA DE CORES (60/30/10) */
-    --primary-color: #e53935; /* Vermelho Escuro/Vibrante (60% - Fundo Esquerdo) */
-    --secondary-color: #212121; /* Cinza Escuro/Preto (30% - Fundo Geral/Botão Cardápio) */
-    --accent-color: #ff69b4; /* Rosa Neon (10% - Destaque, Linha e Hover) */
+    --primary-color: #e53935; /* Vermelho Escuro/Vibrante (60%) */
+    --secondary-color: #212121; /* Cinza Escuro/Preto (30%) */
+    --accent-color: #ff69b4; /* Rosa Neon (10% - Destaque) */
     
     --card-background: #ffffff;
-    --text-color: #333;
     --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -23,37 +22,35 @@
 }
 
 body {
-    background-color: var(--secondary-color); /* Fundo geral 30% */
-    color: var(--text-color);
-    line-height: 1.6;
+    background-color: var(--secondary-color); 
     min-height: 100vh;
-    display: flex; /* Centraliza o card na tela */
+    display: flex; 
     justify-content: center;
     align-items: center;
     padding: 2rem;
 }
 
-/* --- ESTILOS: CARD PRINCIPAL E RESPONSIVIDADE (60% da Largura) --- */
+/* --- CARD PRINCIPAL: Proporção 60% (Esquerda) e 40% (Direita) --- */
 
 .landing-card {
     background-color: var(--card-background);
     border-radius: 15px;
-    /* Box Shadow elegante com a cor principal */
     box-shadow: 0 15px 30px var(--shadow-color);
     
-    /* Layout de Duas Colunas (Ajustável) */
     display: flex;
     max-width: 900px; 
-    width: 90%; /* Ajustável */
-    height: 500px; /* Altura fixa para telas maiores */
+    width: 90%; 
+    height: 500px; 
     overflow: hidden;
-    position: relative;
+    position: relative; /* Necessário para a linha divisória absoluta */
 }
 
 .card-left {
-    background-color: var(--primary-color); /* 60% da cor principal */
+    background-color: var(--primary-color); /* 60% Cor Principal */
     color: white;
-    flex: 2; /* OCUPA MAIS ESPAÇO: 60% (2 partes de 3) */
+    
+    /* CRÍTICO: Define a proporção de espaço. 60% de 100% */
+    flex: 3; /* Ocupa 3 partes */
     
     padding: 3rem;
     display: flex;
@@ -64,30 +61,34 @@ body {
 }
 
 .card-right {
-    flex: 1; /* OCUPA MENOS ESPAÇO: 30% (1 parte de 3) */
+    /* CRÍTICO: Define a proporção de espaço. 40% de 100% */
+    flex: 2; /* Ocupa 2 partes */
+    
     padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5rem; /* Espaço entre os botões */
+    gap: 1.5rem; 
 }
 
-/* --- LINHA DIVISÓRIA (10% da Cor de Destaque) --- */
-
+/* --- LINHA DIVISÓRIA (10% de Destaque) --- */
+/* Cria uma linha fina e elegante que divide as duas colunas */
 .card-left::after {
     content: '';
     position: absolute;
-    right: 33.33%; /* Posiciona no limite da div esquerda (2/3) */
-    top: 10%;
-    bottom: 10%;
-    width: 2px; /* Espessura da linha */
-    background-color: var(--accent-color); /* Cor Rosa Neon (10% de uso) */
+    /* Posiciona a linha exatamente entre as duas colunas */
+    right: 40%; 
+    top: 0;
+    bottom: 0;
+    width: 3px; /* Espessura da linha */
+    background-color: var(--accent-color); /* Rosa Neon */
     box-shadow: 0 0 10px var(--accent-color); /* Brilho neon */
+    z-index: 10;
 }
 
 
-/* --- ESTILOS DOS ELEMENTOS INTERNOS --- */
+/* --- ELEMENTOS DE TEXTO E LOGO --- */
 
 .logo-landing {
     width: 150px;
@@ -100,11 +101,11 @@ body {
 
 .slogan {
     font-size: 1.7rem;
-    font-weight: 900; /* Mais impacto */
+    font-weight: 900; 
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* --- ESTILOS DOS BOTÕES (Modernos e Arredondados) --- */
+/* --- BOTÕES (Modernos e Arredondados) --- */
 
 .social-btn {
     display: flex;
@@ -112,7 +113,7 @@ body {
     justify-content: center;
     width: 100%;
     padding: 1rem 1.5rem;
-    border-radius: 25px; /* Mais arredondado */
+    border-radius: 25px; 
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
@@ -123,12 +124,12 @@ body {
 
 .social-btn:hover {
     transform: scale(1.05);
-    border-color: var(--accent-color); /* Borda neon no hover */
+    border-color: var(--accent-color); 
     box-shadow: 0 4px 15px rgba(255, 105, 180, 0.6);
 }
 
 .instagram {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Degradê Instagram */
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
     color: white;
 }
 
@@ -138,7 +139,7 @@ body {
 }
 
 .cardapio {
-    background-color: var(--secondary-color); /* Cor 30% */
+    background-color: var(--secondary-color); 
     color: white;
 }
 
@@ -149,7 +150,7 @@ body {
         align-items: flex-start;
     }
     .landing-card {
-        flex-direction: column; /* Coloca um abaixo do outro */
+        flex-direction: column; 
         width: 100%;
         max-width: none;
         height: auto;
@@ -158,7 +159,7 @@ body {
 
     .card-left, .card-right {
         padding: 2rem 1rem;
-        flex: auto;
+        flex: auto; /* Deixa o mobile usar largura total */
     }
     
     /* Remove a linha divisória em mobile */
