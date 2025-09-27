@@ -21,6 +21,8 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     scroll-behavior: smooth;
+    /* Adiciona um padding no topo para o conteúdo não ficar escondido pela navbar fixa */
+    padding-top: 70px; 
 }
 
 a {
@@ -33,7 +35,7 @@ a:hover {
 }
 
 /* ======================================================= */
-/* 1. NAVBAR (Cabeçalho e Navegação) */
+/* 1. NAVBAR (Corrigida: Fixa, Responsiva e Minimalista) */
 /* ======================================================= */
 .navbar {
     background-color: var(--secondary-color);
@@ -41,9 +43,13 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    position: sticky;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    
+    /* FIXA CRÍTICA */
+    position: fixed; 
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 900;
 }
 
@@ -51,11 +57,14 @@ a:hover {
     font-size: 1.8em;
     font-weight: bold;
     color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Efeito Neon leve */
 }
 
 .nav-links {
     list-style: none;
     display: flex;
+    align-items: center; /* Alinha o carrinho e os links */
+    transition: transform 0.3s ease-in-out;
 }
 
 .nav-links li {
@@ -66,6 +75,7 @@ a:hover {
     color: var(--text-color);
     font-weight: 500;
     transition: color 0.3s;
+    padding: 5px 0;
 }
 
 .nav-links a:hover {
@@ -79,6 +89,11 @@ a:hover {
     color: var(--text-color);
     font-size: 1.2em;
     margin-left: 20px;
+    transition: color 0.3s;
+}
+
+.cart-icon:hover {
+    color: var(--primary-color);
 }
 
 #contador-carrinho {
@@ -91,6 +106,7 @@ a:hover {
     top: -10px;
     right: -10px;
     font-weight: bold;
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.7);
 }
 
 /* Menu Hamburger (Mobile) */
@@ -164,7 +180,7 @@ a:hover {
 .item-card p {
     padding: 0 15px;
     color: #aaa;
-    flex-grow: 1; /* Garante que a descrição ocupe o espaço */
+    flex-grow: 1; 
     margin-bottom: 10px;
 }
 
@@ -205,7 +221,7 @@ a:hover {
     width: 100%;
     height: 100%;
     overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.85); /* Fundo escuro intenso */
+    background-color: rgba(0, 0, 0, 0.85); 
 }
 
 .modal.ativo {
@@ -217,10 +233,10 @@ a:hover {
     margin: 5% auto; 
     padding: 25px;
     border: 1px solid var(--primary-color); 
-    width: 95%; /* Maior em mobile */
-    max-width: 550px; /* Limite máximo */
+    width: 95%; 
+    max-width: 550px; 
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); /* Sombra Neon forte */
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); 
     
     /* CRÍTICO: Responsividade de Altura e Flexbox */
     max-height: 90vh; 
@@ -246,7 +262,7 @@ a:hover {
 .modal-content h3 {
     text-align: center;
     color: #fff;
-    margin-top: -10px; /* Ajusta o espaçamento do X */
+    margin-top: -10px; 
     margin-bottom: 20px;
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
@@ -276,15 +292,6 @@ a:hover {
     color: #eee;
 }
 
-.carrinho-item:last-child {
-    border-bottom: none;
-}
-
-.carrinho-item-nome {
-    flex-grow: 1;
-    margin-right: 10px;
-}
-
 .carrinho-total-container {
     display: flex;
     justify-content: space-between;
@@ -296,7 +303,7 @@ a:hover {
     margin-bottom: 15px;
 }
 
-/* Estilos para o formulário de finalização */
+/* Formulário e Campos */
 .carrinho-finalizar input,
 .carrinho-finalizar select,
 .carrinho-finalizar textarea {
@@ -338,10 +345,6 @@ a:hover {
     color: #eee;
 }
 
-.adicional-item-opcao small {
-    color: #aaa;
-}
-
 .adicional-contador {
     display: flex;
     align-items: center;
@@ -361,13 +364,6 @@ a:hover {
     margin-top: auto; 
 }
 
-.customizacao-resumo p {
-    margin: 5px 0;
-    color: #ccc;
-    display: flex;
-    justify-content: space-between;
-}
-
 .customizacao-resumo h4 {
     color: var(--primary-color);
     display: flex;
@@ -376,13 +372,13 @@ a:hover {
 }
 
 /* ======================================================= */
-/* 6. ESTILOS DE BOTÕES (Bonitos) */
+/* 6. ESTILOS DE BOTÕES */
 /* ======================================================= */
 
 /* Botões de Ação Principal (Finalizar e Adicionar Customizado) */
 #btn-finalizar-pedido, #btn-adicionar-customizado {
     width: 100%;
-    padding: 14px; /* Maior padding */
+    padding: 14px; 
     background-color: var(--primary-color); 
     color: #000;
     border: none;
@@ -392,7 +388,7 @@ a:hover {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
     margin-top: 15px;
-    box-shadow: 0 0 10px var(--primary-color); /* Sombra mais forte */
+    box-shadow: 0 0 10px var(--primary-color); 
 }
 
 #btn-finalizar-pedido:hover, #btn-adicionar-customizado:hover {
@@ -542,17 +538,18 @@ footer {
 /* ======================================================= */
 
 @media (max-width: 768px) {
-    /* Navbar e Menu Hamburger */
+    /* Navbar e Menu Hamburger (Mobile) */
     .nav-links {
         display: none;
         flex-direction: column;
+        align-items: flex-start; /* Alinha o menu à esquerda */
         width: 100%;
         position: absolute;
-        top: 60px; /* Abaixo da navbar */
+        top: 60px; 
         left: 0;
         background-color: var(--secondary-color);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        padding: 10px 0;
+        padding: 10px 20px;
     }
 
     .nav-links.active {
@@ -561,13 +558,23 @@ footer {
 
     .nav-links li {
         margin: 10px 0;
-        text-align: center;
         width: 100%;
+        border-bottom: 1px dashed #444;
+        padding-bottom: 5px;
     }
-
+    
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+    
     .nav-links a {
         display: block;
-        padding: 10px;
+        padding: 5px 0;
+    }
+    
+    /* Move o ícone do carrinho para o menu quando o menu está fechado */
+    .cart-icon {
+        display: none; 
     }
 
     .hamburger-menu-btn, .mobile-hamburger-btn {
@@ -576,10 +583,10 @@ footer {
 
     /* Cardápio */
     .cardapio-grid {
-        grid-template-columns: 1fr; /* Coluna única em mobile */
+        grid-template-columns: 1fr;
     }
-
-    /* Modais (Aumenta o espaçamento do topo para não cobrir o cabeçalho) */
+    
+    /* Modais (Ajuste para telas muito pequenas) */
     .modal-content {
         margin: 10vh auto;
     }
