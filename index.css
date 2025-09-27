@@ -1,14 +1,18 @@
-/* Configuração Global */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* ======================================================= */
+/* index.css - LANDING PAGE | DESIGN CORRIGIDO E MODERNO */
+/* ======================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
 
 :root {
-    /* Cores que você definiu na etapa anterior */
-    --primary-color: #e53935; /* Vermelho do lado esquerdo */
-    --secondary-color: #212121; /* Cor do botão Cardápio */
-    --background-color: #f5f5f5;
-    --card-background: #fff;
+    /* PALETA DE CORES (60/30/10) */
+    --primary-color: #e53935; /* Vermelho Escuro/Vibrante (60% - Fundo Esquerdo) */
+    --secondary-color: #212121; /* Cinza Escuro/Preto (30% - Fundo Geral/Botão Cardápio) */
+    --accent-color: #ff69b4; /* Rosa Neon (10% - Destaque, Linha e Hover) */
+    
+    --card-background: #ffffff;
     --text-color: #333;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -19,34 +23,39 @@
 }
 
 body {
-    background-color: var(--background-color);
+    background-color: var(--secondary-color); /* Fundo geral 30% */
     color: var(--text-color);
     line-height: 1.6;
-}
-
-/* --- ESTILOS: CARTÃO DE VISITA (index.html) --- */
-
-.landing-page-container {
-    display: flex;
+    min-height: 100vh;
+    display: flex; /* Centraliza o card na tela */
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     padding: 2rem;
 }
+
+/* --- ESTILOS: CARD PRINCIPAL E RESPONSIVIDADE (60% da Largura) --- */
 
 .landing-card {
     background-color: var(--card-background);
     border-radius: 15px;
-    box-shadow: 0 10px 20px var(--shadow-color);
+    /* Box Shadow elegante com a cor principal */
+    box-shadow: 0 15px 30px var(--shadow-color);
+    
+    /* Layout de Duas Colunas (Ajustável) */
     display: flex;
-    max-width: 900px;
-    width: 90%;
+    max-width: 900px; 
+    width: 90%; /* Ajustável */
+    height: 500px; /* Altura fixa para telas maiores */
     overflow: hidden;
+    position: relative;
 }
 
-.card-left, .card-right {
+.card-left {
+    background-color: var(--primary-color); /* 60% da cor principal */
+    color: white;
+    flex: 2; /* OCUPA MAIS ESPAÇO: 60% (2 partes de 3) */
+    
     padding: 3rem;
-    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -54,10 +63,31 @@ body {
     text-align: center;
 }
 
-.card-left {
-    background-color: var(--primary-color);
-    color: white;
+.card-right {
+    flex: 1; /* OCUPA MENOS ESPAÇO: 30% (1 parte de 3) */
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem; /* Espaço entre os botões */
 }
+
+/* --- LINHA DIVISÓRIA (10% da Cor de Destaque) --- */
+
+.card-left::after {
+    content: '';
+    position: absolute;
+    right: 33.33%; /* Posiciona no limite da div esquerda (2/3) */
+    top: 10%;
+    bottom: 10%;
+    width: 2px; /* Espessura da linha */
+    background-color: var(--accent-color); /* Cor Rosa Neon (10% de uso) */
+    box-shadow: 0 0 10px var(--accent-color); /* Brilho neon */
+}
+
+
+/* --- ESTILOS DOS ELEMENTOS INTERNOS --- */
 
 .logo-landing {
     width: 150px;
@@ -69,13 +99,12 @@ body {
 }
 
 .slogan {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.7rem;
+    font-weight: 900; /* Mais impacto */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-.card-right {
-    gap: 1.5rem;
-}
+/* --- ESTILOS DOS BOTÕES (Modernos e Arredondados) --- */
 
 .social-btn {
     display: flex;
@@ -83,68 +112,63 @@ body {
     justify-content: center;
     width: 100%;
     padding: 1rem 1.5rem;
-    border-radius: 8px;
+    border-radius: 25px; /* Mais arredondado */
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px var(--shadow-color);
-}
-
-.social-btn i {
-    margin-right: 10px;
-    font-size: 1.2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
 }
 
 .social-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+    border-color: var(--accent-color); /* Borda neon no hover */
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.6);
 }
 
 .instagram {
-    background-color: #E1306C; /* Cor do Instagram */
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Degradê Instagram */
     color: white;
 }
 
 .whatsapp {
-    background-color: #25D366; /* Cor do WhatsApp */
+    background-color: #25D366; 
     color: white;
 }
 
 .cardapio {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color); /* Cor 30% */
     color: white;
 }
 
-/* --- Responsividade da Landing Page --- */
+/* --- Responsividade (Telas Pequenas) --- */
 @media (max-width: 768px) {
-    .landing-page-container {
-        padding: 1rem;
+    body {
+        padding: 0;
         align-items: flex-start;
-        min-height: 100vh;
-        padding-top: 50px;
     }
-
     .landing-card {
-        flex-direction: column;
+        flex-direction: column; /* Coloca um abaixo do outro */
         width: 100%;
         max-width: none;
+        height: auto;
+        border-radius: 0;
     }
 
     .card-left, .card-right {
         padding: 2rem 1rem;
-    }
-
-    .card-left {
-        border-radius: 15px 15px 0 0;
-    }
-
-    .card-right {
-        border-radius: 0 0 15px 15px;
+        flex: auto;
     }
     
-    .logo-landing {
-        width: 120px;
-        height: 120px;
+    /* Remove a linha divisória em mobile */
+    .card-left::after {
+        display: none; 
+    }
+    
+    .card-left {
+        border-radius: 0;
+        /* Adiciona uma linha de destaque para separar as seções */
+        border-bottom: 2px solid var(--accent-color);
     }
 }
