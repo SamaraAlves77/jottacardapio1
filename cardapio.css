@@ -1,5 +1,192 @@
 /* ======================================= */
-/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - CORRIGIDO */
+/* 1. CONFIGURAÇÃO GLOBAL E VARIÁVEIS      */
+/* ======================================= */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    /* Cores principais */
+    --primary-color: #ff00ff; /* Cor Neon principal (Roxo/Magenta) */
+    --secondary-color: #212121; /* Cor de fundo escura */
+    --background-color: #f5f5f5; /* Fundo do corpo */
+    --card-background: #fff;
+    --text-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    
+    /* Efeito Neon */
+    --neon-shadow: 0 0 5px var(--primary-color), 
+                   0 0 10px var(--primary-color), 
+                   0 0 20px var(--primary-color);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-top: 60px; /* Espaço para o header fixo */
+}
+
+a {
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+
+/* ======================================= */
+/* 2. NAVBAR (INJETADO VIA navbar.html)    */
+/* ======================================= */
+header {
+    background-color: var(--card-background);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li a {
+    padding: 10px 15px;
+    display: block;
+    font-weight: 700;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.carrinho-btn, .hamburger-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    padding: 10px;
+    position: relative;
+}
+
+#contador-carrinho {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+}
+
+.hamburger-menu-btn {
+    display: none; /* Esconde no desktop */
+}
+
+/* ======================================= */
+/* 3. CONTEÚDO PRINCIPAL (CARDÁPIO)        */
+/* ======================================= */
+main {
+    padding: 20px;
+}
+
+.menu-section {
+    margin-bottom: 40px;
+}
+
+.menu-section h2 {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.cardapio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+}
+
+.item-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.item-card h3 {
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.item-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.item-card .price {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.btn-add {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-add:hover {
+    background-color: #e600e6;
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* ======================================= */
+/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO)     */
 /* ======================================= */
 .modal {
     display: none; 
@@ -9,9 +196,9 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* Permite rolar a tela inteira se o modal for maior que o viewport */
-    background-color: rgba(0,0,0,0.85); 
-    padding: 20px 0; /* Ajusta o padding vertical para telas menores */
+    overflow: auto;
+    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
+    padding-top: 50px;
 }
 
 .modal.ativo {
@@ -20,7 +207,7 @@
 
 .modal-content {
     /* Fundo Escuro com Destaque Neon */
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color); /* Fundo #212121 */
     color: white;
     margin: 5% auto; 
     padding: 30px; 
@@ -30,17 +217,10 @@
     position: relative;
     border: 1px solid var(--primary-color);
     box-shadow: 0 0 15px var(--primary-color), 0 5px 15px rgba(0,0,0,0.8);
-    
-    /* CORREÇÃO CHAVE: Define o box-sizing para que o padding não cause transbordo */
-    box-sizing: border-box; 
-    max-height: 95vh; /* Limita a altura máxima a 95% da altura da tela */
-    overflow-y: auto; /* Adiciona scroll ao modal se ele transbordar a altura máxima */
 }
 
-/* O restante dos estilos do Modal-Content h3, fechar-modal, etc. permanecem os mesmos */
-
 .modal-content h3 {
-    color: var(--primary-color); 
+    color: var(--primary-color); /* Título em Neon */
     text-align: center;
     margin-bottom: 20px;
     text-shadow: 0 0 5px var(--primary-color);
@@ -69,26 +249,273 @@
     padding-right: 10px;
     margin-bottom: 10px;
 }
-/* ... (outros estilos do carrinho-item e total permanecem os mesmos) ... */
 
+.carrinho-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
+}
 
-/* --- Seção de Adicionais (Customização Modal) --- */
+.carrinho-item:last-child {
+    border-bottom: none;
+}
 
-#customizacao-modal .modal-content {
+.carrinho-item-nome {
+    flex-grow: 1;
+    text-align: left;
+    font-weight: 500;
+}
+
+.carrinho-item-preco {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.btn-remover {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+    line-height: 1;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-remover:hover {
+    background-color: #b71c1c;
+}
+
+/* Total do Carrinho */
+.carrinho-total-container {
+    text-align: right;
+    font-size: 1.4rem; 
+    font-weight: 700;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.carrinho-total-container span {
+    color: white;
+    margin-right: 5px;
+}
+
+/* Estilos de Finalização (Inputs e Botão) */
+.carrinho-finalizar {
+    margin-top: 25px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 
-/* CORREÇÃO CHAVE PARA A LISTA DE ADICIONAIS */
-.lista-adicionais-container { /* Use o ID ou classe do contêiner da sua lista de adicionais */
-    max-height: 40vh; /* Limita a altura da lista a uma porcentagem da tela */
-    overflow-y: auto;
-    padding-right: 10px;
+.carrinho-finalizar input {
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Garante que o Resumo e o botão fiquem visíveis no final */
-.customizacao-resumo, #btn-adicionar-customizado {
-    flex-shrink: 0; /* Impede que estes elementos diminuam */
+.carrinho-finalizar input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+    outline: none;
 }
 
-/* ... (Estilos de Adicionais/Finalização/Contador permanecem os mesmos) ... */
+.carrinho-finalizar input::placeholder {
+    color: #aaa;
+}
+
+#btn-finalizar-pedido {
+    background-color: #25d366; 
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); 
+}
+
+#btn-finalizar-pedido:hover {
+    background-color: #128c7e;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.8);
+}
+
+/* Estilos de Customização */
+.adicionais-opcoes h4, .customizacao-resumo h4 {
+    color: var(--primary-color);
+    text-shadow: 0 0 3px var(--primary-color);
+}
+
+.adicional-item-opcao {
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.adicional-item-opcao small {
+    color: #ccc;
+}
+
+
+/* ======================================= */
+/* 5. BOTÃO NEON FIXO (FAB) - MANTIDO      */
+/* ======================================= */
+.carrinho-fab {
+    position: fixed;
+    /* CORREÇÃO: Posição mais alta para evitar corte */
+    bottom: 40px; 
+    right: 20px;
+    width: 65px; 
+    height: 65px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    color: white;
+    border: 3px solid var(--primary-color); 
+    box-shadow: var(--neon-shadow);
+    z-index: 3000;
+    cursor: pointer;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 0;
+    transition: transform 0.2s;
+}
+
+.carrinho-fab:hover {
+    transform: scale(1.05);
+}
+
+.carrinho-fab span {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 7px;
+    border: 1px solid white;
+}
+
+
+/* ======================================= */
+/* 6. NOTIFICAÇÃO (TOAST)                  */
+/* ======================================= */
+#notificacao {
+    position: fixed;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #388e3c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 4000;
+    opacity: 0;
+    transition: bottom 0.5s, opacity 0.5s;
+    font-weight: bold;
+}
+
+#notificacao.mostrar {
+    bottom: 110px; /* Acima do FAB */
+    opacity: 1;
+}
+
+/* ======================================= */
+/* 7. FOOTER                               */
+/* ======================================= */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    color: #ccc;
+    font-size: 0.85rem;
+}
+
+
+/* ======================================= */
+/* 8. MEDIA QUERIES (RESPONSIVIDADE)       */
+/* ======================================= */
+
+/* Para telas menores que 768px (Mobile) */
+@media (max-width: 768px) {
+    
+    /* ❌ REMOÇÃO DA BARRA FIXA MÓVEL ANTERIOR ❌ */
+    .mobile-fixed-bar {
+        display: none !important; 
+    }
+    
+    /* Navbar e Menu Hamburger */
+    .nav-links {
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        flex-direction: column;
+        background-color: var(--secondary-color);
+        width: 70%;
+        height: 100%;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+        transition: right 0.3s ease-in-out;
+        z-index: 1500;
+        padding-top: 20px;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li a {
+        color: white;
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-links li a:hover,
+    .nav-links li a.active {
+        color: var(--primary-color);
+    }
+
+    .hamburger-menu-btn {
+        display: block;
+    }
+    
+    .header-actions .carrinho-btn {
+        display: none;
+    }
+    
+    /* Conteúdo Principal */
+    main {
+        padding-bottom: 80px;
+    }
+    
+    .modal-content {
+        margin: 10% auto; 
+    }
+}
+
+
+/* Para telas maiores que 768px (Desktop/Tablet) */
+@media (min-width: 769px) {
+    /* Esconde o FAB no desktop */
+    .carrinho-fab {
+        display: none; 
+    }
+}
