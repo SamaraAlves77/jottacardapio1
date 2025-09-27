@@ -3,8 +3,8 @@
 
 :root {
     /* Cores que você definiu na etapa anterior */
-    --primary-color: #e53935;
-    --secondary-color: #212121;
+    --primary-color: #e53935; /* Vermelho do lado esquerdo */
+    --secondary-color: #212121; /* Cor do botão Cardápio */
     --background-color: #f5f5f5;
     --card-background: #fff;
     --text-color: #333;
