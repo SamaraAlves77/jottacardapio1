@@ -181,23 +181,23 @@ main {
 }
 
 .btn-add:hover {
-    background-color: #e600e6; /* Um tom mais escuro de neon */
-    box-shadow: 0 0 8px var(--primary-color); /* Pequeno brilho ao passar o mouse */
+    background-color: #e600e6;
+    box-shadow: 0 0 8px var(--primary-color);
 }
 
 /* ======================================= */
 /* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO)     */
 /* ======================================= */
 .modal {
-    display: none; /* Escondido por padrão */
+    display: none; 
     position: fixed;
-    z-index: 5000; /* Acima de tudo */
+    z-index: 5000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.6); 
+    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
     padding-top: 50px;
 }
 
@@ -206,54 +206,72 @@ main {
 }
 
 .modal-content {
-    background-color: var(--card-background);
+    /* Fundo Escuro com Destaque Neon */
+    background-color: var(--secondary-color); /* Fundo #212121 */
+    color: white;
     margin: 5% auto; 
-    padding: 20px;
+    padding: 30px; 
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
     position: relative;
-    box-shadow: 0 5px 15px var(--shadow-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color), 0 5px 15px rgba(0,0,0,0.8);
+}
+
+.modal-content h3 {
+    color: var(--primary-color); /* Título em Neon */
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px var(--primary-color);
+    text-transform: uppercase;
 }
 
 .fechar-modal, .fechar-customizacao {
-    color: #aaa;
+    color: var(--primary-color);
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.3s;
 }
 
 .fechar-modal:hover,
-.fechar-modal:focus,
-.fechar-customizacao:hover,
-.fechar-customizacao:focus {
-    color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
+.fechar-customizacao:hover {
+    color: white;
+    text-shadow: 0 0 5px white;
 }
 
-/* Estilos de Carrinho */
+/* Estilos da Lista de Itens no Carrinho */
+.carrinho-itens {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
 .carrinho-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px dashed #eee;
     align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
+}
+
+.carrinho-item:last-child {
+    border-bottom: none;
 }
 
 .carrinho-item-nome {
     flex-grow: 1;
     text-align: left;
+    font-weight: 500;
 }
 
-.carrinho-total-container {
-    text-align: right;
-    font-size: 1.3rem;
+.carrinho-item-preco {
+    color: var(--primary-color);
     font-weight: 700;
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 2px solid var(--secondary-color);
+    margin-left: 10px;
 }
 
 .btn-remover {
@@ -261,11 +279,11 @@ main {
     color: white;
     border: none;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.7rem;
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
     line-height: 1;
-    margin-left: 10px;
+    margin-left: 15px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -274,63 +292,84 @@ main {
     background-color: #b71c1c;
 }
 
-.carrinho-finalizar {
+/* Total do Carrinho */
+.carrinho-total-container {
+    text-align: right;
+    font-size: 1.4rem; 
+    font-weight: 700;
     margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.carrinho-total-container span {
+    color: white;
+    margin-right: 5px;
+}
+
+/* Estilos de Finalização (Inputs e Botão) */
+.carrinho-finalizar {
+    margin-top: 25px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .carrinho-finalizar input {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #555;
     border-radius: 5px;
+    background-color: #444;
+    color: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.carrinho-finalizar input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+    outline: none;
+}
+
+.carrinho-finalizar input::placeholder {
+    color: #aaa;
 }
 
 #btn-finalizar-pedido {
-    background-color: #25d366; /* Cor do WhatsApp */
+    background-color: #25d366; 
     color: white;
     padding: 15px;
     border: none;
     border-radius: 5px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s;
+    text-transform: uppercase;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); 
 }
 
 #btn-finalizar-pedido:hover {
     background-color: #128c7e;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.8);
 }
 
 /* Estilos de Customização */
-.adicional-item-opcao {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px dashed #eee;
-}
-
-.adicional-contador button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    margin: 0 5px;
-}
-
-.customizacao-resumo {
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-}
-.customizacao-resumo h4 {
+.adicionais-opcoes h4, .customizacao-resumo h4 {
     color: var(--primary-color);
-    font-size: 1.4rem;
+    text-shadow: 0 0 3px var(--primary-color);
+}
+
+.adicional-item-opcao {
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.adicional-item-opcao small {
+    color: #ccc;
 }
 
 
@@ -339,15 +378,16 @@ main {
 /* ======================================= */
 .carrinho-fab {
     position: fixed;
-    bottom: 20px; 
+    /* CORREÇÃO: Posição mais alta para evitar corte */
+    bottom: 40px; 
     right: 20px;
-    width: 65px; /* Tamanho levemente maior */
+    width: 65px; 
     height: 65px;
     border-radius: 50%;
-    background-color: var(--secondary-color); /* Fundo escuro */
+    background-color: var(--secondary-color);
     color: white;
     border: 3px solid var(--primary-color); 
-    box-shadow: var(--neon-shadow); /* Efeito Neon */
+    box-shadow: var(--neon-shadow);
     z-index: 3000;
     cursor: pointer;
     display: flex; 
@@ -366,7 +406,7 @@ main {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: var(--primary-color); /* Fundo Neon para o contador */
+    background-color: var(--primary-color);
     color: white;
     font-size: 0.9rem;
     font-weight: bold;
@@ -381,7 +421,7 @@ main {
 /* ======================================= */
 #notificacao {
     position: fixed;
-    bottom: -50px; /* Escondido fora da tela */
+    bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #388e3c;
@@ -395,19 +435,30 @@ main {
 }
 
 #notificacao.mostrar {
-    bottom: 80px; /* Aparece acima do FAB no mobile */
+    bottom: 110px; /* Acima do FAB */
     opacity: 1;
+}
+
+/* ======================================= */
+/* 7. FOOTER                               */
+/* ======================================= */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    color: #ccc;
+    font-size: 0.85rem;
 }
 
 
 /* ======================================= */
-/* 7. MEDIA QUERIES (RESPONSIVIDADE)       */
+/* 8. MEDIA QUERIES (RESPONSIVIDADE)       */
 /* ======================================= */
 
 /* Para telas menores que 768px (Mobile) */
 @media (max-width: 768px) {
     
-    /* ❌ REMOÇÃO DO CÓDIGO DA BARRA FIXA MÓVEL ❌ */
+    /* ❌ REMOÇÃO DA BARRA FIXA MÓVEL ANTERIOR ❌ */
     .mobile-fixed-bar {
         display: none !important; 
     }
@@ -415,8 +466,8 @@ main {
     /* Navbar e Menu Hamburger */
     .nav-links {
         position: fixed;
-        top: 60px; /* Abaixo do header */
-        right: -100%; /* Escondido */
+        top: 60px;
+        right: -100%;
         flex-direction: column;
         background-color: var(--secondary-color);
         width: 70%;
@@ -428,7 +479,7 @@ main {
     }
 
     .nav-links.active {
-        right: 0; /* Mostra o menu */
+        right: 0;
     }
 
     .nav-links li a {
@@ -443,16 +494,16 @@ main {
     }
 
     .hamburger-menu-btn {
-        display: block; /* Mostra o botão hamburger no mobile */
+        display: block;
     }
     
     .header-actions .carrinho-btn {
-        display: none; /* Esconde o carrinho da navbar no mobile */
+        display: none;
     }
     
     /* Conteúdo Principal */
     main {
-        padding-bottom: 80px; /* Mais espaço inferior para o FAB */
+        padding-bottom: 80px;
     }
     
     .modal-content {
@@ -463,7 +514,7 @@ main {
 
 /* Para telas maiores que 768px (Desktop/Tablet) */
 @media (min-width: 769px) {
-    /* Esconde o FAB no desktop, pois o carrinho já está na navbar */
+    /* Esconde o FAB no desktop */
     .carrinho-fab {
         display: none; 
     }
