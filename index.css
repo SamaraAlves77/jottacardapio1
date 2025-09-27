@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
+    /* Cores que você definiu na etapa anterior */
     --primary-color: #e53935;
     --secondary-color: #212121;
     --background-color: #f5f5f5;
