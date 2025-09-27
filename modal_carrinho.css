@@ -67,7 +67,7 @@
 
 
 /* ------------------------------------------------------- */
-/* LAYOUT DE CUSTOMIZAÇÃO (Onde estava a desorganização) */
+/* LAYOUT DE CUSTOMIZAÇÃO (Otimizado) */
 /* ------------------------------------------------------- */
 
 .adicionais-opcoes {
@@ -84,13 +84,15 @@
     border-bottom: 1px dashed #555;
     color: #eee;
     font-size: 1.05em;
-    flex-wrap: wrap; /* Evita quebra feia em telas muito pequenas */
+    /* CORREÇÃO/OTIMIZAÇÃO: Impede a quebra de linha principal */
+    flex-wrap: nowrap;
 }
 
 /* Esquerda: Nome do Adicional */
 .adicional-item-opcao > span:first-child {
     flex-grow: 1; /* Ocupa o espaço restante */
-    max-width: 50%; /* Limita o crescimento para dar espaço aos controles */
+    flex-basis: 0; /* Adicionado para melhor funcionamento do flex-grow */
+    min-width: 100px; /* Garante que não encolha demais */
     margin-right: 15px; /* Espaçamento da coluna do meio */
 }
 
@@ -101,6 +103,7 @@
     flex-shrink: 0; /* IMPEDE QUE ENCOLHA */
     gap: 10px; /* Espaço entre o preço e os botões */
     margin-left: auto; /* Empurra para a direita */
+    min-width: 120px; /* Garante espaço mínimo para os controles */
 }
 
 /* Meio: Preço do Adicional */
