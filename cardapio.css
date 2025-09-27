@@ -1,199 +1,211 @@
-/* ======================================= */
-/* 1. CONFIGURAÇÃO GLOBAL E VARIÁVEIS      */
-/* ======================================= */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
+/* ======================================================= */
+/* 0. VARIÁVEIS E ESTILOS GLOBAIS */
+/* ======================================================= */
 :root {
-    /* Cores principais - Base CLARA */
-    --primary-color: #ff00ff; /* Cor Neon principal (Roxo/Magenta) */
-    --secondary-color: #212121; /* Cor de fundo escura (usada no Modal) */
-    --background-color: #ffffff; /* Fundo do corpo CLARO */
-    --card-background: #f8f8f8;
-    --text-color: #333;
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    
-    /* Efeito Neon */
-    --neon-shadow: 0 0 5px var(--primary-color), 
-                   0 0 10px var(--primary-color), 
-                   0 0 20px var(--primary-color);
+    --primary-color: #ff69b4; /* Rosa Neon */
+    --secondary-color: #333;
+    --text-color: #eee;
+    --background-color: #1a1a1a;
+    --card-background: #2b2b2b;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
-    padding-top: 55px; /* Espaço para a navbar minimalista */
+    scroll-behavior: smooth;
 }
 
 a {
+    color: var(--primary-color);
     text-decoration: none;
-    color: var(--secondary-color);
 }
 
-/* ======================================= */
-/* 2. NAVBAR (MINIMALISTA E FIXA)          */
-/* ======================================= */
-header {
-    background-color: var(--background-color);
-    box-shadow: 0 1px 3px var(--shadow-color); /* Sombra mais suave */
+a:hover {
+    text-decoration: underline;
+}
+
+/* ======================================================= */
+/* 1. NAVBAR (Cabeçalho e Navegação) */
+/* ======================================================= */
+.navbar {
+    background-color: var(--secondary-color);
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 1.5rem; 
-    height: 55px; /* Altura fixa minimalista */
-    position: fixed;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 2000;
+    z-index: 900;
 }
 
-.logo img {
-    height: 35px; /* Reduz o tamanho da logo */
+.logo a {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    align-items: center;
 }
 
-.nav-links li a {
-    padding: 8px 12px;
-    display: block;
-    font-weight: 500; 
-    font-size: 0.95rem;
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    font-weight: 500;
     transition: color 0.3s;
 }
 
-.nav-links li a:hover,
-.nav-links li a.active {
+.nav-links a:hover {
     color: var(--primary-color);
-    text-shadow: 0 0 1px rgba(255, 0, 255, 0.5);
+    text-decoration: none;
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.carrinho-btn, .hamburger-menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    color: var(--secondary-color);
-    padding: 5px;
+.cart-icon {
     position: relative;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1.2em;
+    margin-left: 20px;
 }
 
 #contador-carrinho {
-    position: absolute;
-    top: -2px;
-    right: -2px;
     background-color: var(--primary-color);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
+    color: #000;
     border-radius: 50%;
-    padding: 2px 5px;
-    box-shadow: 0 0 3px var(--primary-color);
+    padding: 2px 7px;
+    font-size: 0.7em;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-weight: bold;
 }
 
-.hamburger-menu-btn {
+/* Menu Hamburger (Mobile) */
+.hamburger-menu-btn, .mobile-hamburger-btn {
     display: none;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
-/* ======================================= */
-/* 3. CONTEÚDO PRINCIPAL (CARDÁPIO)        */
-/* ======================================= */
-main {
+
+/* ======================================================= */
+/* 2. CONTEÚDO PRINCIPAL (Cardápio) */
+/* ======================================================= */
+
+#main-content-container {
     padding: 20px;
-    max-width: 1200px; /* Limita a largura em desktop */
-    margin: 0 auto; 
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .menu-section {
     margin-bottom: 40px;
+    padding: 20px 0;
+    border-bottom: 1px dashed #444;
 }
 
 .menu-section h2 {
-    color: var(--secondary-color);
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.4);
 }
 
 .cardapio-grid {
     display: grid;
-    /* Grid proporcional: 1, 2 ou 3 colunas dependendo da tela */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
 }
 
 .item-card {
     background-color: var(--card-background);
     border-radius: 10px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.3s;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
 .item-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
 }
 
 .item-card img {
-    /* Altura padronizada para proporção */
     width: 100%;
-    height: 180px; 
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
 }
-/* ... (outros estilos de card) ... */
 
-.btn-add {
+.item-card h3 {
+    padding: 15px 15px 0;
+    color: #fff;
+    font-size: 1.4em;
+}
+
+.item-card p {
+    padding: 0 15px;
+    color: #aaa;
+    flex-grow: 1; /* Garante que a descrição ocupe o espaço */
+    margin-bottom: 10px;
+}
+
+.item-card .price {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    font-weight: bold;
+    padding: 0 15px 10px;
+}
+
+.item-card .btn-add {
     background-color: var(--primary-color);
-    color: white;
+    color: #000;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 700;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 6px rgba(255, 0, 255, 0.3); 
+    transition: background-color 0.3s;
+    border-radius: 0 0 10px 10px;
 }
 
-.btn-add:hover {
-    background-color: #e600e6;
-    box-shadow: 0 0 10px var(--primary-color);
+.item-card .btn-add:hover {
+    background-color: #ff85c0;
 }
 
-/* ======================================= */
-/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - TEMA NEON ESCURO */
-/* ======================================= */
+
+/* ======================================================= */
+/* 3. MODAIS (Janelas Flutuantes: Carrinho e Customização) */
+/* ======================================================= */
+
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
-    z-index: 5000; 
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow-y: auto; 
-    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
-    padding: 0; /* Correção de padding */
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.85); /* Fundo escuro intenso */
 }
 
 .modal.ativo {
@@ -201,220 +213,374 @@ main {
 }
 
 .modal-content {
-    /* Fundo Escuro com Destaque Neon */
-    background-color: var(--secondary-color); /* Fundo #212121 */
-    color: white;
-    margin: 30px auto; /* Margem ajustada para centralização segura */
-    padding: 30px; 
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    border: 1px solid var(--primary-color);
-    box-shadow: 0 0 15px var(--primary-color), 0 5px 15px rgba(0,0,0,0.8);
+    background-color: var(--secondary-color);
+    margin: 5% auto; 
+    padding: 25px;
+    border: 1px solid var(--primary-color); 
+    width: 95%; /* Maior em mobile */
+    max-width: 550px; /* Limite máximo */
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); /* Sombra Neon forte */
     
-    /* CORREÇÃO: Garante que o modal se ajuste sem cortar o conteúdo */
-    max-height: calc(100vh - 60px); 
-    overflow-y: auto;
+    /* CRÍTICO: Responsividade de Altura e Flexbox */
+    max-height: 90vh; 
+    overflow-y: hidden; 
+    display: flex; 
+    flex-direction: column;
 }
 
-.modal-content h3 {
-    color: var(--primary-color); /* Título em Neon */
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px var(--primary-color);
-    text-transform: uppercase;
-}
-
+/* Close button (X) */
 .fechar-modal, .fechar-customizacao {
-    color: var(--primary-color);
-    float: right;
-    font-size: 28px;
+    color: #fff;
+    font-size: 32px;
     font-weight: bold;
+    align-self: flex-end; 
     cursor: pointer;
     transition: color 0.3s;
 }
 
-.fechar-modal:hover,
-.fechar-customizacao:hover {
-    color: white;
-    text-shadow: 0 0 5px white;
+.fechar-modal:hover, .fechar-customizacao:hover {
+    color: var(--primary-color);
 }
 
-/* Estilos da Lista de Itens no Carrinho */
+.modal-content h3 {
+    text-align: center;
+    color: #fff;
+    margin-top: -10px; /* Ajusta o espaçamento do X */
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+/* ======================================================= */
+/* 4. MODAL DO CARRINHO (Ajuste de Rolagem) */
+/* ======================================================= */
+
 .carrinho-itens {
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin-bottom: 10px;
+    /* CRÍTICO: Rolagem para a lista de itens */
+    max-height: 25vh; 
+    overflow-y: auto; 
+    padding-right: 10px; 
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .carrinho-item {
-    padding: 15px 0; 
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
-}
-/* ... (outros estilos de item) ... */
-
-.carrinho-item-preco {
-    color: var(--primary-color); 
-}
-
-/* Total do Carrinho */
-.carrinho-total-container {
-    text-align: right;
-    font-size: 1.4rem; 
-    font-weight: 700;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 2px solid var(--primary-color); 
-    color: var(--primary-color); 
-    text-shadow: 0 0 5px var(--primary-color);
-}
-
-.carrinho-total-container span {
-    color: white;
-    margin-right: 5px;
-}
-
-/* Estilos de Finalização (Inputs e Botão) */
-.carrinho-finalizar {
-    margin-top: 25px;
-    padding: 10px;
-    background-color: #333; /* Fundo para a área de inputs */
-    border-radius: 5px;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #555;
+    color: #eee;
 }
 
-.carrinho-finalizar input {
+.carrinho-item:last-child {
+    border-bottom: none;
+}
+
+.carrinho-item-nome {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.carrinho-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 10px 0;
+    border-top: 2px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+/* Estilos para o formulário de finalização */
+.carrinho-finalizar input,
+.carrinho-finalizar select,
+.carrinho-finalizar textarea {
+    width: 100%;
     padding: 12px;
-    border: 1px solid #555;
+    margin-bottom: 10px;
+    border: 1px solid #666;
     border-radius: 5px;
-    background-color: #444; /* Fundo escuro para inputs */
-    color: white;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #444;
+    color: #fff;
+    font-size: 1em;
 }
 
-.carrinho-finalizar input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color); /* Efeito Neon no focus */
-    outline: none;
+.carrinho-finalizar h4 {
+    color: var(--primary-color);
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
-.carrinho-finalizar input::placeholder {
+
+/* ======================================================= */
+/* 5. MODAL DE CUSTOMIZAÇÃO (Ajuste de Rolagem) */
+/* ======================================================= */
+
+.adicionais-opcoes {
+    /* CRÍTICO: Rolagem para a lista de adicionais */
+    max-height: 35vh; 
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+.adicional-item-opcao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #555;
+    color: #eee;
+}
+
+.adicional-item-opcao small {
     color: #aaa;
 }
 
-#btn-finalizar-pedido {
-    /* Mantém o verde WhatsApp com destaque */
-    background-color: #25d366; 
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); 
+.adicional-contador {
+    display: flex;
+    align-items: center;
 }
 
-#btn-finalizar-pedido:hover {
-    background-color: #128c7e;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.8);
-}
-
-/* Estilos de Customização */
-.adicionais-opcoes h4, .customizacao-resumo h4 {
-    color: var(--primary-color);
-    text-shadow: 0 0 3px var(--primary-color);
-}
-
-/* ... (outros estilos de customização) ... */
-
-
-/* ======================================= */
-/* 5. FAB REMOVIDO                         */
-/* ======================================= */
-/* O botão FAB foi removido. */
-
-
-/* ======================================= */
-/* 6. NOTIFICAÇÃO (TOAST)                  */
-/* ======================================= */
-#notificacao {
-    position: fixed;
-    bottom: -50px;
-    /* ... */
-}
-
-#notificacao.mostrar {
-    bottom: 30px; 
-    opacity: 1;
-}
-
-/* ======================================= */
-/* 7. FOOTER                               */
-/* ======================================= */
-footer {
+.quantidade-adicional {
+    min-width: 25px; 
     text-align: center;
-    padding: 15px;
-    background-color: #efefef; /* Fundo claro para o footer */
-    color: var(--secondary-color);
-    font-size: 0.85rem;
+    margin: 0 5px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.customizacao-resumo {
+    padding-top: 15px;
+    border-top: 1px solid #666;
+    margin-top: auto; 
+}
+
+.customizacao-resumo p {
+    margin: 5px 0;
+    color: #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+.customizacao-resumo h4 {
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* ======================================================= */
+/* 6. ESTILOS DE BOTÕES (Bonitos) */
+/* ======================================================= */
+
+/* Botões de Ação Principal (Finalizar e Adicionar Customizado) */
+#btn-finalizar-pedido, #btn-adicionar-customizado {
+    width: 100%;
+    padding: 14px; /* Maior padding */
+    background-color: var(--primary-color); 
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    margin-top: 15px;
+    box-shadow: 0 0 10px var(--primary-color); /* Sombra mais forte */
+}
+
+#btn-finalizar-pedido:hover, #btn-adicionar-customizado:hover {
+    background-color: #ff85c0; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--primary-color);
+}
+
+/* Botão Secundário (Localização) */
+.btn-secundario {
+    width: 100%;
+    padding: 10px;
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+
+.btn-secundario i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.btn-secundario:hover {
+    background-color: #555;
+    border-color: var(--primary-color);
+}
+
+/* Botões de Contador de Adicionais (+/-) */
+.btn-aumentar-adicional, .btn-diminuir-adicional {
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-aumentar-adicional:hover, .btn-diminuir-adicional:hover {
+    background-color: #ff85c0;
+}
+
+/* Botão de Remover Item do Carrinho */
+.btn-remover {
+    background: none;
+    color: #e53935; 
+    border: 1px solid #e53935;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    line-height: 1;
+    text-align: center;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-remover:hover {
+    background-color: #e53935;
+    color: #fff;
 }
 
 
-/* ======================================= */
-/* 8. MEDIA QUERIES (RESPONSIVIDADE)       */
-/* ======================================= */
+/* ======================================================= */
+/* 7. BOTÃO FLUTUANTE (FAB) E NOTIFICAÇÃO */
+/* ======================================================= */
 
-/* Mobile (1 Coluna) */
-@media (max-width: 480px) {
-    .cardapio-grid {
-        grid-template-columns: 1fr;
-    }
+.carrinho-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.6);
+    z-index: 950;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
 }
 
-/* Tablet (2 Colunas) e Mobile Geral */
-@media (min-width: 481px) and (max-width: 768px) {
-    .cardapio-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    /* ❌ REMOÇÃO DA BARRA FIXA MÓVEL ANTERIOR ❌ */
-    .mobile-fixed-bar {
-        display: none !important; 
-    }
-    
-    main {
-        padding-bottom: 20px;
-    }
-    
-    .header-actions .carrinho-btn {
-        display: block; 
-    }
+.carrinho-fab:hover {
+    transform: scale(1.05);
 }
 
-/* Esconde o menu de navegação no mobile por padrão (para o menu hamburguer) */
+#fab-contador-carrinho {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.notificacao {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    transform: translateX(100%);
+}
+
+.notificacao.mostrar {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ======================================================= */
+/* 8. FOOTER */
+/* ======================================================= */
+
+footer {
+    background-color: var(--secondary-color);
+    color: #777;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 40px;
+    border-top: 1px solid #444;
+}
+
+/* ======================================================= */
+/* 9. MEDIA QUERIES (Responsividade) */
+/* ======================================================= */
+
 @media (max-width: 768px) {
+    /* Navbar e Menu Hamburger */
     .nav-links {
-        position: fixed;
-        top: 55px; /* Altura da navbar */
-        right: -100%;
+        display: none;
         flex-direction: column;
-        background-color: var(--background-color);
-        width: 70%;
-        height: calc(100% - 55px);
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease-in-out;
-        z-index: 1500;
-        padding-top: 20px;
-    }
-    
-    .nav-links.active {
-        right: 0;
-    }
-    
-    .nav-links li a {
-        color: var(--text-color);
-        border-bottom: 1px solid #eee;
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Abaixo da navbar */
+        left: 0;
+        background-color: var(--secondary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 10px 0;
     }
 
-    .hamburger-menu-btn {
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-links a {
         display: block;
+        padding: 10px;
+    }
+
+    .hamburger-menu-btn, .mobile-hamburger-btn {
+        display: block;
+    }
+
+    /* Cardápio */
+    .cardapio-grid {
+        grid-template-columns: 1fr; /* Coluna única em mobile */
+    }
+
+    /* Modais (Aumenta o espaçamento do topo para não cobrir o cabeçalho) */
+    .modal-content {
+        margin: 10vh auto;
     }
 }
