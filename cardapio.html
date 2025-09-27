@@ -14,40 +14,26 @@
 <body>
 
     <div id="navbar-container">
-        <nav class="navbar">
-            <div class="logo"><a href="#">JottaV</a></div>
-            <ul class="nav-links">
-                <li><a href="#hamburgueres-artesanais">Hambúrgueres</a></li>
-                <li><a href="#combos-e-familia">Combos</a></li>
-                <li><a href="#bebidas">Bebidas</a></li>
-            </ul>
-            <div class="cart-icon" id="carrinho-desktop-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="contador-carrinho">0</span>
-            </div>
-            <button class="hamburger-menu-btn" id="menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
-    </div>
+        </div>
     
     <main id="main-content-container">
-        <section class="menu-section" id="hamburgueres-artesanais">
+        
+        <section class="menu-section" id="hamburgueres-artesanais-secao">
             <h2>Hambúrgueres Artesanais</h2>
-            <div class="cardapio-grid" id="hamburgueres-artesanais-grid"></div>
+            <div class="cardapio-grid" id="hamburgueres-artesanais-grid"></div> 
         </section>
 
-        <section class="menu-section" id="combos-e-familia">
+        <section class="menu-section" id="combos-e-familia-secao">
             <h2>Combos e Família</h2>
             <div class="cardapio-grid" id="combos-e-familia-grid"></div>
         </section>
 
-        <section class="menu-section" id="acompanhamentos">
+        <section class="menu-section" id="acompanhamentos-secao">
             <h2>Acompanhamentos</h2>
             <div class="cardapio-grid" id="acompanhamentos-grid"></div>
         </section>
 
-        <section class="menu-section" id="bebidas">
+        <section class="menu-section" id="bebidas-secao">
             <h2>Bebidas</h2>
             <div class="cardapio-grid" id="bebidas-grid"></div>
         </section>
@@ -55,63 +41,7 @@
     </main>
 
     <div id="modal-container">
-        
-        <div id="customizacao-modal" class="modal">
-            <div class="modal-content">
-                <span class="fechar-customizacao">&times;</span>
-                <h3 id="customizacao-titulo">Personalizar Item</h3>
-                <p id="customizacao-descricao" style="color: #aaa; margin-bottom: 15px;"></p>
-                
-                <div class="adicionais-opcoes">
-                    </div>
-
-                <div class="customizacao-resumo">
-                    <p>Subtotal do Item: <span id="subtotal-item">R$ 0,00</span></p>
-                    <h4>Total: <span id="total-customizacao">R$ 0,00</span></h4>
-                    <button id="btn-adicionar-customizado">Adicionar ao Carrinho</button>
-                </div>
-            </div>
         </div>
-
-        <div id="modal-carrinho" class="modal">
-            <div class="modal-content">
-                <span class="fechar-modal">&times;</span>
-                <h3>Seu Carrinho</h3>
-                
-                <div class="carrinho-itens">
-                    </div>
-                
-                <div class="carrinho-total-container">
-                    <span>Total do Pedido:</span>
-                    <span id="carrinho-total">R$ 0,00</span>
-                </div>
-
-                <div class="carrinho-finalizar">
-                    <h4>Informações de Contato e Entrega</h4>
-                    
-                    <button class="btn-secundario" id="btn-anexar-localizacao">
-                        <i class="fas fa-map-marker-alt"></i> Anexar Localização
-                    </button>
-                    
-                    <input type="text" id="campo-nome" placeholder="Seu Nome" required>
-                    <input type="tel" id="campo-telefone" placeholder="Telefone (WhatsApp)" required>
-                    <input type="text" id="campo-endereco" placeholder="Rua, Número e Bairro" required>
-                    
-                    <h4>Forma de Pagamento</h4>
-                    <select id="campo-pagamento">
-                        <option value="pix">PIX</option>
-                        <option value="cartao">Cartão de Crédito/Débito</option>
-                        <option value="dinheiro">Dinheiro (troco para...)</option>
-                    </select>
-                    
-                    <textarea id="campo-observacoes" placeholder="Observações (ex: Sem cebola, Troco para R$50)"></textarea>
-
-                    <button id="btn-finalizar-pedido">Finalizar Pedido (WhatsApp)</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
     
     <div id="notificacao" class="notificacao">
         Item adicionado ao carrinho!
@@ -126,6 +56,10 @@
         <p>&copy; 2024 JottaV Burguer. Todos os direitos reservados.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="cardapio.js"></script>
+    <script src="modal_carrinho.js"></script>
+    <script src="navbar.js"></script>
+    <script src="index.js"></script>
+    
 </body>
 </html>
