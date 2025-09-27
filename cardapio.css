@@ -171,7 +171,7 @@ main {
     border: none;
     padding: 0.8rem 1rem;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.rem;
     font-weight: 700;
     transition: background-color 0.2s;
     margin-top: auto;
@@ -441,9 +441,20 @@ main {
         display: block; 
     }
 
-    /* Oculta o FAB no mobile, pois a barra fixa inferior já tem o botão */
+    /* * CORREÇÃO: FAZ O FAB (BOTÃO FIXO NEON) APARECER NO MOBILE 
+    * E O POSICIONA ACIMA DA BARRA FIXA PADRÃO.
+    */
     .carrinho-fab {
-        display: none; 
+        display: flex; /* Torna o FAB visível */
+        bottom: 75px; /* Posição acima da barra fixa inferior (aprox. 55px de altura) */
+        right: 15px; 
+        width: 55px; /* Levemente menor para mobile */
+        height: 55px; /* Levemente menor para mobile */
+    }
+
+    /* OCULTA o botão de carrinho original na barra fixa para evitar duplicidade */
+    #mobile-carrinho-btn {
+        display: none !important;
     }
 
     /* Layout da Página */
@@ -489,15 +500,15 @@ main {
         margin-bottom: 1rem;
     }
     
-    /* AJUSTE ESSENCIAL: Posiciona a notificação acima da barra fixa */
+    /* AJUSTE ESSENCIAL: Posiciona a notificação acima do FAB e da barra fixa */
     #notificacao {
-        bottom: 75px; 
+        bottom: 140px; /* Sobe a notificação para ficar acima do FAB */
         width: 90%; 
         text-align: center;
     }
 
     #notificacao.mostrar {
-        bottom: 90px; 
+        bottom: 155px; 
     }
     
     /* Ajuste para o botão minimalista no mobile */
