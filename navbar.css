@@ -8,9 +8,10 @@
     --text-color: #eee;
 }
 
-.navbar {
+/* 1. ESTILO DO HEADER (NAVBAR) */
+header {
     background-color: var(--secondary-color);
-    /* AJUSTE AQUI: Reduzindo o padding vertical para diminuir a altura da barra */
+    /* AJUSTE AQUI: Padding vertical para altura minimalista */
     padding: 10px 20px; 
     display: flex;
     justify-content: space-between;
@@ -25,49 +26,73 @@
     z-index: 900;
 }
 
-.logo a {
-    /* Mantendo o 1.5em, que é um bom tamanho minimalista */
-    font-size: 1.5em; 
-    font-weight: bold;
-    color: var(--primary-color);
-    text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); 
-    /* Garante alinhamento vertical */
-    line-height: 1; 
+/* 2. ESTILO DA LOGO (IMAGEM) */
+.logo {
+    display: flex; /* Garante alinhamento */
+    align-items: center;
+}
+
+.logo img {
+    /* CORREÇÃO CRÍTICA AQUI: Define a altura máxima para a imagem */
+    height: 35px; /* Altura ideal para uma barra minimalista de 10px padding */
+    width: auto;
+    transition: transform 0.3s;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+/* 3. ESTILOS DOS LINKS E AÇÕES */
+nav {
+    flex-grow: 1; /* Permite que a navegação ocupe o espaço central */
+    margin: 0 20px;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
     align-items: center; 
+    justify-content: flex-start; /* Alinha os links à esquerda do centro */
     transition: transform 0.3s ease-in-out;
 }
 
 .nav-links li {
-    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .nav-links a {
     color: var(--text-color);
     font-weight: 500;
-    transition: color 0.3s;
+    transition: color 0.3s, border-bottom 0.3s;
     padding: 5px 0;
 }
 
-.nav-links a:hover {
+.nav-links a:hover, .nav-links a.active {
     color: var(--primary-color);
     text-decoration: none;
+    border-bottom: 2px solid var(--primary-color); /* Efeito de seleção bonito */
 }
 
-.cart-icon {
+/* 4. BOTÕES DE AÇÃO (CARRINHO E MENU) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.carrinho-btn {
     position: relative;
     cursor: pointer;
+    background: none;
+    border: none;
     color: var(--text-color);
-    font-size: 1.2em;
-    margin-left: 20px;
+    font-size: 1.5em; /* Aumentado para melhor visibilidade */
     transition: color 0.3s;
+    padding: 0;
 }
 
-.cart-icon:hover {
+.carrinho-btn:hover {
     color: var(--primary-color);
 }
 
@@ -85,7 +110,7 @@
 }
 
 /* Menu Hamburger (Mobile) */
-.hamburger-menu-btn, .mobile-hamburger-btn {
+.hamburger-menu-btn {
     display: none;
     background: none;
     border: none;
@@ -94,36 +119,46 @@
     cursor: pointer;
 }
 
-/* MEDIA QUERIES para Responsividade */
+/* 5. MEDIA QUERIES para Responsividade */
 @media (max-width: 768px) {
-    /* AJUSTE AQUI: Reduzindo o padding vertical para mobile também */
-    .navbar {
+    header {
+        /* Reduzindo o padding vertical para mobile */
         padding: 8px 15px; 
     }
     
-    .logo a {
-        font-size: 1.4em; 
+    .logo img {
+        /* Ajuste para telas pequenas */
+        height: 30px; 
     }
 
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        align-items: flex-start; 
-        /* Ajusta o topo do menu móvel de 60px para 45px, acompanhando a nova altura da barra */
-        top: 45px; 
+    nav {
+        /* Esconde a navegação principal no mobile */
+        display: none; 
+        position: absolute;
+        width: 100%;
+        top: 45px; /* Abaixo do header */
         left: 0;
         background-color: var(--secondary-color);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        padding: 10px 20px;
+        padding: 10px 0;
+        margin: 0;
     }
 
-    .nav-links.active {
-        display: flex;
+    /* A classe 'active' seria adicionada ao <nav> pelo JavaScript para mostrar o menu */
+    nav.active {
+        display: block; 
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: center; 
+        padding: 10px 0;
     }
 
     .nav-links li {
         margin: 10px 0;
-        width: 100%;
+        width: 90%;
+        text-align: center;
         border-bottom: 1px dashed #444;
         padding-bottom: 5px;
     }
@@ -137,11 +172,12 @@
         padding: 5px 0;
     }
     
-    .cart-icon {
-        display: none; 
+    /* Move o ícone do carrinho para dentro do .header-actions no mobile */
+    .carrinho-btn {
+        font-size: 1.2em; 
     }
 
-    .hamburger-menu-btn, .mobile-hamburger-btn {
-        display: block;
+    .hamburger-menu-btn {
+        display: block; /* Mostra o menu hamburger */
     }
 }
