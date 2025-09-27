@@ -9,7 +9,8 @@
 }
 
 /* 1. ESTILO DO HEADER (NAVBAR) */
-header {
+/* CORREÇÃO: Alterado de 'header' para '.navbar' para se adequar ao HTML injetado */
+.navbar {
     background-color: var(--secondary-color);
     /* AJUSTE AQUI: Padding vertical para altura minimalista */
     padding: 10px 20px; 
@@ -121,7 +122,8 @@ nav {
 
 /* 5. MEDIA QUERIES para Responsividade */
 @media (max-width: 768px) {
-    header {
+    /* CORREÇÃO: Alterado de 'header' para '.navbar' */
+    .navbar {
         /* Reduzindo o padding vertical para mobile */
         padding: 8px 15px; 
     }
@@ -136,7 +138,8 @@ nav {
         display: none; 
         position: absolute;
         width: 100%;
-        top: 45px; /* Abaixo do header */
+        /* CORREÇÃO: Ajuste de 'top' para posicionar abaixo da navbar */
+        top: 56px; 
         left: 0;
         background-color: var(--secondary-color);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
