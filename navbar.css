@@ -10,7 +10,8 @@
 
 .navbar {
     background-color: var(--secondary-color);
-    padding: 15px 20px;
+    /* AJUSTE AQUI: Reduzindo o padding vertical para diminuir a altura da barra */
+    padding: 10px 20px; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,12 +26,12 @@
 }
 
 .logo a {
-    /* CORREÇÃO AQUI: Reduzido para 1.5em para melhor proporção na barra */
+    /* Mantendo o 1.5em, que é um bom tamanho minimalista */
     font-size: 1.5em; 
     font-weight: bold;
     color: var(--primary-color);
-    text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Efeito Neon leve */
-    /* Adicionando line-height para garantir que o texto esteja centralizado verticalmente */
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); 
+    /* Garante alinhamento vertical */
     line-height: 1; 
 }
 
@@ -95,8 +96,12 @@
 
 /* MEDIA QUERIES para Responsividade */
 @media (max-width: 768px) {
+    /* AJUSTE AQUI: Reduzindo o padding vertical para mobile também */
+    .navbar {
+        padding: 8px 15px; 
+    }
+    
     .logo a {
-        /* Garante que a logo não cresça demais em telas pequenas */
         font-size: 1.4em; 
     }
 
@@ -104,9 +109,8 @@
         display: none;
         flex-direction: column;
         align-items: flex-start; 
-        width: 100%;
-        position: absolute;
-        top: 60px; 
+        /* Ajusta o topo do menu móvel de 60px para 45px, acompanhando a nova altura da barra */
+        top: 45px; 
         left: 0;
         background-color: var(--secondary-color);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
