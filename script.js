@@ -4,10 +4,10 @@
 let carrinho = [];
 let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
-const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; // Garante que apenas Artesanais possam ser customizados
+const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
-// Variáveis globais para os elementos (fabCarrinho e fabContadorCarrinho estão incluídos)
-let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
+// Variáveis globais: mobileCarrinhoBtn e mobileContadorCarrinho removidos para limpeza
+let carrinhoModal, fecharModalBtn, carrinhoBtn, contadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 
 // =======================================================
@@ -39,13 +39,13 @@ async function loadHTML(url, elementId) {
 }
 
 function rebindElements() {
-    // ⚠️ Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM ⚠️
+    // Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM
     carrinhoModal = document.getElementById('carrinho-modal');
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
-    mobileCarrinhoBtn = document.getElementById('mobile-carrinho-btn');
     contadorCarrinho = document.getElementById('contador-carrinho');
-    mobileContadorCarrinho = document.getElementById('mobile-contador-carrinho');
+    
+    // Referências móveis antigas foram removidas aqui
     
     // REFERÊNCIAS DO BOTÃO FIXO (FAB)
     fabCarrinho = document.getElementById('fab-carrinho');
@@ -57,7 +57,7 @@ function rebindElements() {
     btnFinalizar = document.getElementById('btn-finalizar-pedido');
     navLinks = document.querySelector('.nav-links');
     hamburgerBtn = document.getElementById('hamburger-menu-btn');
-    mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
+    mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn'); // Mantido para o menu lateral
     customizacaoModal = document.getElementById('customizacao-modal');
     fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
     btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
@@ -68,12 +68,11 @@ function rebindElements() {
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO E UTILIDADE
 // =======================================================
 
-// Função centralizada para atualizar todos os contadores
+// Função centralizada para atualizar APENAS os contadores ativos (Desktop e FAB)
 function updateContadorCarrinho() {
-    // Conta apenas o número de itens, não a quantidade total dentro de cada item
     const totalItens = carrinho.length; 
     if (contadorCarrinho) contadorCarrinho.textContent = totalItens;
-    if (mobileContadorCarrinho) mobileContadorCarrinho.textContent = totalItens;
+    // mobileContadorCarrinho removido
     if (fabContadorCarrinho) fabContadorCarrinho.textContent = totalItens; // ATUALIZA O FAB
 }
 
@@ -291,7 +290,6 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
-    // O ID deve ser o nome da seção + '-grid' (ex: hamburgueres-artesanais-grid)
     const container = document.getElementById(idContainer); 
     if (!container) {
         console.error(`Contêiner não encontrado para a categoria: ${titulo} (ID: ${idContainer})`);
@@ -306,7 +304,6 @@ function criarSecaoCardapio(titulo, idContainer, itens) {
 
 async function carregarCardapio() {
     try {
-        // Busca o cardapio.json na raiz
         const response = await fetch('./cardapio.json');
         
         if (!response.ok) {
@@ -345,13 +342,12 @@ async function carregarCardapio() {
 // =======================================================
 
 function setupEventListeners() {
-    // ABRIR MODAL DO CARRINHO (Desktop, Mobile e FAB)
+    // ABRIR MODAL DO CARRINHO (Desktop e FAB)
     if (carrinhoBtn) {
         carrinhoBtn.addEventListener('click', openCarrinhoModal);
     }
-    if (mobileCarrinhoBtn) {
-        mobileCarrinhoBtn.addEventListener('click', openCarrinhoModal);
-    }
+    // mobileCarrinhoBtn foi removido
+
     // Adiciona o listener para o Botão Fixo Neon (FAB)
     if (fabCarrinho) {
         fabCarrinho.addEventListener('click', openCarrinhoModal);
@@ -387,7 +383,6 @@ function setupEventListeners() {
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
-            // Define o nome de exibição: "Nome do Item (+ X adicionais)"
             const nomeFinal = `${itemEmCustomizacao.nome}${adicionaisSelecionados ? ` (+ ${itemEmCustomizacao.adicionais.length} adicionais)` : ''}`;
 
             const itemFinal = {
@@ -450,6 +445,7 @@ function setupEventListeners() {
         });
     }
     
+    // mobileHamburgerBtn foi mantido, mas verifique se ele é o único necessário
     if (mobileHamburgerBtn && navLinks) {
         mobileHamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -475,14 +471,13 @@ function setupEventListeners() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     
-    // 1. Carrega o HTML dinamicamente. (VERIFIQUE O NOME DESTES ARQUIVOS!)
+    // 1. Carrega o HTML dinamicamente. 
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
-    // ATENÇÃO: Corrigido o erro de nome de arquivo aqui, o conteúdo está no cardapio.html original,
-    // mas o JS estava tentando carregar um 'conteudo_cardapio.html'.
-    // Deixei a linha original caso você tenha criado este arquivo. Se não, esta linha deve ser ajustada
-    // ou o conteúdo deve ser injetado de outra forma. 
-    const conteudoOK = true; // Assumimos que o conteúdo está no cardapio.html que você enviou.
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
+    
+    // Assumimos que o conteúdo do cardápio está no cardapio.html, se tiver separado, use a linha abaixo:
+    // const conteudoOK = await loadHTML('conteudo_cardapio.html', 'main-content-container');
+    const conteudoOK = true; // Mantemos true para continuar a execução
     
     // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
     if (navbarOK && conteudoOK && modalOK) {
@@ -496,7 +491,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Configura os Listeners de botões e modais (incluindo o FAB)
         setupEventListeners();
         
-        // Garante que o contador inicial seja 0 (incluindo o novo FAB)
+        // Garante que o contador inicial seja 0 (Desktop e FAB)
         updateContadorCarrinho();
         
     } else {
