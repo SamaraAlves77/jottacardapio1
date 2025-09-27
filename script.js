@@ -7,9 +7,9 @@ let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
 // Variáveis globais (Serão ligadas no rebindElements)
-let carrinhoModal, fecharModalBtn, carrinhoBtn, contadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
+let carrinhoModal, fecharModalBtn, carrinhoBtn, contadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
-// NOVO: Variáveis para Geolocalização
+// Variáveis para Geolocalização
 let btnAnexarLocalizacao;
 let localizacaoStatus;
 let coordenadasEnviadas = ''; // Armazena as coordenadas para enviar no WhatsApp
@@ -30,7 +30,6 @@ async function loadHTML(url, elementId) {
         const response = await fetch(url);
         
         if (!response.ok) {
-            // Não mostra erro 404 para arquivos externos
             if (url !== 'conteudo_cardapio.html') { 
                 element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO ${response.status}: Arquivo '${url}' não encontrado.</h3>`;
             }
@@ -49,11 +48,9 @@ async function loadHTML(url, elementId) {
 function rebindElements() {
     // Liga as variáveis globais aos elementos que acabaram de ser injetados no DOM
     carrinhoModal = document.getElementById('carrinho-modal');
-    // Verifica se os elementos existem antes de tentar acessá-los
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
     contadorCarrinho = document.getElementById('contador-carrinho');
-    // fabCarrinho e fabContadorCarrinho só serão rebindados se existirem no DOM.
     fabCarrinho = document.getElementById('fab-carrinho');
     fabContadorCarrinho = document.getElementById('fab-contador-carrinho');
 
@@ -62,15 +59,13 @@ function rebindElements() {
     notificacao = document.getElementById('notificacao');
     btnFinalizar = document.getElementById('btn-finalizar-pedido');
     navLinks = document.querySelector('.nav-links');
-    // CORREÇÃO: Usando apenas o ID existente no HTML da navbar.
-    hamburgerBtn = document.getElementById('hamburger-menu-btn'); 
     
     customizacaoModal = document.getElementById('customizacao-modal');
     fecharCustomizacaoBtn = customizacaoModal ? customizacaoModal.querySelector('.fechar-customizacao') : null;
     btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
     listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
     
-    // NOVO: Referências dos elementos de Localização
+    // Referências dos elementos de Localização (injetados em modal_carrinho.html)
     btnAnexarLocalizacao = document.getElementById('btn-anexar-localizacao'); 
     localizacaoStatus = document.getElementById('localizacao-status');
 }
@@ -87,7 +82,6 @@ function obterLocalizacao() {
             localizacaoStatus.style.color = '#ccc';
         }
 
-        // Tenta obter a localização com alta precisão e timeout
         navigator.geolocation.getCurrentPosition(
             sucessoLocalizacao,
             erroLocalizacao,
@@ -96,7 +90,7 @@ function obterLocalizacao() {
     } else {
         if (localizacaoStatus) {
             localizacaoStatus.innerText = 'Erro: Geolocalização não suportada.';
-            localizacaoStatus.style.color = '#e53935'; // Vermelho
+            localizacaoStatus.style.color = '#e53935';
         }
         coordenadasEnviadas = '';
     }
@@ -107,7 +101,7 @@ function sucessoLocalizacao(posicao) {
     const lon = posicao.coords.longitude;
     
     // CORREÇÃO CRÍTICA: Sintaxe correta para o link do Google Maps.
-    const linkMapa = `https://maps.google.com/?q=${lat},${lon}`;
+    const linkMapa = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
     coordenadasEnviadas = `Localização (Lat: ${lat}, Lon: ${lon}). Link: ${linkMapa}`;
     
     if (localizacaoStatus) {
@@ -119,7 +113,6 @@ function sucessoLocalizacao(posicao) {
 function erroLocalizacao(erro) {
     let mensagem;
     
-    // Tratamento de erros detalhado para o usuário
     switch (erro.code) {
         case erro.PERMISSION_DENIED:
             mensagem = "❌ Permissão negada. Ative nas configurações do navegador.";
@@ -138,7 +131,7 @@ function erroLocalizacao(erro) {
         localizacaoStatus.innerText = mensagem;
         localizacaoStatus.style.color = '#e53935'; // Cor de erro
     }
-    coordenadasEnviadas = ''; // Limpa a variável
+    coordenadasEnviadas = '';
 }
 
 
@@ -148,7 +141,6 @@ function erroLocalizacao(erro) {
 
 function updateContadorCarrinho() {
     const totalItens = carrinho.length; 
-    // Usamos ?. para verificar se o elemento existe (opcional chaining)
     if (contadorCarrinho) contadorCarrinho.textContent = totalItens;
     if (fabContadorCarrinho) fabContadorCarrinho.textContent = totalItens;
 }
@@ -156,6 +148,7 @@ function updateContadorCarrinho() {
 function openCarrinhoModal() {
     if (carrinhoModal) {
         carrinhoModal.classList.add('ativo');
+        
         // Limpa o status da localização e as coordenadas ao abrir o modal
         if (localizacaoStatus) {
             localizacaoStatus.innerText = '';
@@ -167,7 +160,6 @@ function openCarrinhoModal() {
         document.getElementById('endereco-cliente').value = '';
         document.getElementById('telefone-cliente').value = '';
         document.getElementById('observacoes-pedido').value = '';
-        // Verifica se o elemento existe antes de tentar acessar o selectedIndex
         const formaPagamentoSelect = document.getElementById('forma-pagamento');
         if(formaPagamentoSelect) formaPagamentoSelect.selectedIndex = 0; 
         
@@ -259,7 +251,6 @@ function renderizarOpcoesAdicionais() {
     listaAdicionaisContainer.innerHTML = '';
     
     adicionaisGlobais.forEach(adicional => {
-        // Encontra o adicional no itemEmCustomizacao (se foi adicionado)
         const selecionado = itemEmCustomizacao.adicionais.find(a => a.nome === adicional.nome);
         const quantidade = selecionado ? selecionado.quantidade : 0;
         
@@ -444,7 +435,7 @@ function setupEventListeners() {
         fabCarrinho.addEventListener('click', openCarrinhoModal);
     }
 
-    // NOVO: Adiciona o listener para o Botão de Localização
+    // Adiciona o listener para o Botão de Localização
     if (btnAnexarLocalizacao) {
         btnAnexarLocalizacao.addEventListener('click', obterLocalizacao);
     }
@@ -479,7 +470,6 @@ function setupEventListeners() {
             const adicionaisSelecionados = itemEmCustomizacao.adicionais
                 .map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             
-            // OTIMIZAÇÃO: Remove o contador de adicionais da exibição, fica visualmente mais limpo
             const nomeFinal = `${itemEmCustomizacao.nome}${adicionaisSelecionados ? ` (+ Adicionais)` : ''}`;
 
             const itemFinal = {
@@ -503,7 +493,6 @@ function setupEventListeners() {
                 return;
             }
             
-            // Re-liga os campos do formulário para garantir que os valores mais recentes sejam usados
             const nomeCliente = document.getElementById('nome-cliente').value;
             const formaPagamento = document.getElementById('forma-pagamento').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
@@ -518,7 +507,7 @@ function setupEventListeners() {
 
             let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
             mensagem += `*Nome:* ${nomeCliente}\n`;
-            mensagem += `*Telefone:* ${telefoneCliente}\n`; // ORDEM CORRIGIDA no HTML, mantida aqui
+            mensagem += `*Telefone:* ${telefoneCliente}\n`; 
             mensagem += `*Endereço:* ${enderecoCliente}\n`;
             
             // Adiciona a Localização, se capturada
@@ -544,7 +533,6 @@ function setupEventListeners() {
             const totalFinal = carrinhoTotalSpan.textContent;
             mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
-            // MANTENHA ESTE NÚMERO OU SUBSTITUA PELO NÚMERO CORRETO DO SEU WHATSAPP
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
@@ -557,17 +545,14 @@ function setupEventListeners() {
         });
     }
 
-    // Lógica do Hamburger Menu
-    if (hamburgerBtn && navLinks) {
-        hamburgerBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    }
+    // Lógica do Hamburger Menu (REMOVIDA/DESABILITADA)
+    // Motivo: Os links da navbar agora são sempre visíveis no mobile (conforme ajuste no CSS)
     
-    // Fecha o menu mobile ao clicar em um link
+    // Opcional: Fechar o menu mobile ao clicar em um link (mantido, mas pode ser redundante)
     if (navLinks) {
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
+                // Apenas garante que se houver alguma classe 'active' residual, ela seja removida
                 if (navLinks.classList.contains('active')) {
                     navLinks.classList.remove('active');
                 }
@@ -587,11 +572,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // Otimização: A variável conteudoOK não precisa existir ou ser carregada
-    const conteudoOK = true; 
-    
-    // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
-    if (navbarOK && conteudoOK && modalOK) {
+    if (navbarOK && modalOK) {
         
         // Re-liga os elementos injetados às variáveis JS
         rebindElements(); 
