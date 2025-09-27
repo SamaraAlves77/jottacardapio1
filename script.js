@@ -6,7 +6,7 @@ let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
-// Variáveis globais: mobileCarrinhoBtn e mobileContadorCarrinho removidos para limpeza
+// Variáveis globais
 let carrinhoModal, fecharModalBtn, carrinhoBtn, contadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 // NOVO: Variáveis para Geolocalização
@@ -50,7 +50,7 @@ function rebindElements() {
     carrinhoBtn = document.getElementById('carrinho-btn');
     contadorCarrinho = document.getElementById('contador-carrinho');
     
-    // Referências do Botão Fixo (FAB) (Embora removido no CSS final, mantemos aqui para evitar erro)
+    // Referências do Botão Fixo (FAB)
     fabCarrinho = document.getElementById('fab-carrinho');
     fabContadorCarrinho = document.getElementById('fab-contador-carrinho');
 
@@ -66,15 +66,14 @@ function rebindElements() {
     btnAdicionarCustomizado = document.getElementById('btn-adicionar-customizado');
     listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
     
-    // NOVO: Referências dos elementos de Localização (devem estar no modal_carrinho.html)
-    btnAnexarLocalizacao = document.getElementById('anexar-localizacao-btn');
+    // NOVO: Referências dos elementos de Localização
+    btnAnexarLocalizacao = document.getElementById('btn-anexar-localizacao'); // CORRIGIDO PARA O NOVO ID
     localizacaoStatus = document.getElementById('localizacao-status');
-
 }
 
 
 // =======================================================
-// FUNÇÕES DE GEOLOCALIZAÇÃO (NOVO BLOCO)
+// FUNÇÕES DE GEOLOCALIZAÇÃO
 // =======================================================
 
 function obterLocalizacao() {
@@ -103,18 +102,19 @@ function sucessoLocalizacao(posicao) {
     const lat = posicao.coords.latitude;
     const lon = posicao.coords.longitude;
     
+    // Formato que será enviado no WhatsApp
     coordenadasEnviadas = `Localização (Lat: ${lat}, Lon: ${lon})`;
     
     if (localizacaoStatus) {
         localizacaoStatus.innerText = '✅ Localização Anexada!';
-        localizacaoStatus.style.color = '#25d366'; // Verde WhatsApp
+        localizacaoStatus.style.color = '#25d366'; // Verde
     }
 }
 
 function erroLocalizacao(erro) {
     let mensagem;
     
-    // NOVO: Tratamento de erros detalhado
+    // Tratamento de erros detalhado para o usuário
     switch (erro.code) {
         case erro.PERMISSION_DENIED:
             mensagem = "❌ Permissão negada. Localização não enviada.";
@@ -141,9 +141,6 @@ function erroLocalizacao(erro) {
 // FUNÇÕES DE MANIPULAÇÃO DO CARRINHO E UTILIDADE
 // =======================================================
 
-// ... (Restante das funções do carrinho: updateContadorCarrinho, openCarrinhoModal, adicionarAoCarrinho, removerDoCarrinho, atualizarModalCarrinho) ...
-// (Mantenha as funções originais do carrinho aqui)
-
 function updateContadorCarrinho() {
     const totalItens = carrinho.length; 
     if (contadorCarrinho) contadorCarrinho.textContent = totalItens;
@@ -153,6 +150,11 @@ function updateContadorCarrinho() {
 function openCarrinhoModal() {
     if (carrinhoModal) {
         carrinhoModal.classList.add('ativo');
+        // Limpa o status da localização ao abrir o modal
+        if (localizacaoStatus) {
+            localizacaoStatus.innerText = '';
+        }
+        coordenadasEnviadas = '';
         atualizarModalCarrinho();
     }
 }
@@ -217,7 +219,6 @@ function atualizarModalCarrinho() {
 // =======================================================
 // FUNÇÕES DE CUSTOMIZAÇÃO
 // =======================================================
-// (Mantenha todas as funções de customização sem alteração)
 
 function abrirModalCustomizacao(item) {
     if (!customizacaoModal) return;
@@ -319,7 +320,6 @@ function atualizarResumoCustomizacao() {
 // =======================================================
 // FUNÇÕES DE CARREGAMENTO DO CARDÁPIO E CRIAÇÃO DE CARDS
 // =======================================================
-// (Mantenha todas as funções de cardápio sem alteração)
 
 function criarItemCardapio(item, categoriaNome) {
     const divItem = document.createElement('div');
@@ -486,11 +486,14 @@ function setupEventListeners() {
             }
             
             const nomeCliente = document.getElementById('nome-cliente').value;
+            const formaPagamento = document.getElementById('forma-pagamento').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
-            
-            if (!nomeCliente || !enderecoCliente || !telefoneCliente) {
-                alert("Por favor, preencha seu nome, endereço e telefone para finalizar o pedido.");
+            const observacoesPedido = document.getElementById('observacoes-pedido').value; // Captura as observações
+
+            
+            if (!nomeCliente || !enderecoCliente || !telefoneCliente || !formaPagamento) {
+                alert("Por favor, preencha todos os campos (Nome, Endereço, Telefone e Pagamento) para finalizar o pedido.");
                 return;
             }
 
@@ -498,13 +501,20 @@ function setupEventListeners() {
             mensagem += `*Nome:* ${nomeCliente}\n`;
             mensagem += `*Endereço:* ${enderecoCliente}\n`;
 
-            // NOVO: Adiciona a Localização, se capturada
+            // Adiciona a Localização, se capturada
             if (coordenadasEnviadas) {
                 mensagem += `*Localização GPS:* ${coordenadasEnviadas}\n`;
             }
             
-            mensagem += `*Telefone:* ${telefoneCliente}\n\n`;
-            mensagem += `*ITENS DO PEDIDO (${carrinho.length}):*\n`;
+            mensagem += `*Telefone:* ${telefoneCliente}\n`;
+            mensagem += `*Pagamento:* ${formaPagamento.toUpperCase()}\n`;
+            
+            // Adiciona as observações
+            if (observacoesPedido) {
+                mensagem += `*Obs:* ${observacoesPedido}\n`;
+            }
+            
+            mensagem += `\n*ITENS DO PEDIDO (${carrinho.length}):*\n`;
             
             carrinho.forEach((item, index) => {
                 const precoFormatado = item.preco.toFixed(2).replace('.', ',');
@@ -530,7 +540,6 @@ function setupEventListeners() {
         });
     }
     
-    // mobileHamburgerBtn foi mantido, mas verifique se ele é o único necessário
     if (mobileHamburgerBtn && navLinks) {
         mobileHamburgerBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
@@ -560,6 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
+    // CORREÇÃO: Removemos a tentativa de carregar 'conteudo_cardapio.html' (erro 404)
     const conteudoOK = true; 
     
     // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
