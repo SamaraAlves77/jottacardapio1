@@ -226,11 +226,11 @@ main {
     line-height: 1;
 }
 
-/* --- ESTILOS: MODAL CARRINHO (Aprimorado) --- */
+/* --- ESTILOS: MODAL CARRINHO (Organização Limpa) --- */
 .carrinho-itens {
-    max-height: 250px; /* Aumentado um pouco para melhor visualização */
+    max-height: 250px; 
     overflow-y: auto;
-    margin-bottom: 1.5rem; /* Mais espaçamento antes do total */
+    margin-bottom: 1.5rem; 
     padding-right: 10px;
 }
 
@@ -239,7 +239,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0; /* Mais padding para espaçamento */
+    padding: 0.75rem 0; 
 }
 
 .carrinho-item-nome {
@@ -254,7 +254,7 @@ main {
     font-weight: 700;
     padding: 1rem 0;
     border-top: 2px solid var(--secondary-color);
-    margin-bottom: 1rem; /* Espaçamento antes dos campos de finalização */
+    margin-bottom: 1rem; 
 }
 
 .carrinho-finalizar h4 {
@@ -268,7 +268,7 @@ main {
 .carrinho-finalizar textarea {
     width: 100%;
     padding: 0.75rem;
-    margin-bottom: 1rem; /* AUMENTADO: Mais espaçamento entre os campos */
+    margin-bottom: 1rem; 
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
@@ -293,7 +293,7 @@ main {
     background-color: #1aae4b;
 }
 
-/* --- ESTILOS: MODAL CUSTOMIZAÇÃO (Mantidos e Verificados) --- */
+/* --- ESTILOS: MODAL CUSTOMIZAÇÃO (Organizado e com Botão Novo) --- */
 
 .adicionais-opcoes h4 {
     font-size: 1.25rem;
@@ -311,6 +311,21 @@ main {
     border-bottom: 1px solid #f0f0f0;
 }
 
+.adicional-item-opcao:last-child {
+    border-bottom: none; 
+}
+
+.adicional-item-opcao span {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.adicional-contador {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+}
+
 .adicional-contador button {
     background-color: var(--primary-color);
     color: white;
@@ -324,7 +339,64 @@ main {
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.adicional-contador button:hover {
+    background-color: #c62828;
+    transform: translateY(-1px);
+}
+
+.adicional-contador span.quantidade-adicional {
+    display: inline-block;
+    width: 25px; 
+    text-align: center;
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.customizacao-resumo {
+    margin-top: 2rem; /* Mais espaçamento para separar dos adicionais */
+    padding-top: 1.5rem; /* Mais padding superior */
+    border-top: 1px solid #ccc;
+    text-align: right;
+}
+
+.customizacao-resumo p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.customizacao-resumo h4 {
+    font-size: 1.6rem; 
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+}
+
+/* NOVO ESTILO: BOTÃO ADICIONAR AO CARRINHO MINIMALISTA */
+#btn-adicionar-customizado {
+    width: 100%;
+    margin-top: 1.5rem; 
+    background-color: var(--primary-color); /* Usando a cor primária */
+    color: white;
+    border: none;
+    padding: 1.1rem; /* Mais padding para ser fácil de clicar (mobile) */
+    border-radius: 50px; /* Borda arredondada (pill shape) */
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(229, 57, 53, 0.4); /* Sombra suave para destacar */
+}
+
+#btn-adicionar-customizado:hover {
+    background-color: #c62828; /* Vermelho mais escuro no hover */
+    box-shadow: 0 6px 15px rgba(229, 57, 53, 0.6);
 }
 
 /* --- ESTILOS: NOTIFICAÇÃO (TOAST) --- */
@@ -424,5 +496,11 @@ main {
 
     #notificacao.mostrar {
         bottom: 90px; 
+    }
+    
+    /* Ajuste para o botão minimalista no mobile */
+    #btn-adicionar-customizado {
+        padding: 0.8rem; /* Um pouco menor para caber melhor */
+        font-size: 1rem;
     }
 }
