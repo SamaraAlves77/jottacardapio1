@@ -9,14 +9,16 @@
 }
 
 /* 1. ESTILO DO HEADER (NAVBAR) */
-/* CORREÇÃO: Alterado de 'header' para '.navbar' para se adequar ao HTML injetado */
 .navbar {
     background-color: var(--secondary-color);
     /* AJUSTE AQUI: Padding vertical para altura minimalista */
     padding: 10px 20px; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    
+    /* REMOÇÃO CRÍTICA: O Flexbox deve ir para o contêiner interno */
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     
     /* FIXA CRÍTICA */
@@ -25,6 +27,21 @@
     left: 0;
     width: 100%;
     z-index: 900;
+}
+
+/* NOVO: Regras para centralizar o conteúdo da navbar */
+.navbar-content-wrapper {
+    /* Centraliza o conteúdo na tela */
+    margin: 0 auto; 
+    /* Limita a largura máxima do conteúdo (ajuste se seu cardápio tiver outra largura) */
+    max-width: 1200px; 
+    /* Ocupa a largura total dentro do .navbar */
+    width: 100%; 
+    
+    /* Aplica o Flexbox para alinhar os elementos (Logo, Links, Ações) */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* 2. ESTILO DA LOGO (IMAGEM) */
@@ -44,85 +61,78 @@
     transform: scale(1.05);
 }
 
-/* 3. ESTILOS DOS LINKS E AÇÕES */
-nav {
-    flex-grow: 1; /* Permite que a navegação ocupe o espaço central */
-    margin: 0 20px;
-}
-
+/* 3. ESTILO DOS LINKS DE NAVEGAÇÃO */
 .nav-links {
     list-style: none;
     display: flex;
-    align-items: center; 
-    justify-content: flex-start; /* Alinha os links à esquerda do centro */
-    transition: transform 0.3s ease-in-out;
-}
-
-.nav-links li {
-    margin-right: 20px;
+    gap: 20px; /* Espaço entre os links */
 }
 
 .nav-links a {
     color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s, border-bottom 0.3s;
-    padding: 5px 0;
+    padding: 5px 10px;
+    transition: color 0.3s, background-color 0.3s;
+    font-weight: bold;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.nav-links a:hover {
     color: var(--primary-color);
-    text-decoration: none;
-    border-bottom: 2px solid var(--primary-color); /* Efeito de seleção bonito */
 }
 
-/* 4. BOTÕES DE AÇÃO (CARRINHO E MENU) */
+/* 4. ESTILOS DAS AÇÕES (CARRINHO E HAMBURGER) */
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 15px; /* Espaço entre o botão do carrinho e o menu hamburger */
 }
 
+/* Estilo do Botão do Carrinho */
 .carrinho-btn {
-    position: relative;
-    cursor: pointer;
     background: none;
     border: none;
-    color: var(--text-color);
-    font-size: 1.5em; /* Aumentado para melhor visibilidade */
+    color: var(--primary-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
     transition: color 0.3s;
-    padding: 0;
 }
 
 .carrinho-btn:hover {
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
-#contador-carrinho {
-    background-color: var(--primary-color);
-    color: #000;
-    border-radius: 50%;
-    padding: 2px 7px;
-    font-size: 0.7em;
+.carrinho-btn span {
+    /* Contador do Carrinho */
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: -5px;
+    right: -5px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-size: 0.7em;
     font-weight: bold;
-    box-shadow: 0 0 5px rgba(255, 105, 180, 0.7);
+    padding: 2px 5px;
+    border-radius: 50%;
 }
 
-/* Menu Hamburger (Mobile) */
+/* Estilo do Botão do Menu Hamburger (Mobile) */
 .hamburger-menu-btn {
-    display: none;
     background: none;
     border: none;
     color: var(--primary-color);
     font-size: 1.5em;
     cursor: pointer;
+    display: none; /* Esconder por padrão no desktop */
 }
 
 /* 5. MEDIA QUERIES para Responsividade */
 @media (max-width: 768px) {
-    /* CORREÇÃO: Alterado de 'header' para '.navbar' */
+    
+    /* O wrapper não precisa de largura máxima no mobile; ele apenas usa o padding */
+    .navbar-content-wrapper {
+        max-width: 100%;
+    }
+    
     .navbar {
         /* Reduzindo o padding vertical para mobile */
         padding: 8px 15px; 
@@ -133,8 +143,8 @@ nav {
         height: 30px; 
     }
 
-    nav {
-        /* Esconde a navegação principal no mobile */
+    /* Esconde os links e mostra o botão hamburger */
+    .nav-links {
         display: none; 
         position: absolute;
         width: 100%;
@@ -145,17 +155,14 @@ nav {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
         padding: 10px 0;
         margin: 0;
-    }
-
-    /* A classe 'active' seria adicionada ao <nav> pelo JavaScript para mostrar o menu */
-    nav.active {
-        display: block; 
-    }
-
-    .nav-links {
+        
         flex-direction: column;
         align-items: center; 
-        padding: 10px 0;
+    }
+
+    /* A classe 'active' seria adicionada ao <nav-links> pelo JavaScript para mostrar o menu */
+    .nav-links.active {
+        display: flex; 
     }
 
     .nav-links li {
@@ -166,21 +173,12 @@ nav {
         padding-bottom: 5px;
     }
     
-    .nav-links li:last-child {
-        border-bottom: none;
-    }
-    
-    .nav-links a {
-        display: block;
-        padding: 5px 0;
-    }
-    
-    /* Move o ícone do carrinho para dentro do .header-actions no mobile */
-    .carrinho-btn {
-        font-size: 1.2em; 
-    }
-
     .hamburger-menu-btn {
-        display: block; /* Mostra o menu hamburger */
+        display: block; /* Mostra o botão no mobile */
+    }
+    
+    /* Esconde o contador do carrinho desktop */
+    #contador-carrinho {
+        display: none; 
     }
 }
