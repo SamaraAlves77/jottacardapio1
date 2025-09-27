@@ -15,6 +15,10 @@
             <h4>Dados para o Pedido:</h4> 
             <input type="text" id="nome-cliente" placeholder="Seu nome" required>
             
+            <input type="text" id="telefone-cliente" placeholder="Seu telefone (WhatsApp)" required>	
+            
+            <input type="text" id="endereco-cliente" placeholder="Seu endereço (Rua, Número, Bairro)" required>
+            
             <select id="forma-pagamento" required>
                 <option value="" disabled selected>Escolha a Forma de Pagamento</option>
                 <option value="pix">PIX</option>
@@ -23,9 +27,6 @@
                 <option value="dinheiro">Dinheiro (Avisar se precisar de troco)</option>
             </select>
             
-            <input type="text" id="endereco-cliente" placeholder="Seu endereço (Rua, Número, Bairro)" required>
-            <input type="text" id="telefone-cliente" placeholder="Seu telefone (WhatsApp)" required> 
-
             <div class="opcoes-pedido">
                 <h4>Observações:</h4>
                 <textarea id="observacoes-pedido" placeholder="Observações (Ex: Sem cebola, Troco para R$ 50,00)" rows="3"></textarea>
