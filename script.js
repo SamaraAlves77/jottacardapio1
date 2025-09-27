@@ -6,13 +6,13 @@ let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
-// Variáveis globais
+// Variáveis globais (Serão ligadas no rebindElements)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, contadorCarrinho, fabCarrinho, fabContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
 
 // NOVO: Variáveis para Geolocalização
 let btnAnexarLocalizacao;
 let localizacaoStatus;
-let coordenadasEnviadas = ''; 
+let coordenadasEnviadas = ''; // Armazena as coordenadas para enviar no WhatsApp
 
 
 // =======================================================
@@ -22,7 +22,7 @@ let coordenadasEnviadas = '';
 async function loadHTML(url, elementId) {
     const element = document.getElementById(elementId);
     if (!element) {
-        console.error(`Contêiner de destino '${elementId}' não encontrado. Verifique se o cardapio.html possui este ID.`);
+        console.error(`Contêiner de destino '${elementId}' não encontrado.`);
         return false;
     }
     
@@ -30,7 +30,10 @@ async function loadHTML(url, elementId) {
         const response = await fetch(url);
         
         if (!response.ok) {
-            element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado. Verifique o nome.</h3>`;
+            // Mostra o erro 404 apenas para arquivos externos que falharam
+            if (url !== 'conteudo_cardapio.html') { // Ignora o erro se for o arquivo que já sabemos que não existe
+                element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado.</h3>`;
+            }
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
         
@@ -49,8 +52,6 @@ function rebindElements() {
     fecharModalBtn = carrinhoModal ? carrinhoModal.querySelector('.fechar-modal') : null;
     carrinhoBtn = document.getElementById('carrinho-btn');
     contadorCarrinho = document.getElementById('contador-carrinho');
-    
-    // Referências do Botão Fixo (FAB)
     fabCarrinho = document.getElementById('fab-carrinho');
     fabContadorCarrinho = document.getElementById('fab-contador-carrinho');
 
@@ -67,7 +68,7 @@ function rebindElements() {
     listaAdicionaisContainer = document.getElementById('adicionais-opcoes-lista');
     
     // NOVO: Referências dos elementos de Localização
-    btnAnexarLocalizacao = document.getElementById('btn-anexar-localizacao'); // CORRIGIDO PARA O NOVO ID
+    btnAnexarLocalizacao = document.getElementById('btn-anexar-localizacao'); 
     localizacaoStatus = document.getElementById('localizacao-status');
 }
 
@@ -92,7 +93,7 @@ function obterLocalizacao() {
     } else {
         if (localizacaoStatus) {
             localizacaoStatus.innerText = 'Erro: Geolocalização não suportada.';
-            localizacaoStatus.style.color = '#e53935';
+            localizacaoStatus.style.color = '#e53935'; // Vermelho
         }
         coordenadasEnviadas = '';
     }
@@ -103,11 +104,13 @@ function sucessoLocalizacao(posicao) {
     const lon = posicao.coords.longitude;
     
     // Formato que será enviado no WhatsApp
-    coordenadasEnviadas = `Localização (Lat: ${lat}, Lon: ${lon})`;
+    // Para criar um link clicável (opcional, mas útil):
+    const linkMapa = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+    coordenadasEnviadas = `Localização (Lat: ${lat}, Lon: ${lon}). Link: ${linkMapa}`;
     
     if (localizacaoStatus) {
-        localizacaoStatus.innerText = '✅ Localização Anexada!';
-        localizacaoStatus.style.color = '#25d366'; // Verde
+        localizacaoStatus.innerHTML = '✅ Localização Anexada!';
+        localizacaoStatus.style.color = '#25d366'; // Verde do WhatsApp
     }
 }
 
@@ -117,7 +120,7 @@ function erroLocalizacao(erro) {
     // Tratamento de erros detalhado para o usuário
     switch (erro.code) {
         case erro.PERMISSION_DENIED:
-            mensagem = "❌ Permissão negada. Localização não enviada.";
+            mensagem = "❌ Permissão negada. Ative nas configurações do navegador.";
             break;
         case erro.POSITION_UNAVAILABLE:
             mensagem = "❌ Sinal fraco. Posição não determinada.";
@@ -150,11 +153,11 @@ function updateContadorCarrinho() {
 function openCarrinhoModal() {
     if (carrinhoModal) {
         carrinhoModal.classList.add('ativo');
-        // Limpa o status da localização ao abrir o modal
+        // Limpa o status da localização e as coordenadas ao abrir o modal
         if (localizacaoStatus) {
             localizacaoStatus.innerText = '';
         }
-        coordenadasEnviadas = '';
+        coordenadasEnviadas = ''; 
         atualizarModalCarrinho();
     }
 }
@@ -421,8 +424,6 @@ function setupEventListeners() {
     if (carrinhoBtn) {
         carrinhoBtn.addEventListener('click', openCarrinhoModal);
     }
-
-    // Adiciona o listener para o Botão Fixo Neon (FAB)
     if (fabCarrinho) {
         fabCarrinho.addEventListener('click', openCarrinhoModal);
     }
@@ -489,7 +490,7 @@ function setupEventListeners() {
             const formaPagamento = document.getElementById('forma-pagamento').value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
-            const observacoesPedido = document.getElementById('observacoes-pedido').value; // Captura as observações
+            const observacoesPedido = document.getElementById('observacoes-pedido').value; 
 
             
             if (!nomeCliente || !enderecoCliente || !telefoneCliente || !formaPagamento) {
@@ -507,7 +508,7 @@ function setupEventListeners() {
             }
             
             mensagem += `*Telefone:* ${telefoneCliente}\n`;
-            mensagem += `*Pagamento:* ${formaPagamento.toUpperCase()}\n`;
+            mensagem += `*Pagamento:* ${formaPagamento.toUpperCase().replace('_', ' ')}\n`;
             
             // Adiciona as observações
             if (observacoesPedido) {
@@ -525,7 +526,7 @@ function setupEventListeners() {
             const totalFinal = carrinhoTotalSpan.textContent;
             mensagem += `\n*TOTAL: R$ ${totalFinal}*`;
             
-            // SUBSTITUA ESTE NÚMERO PELO NÚMERO CORRETO DO SEU WHATSAPP
+            // MANTENHA ESTE NÚMERO OU SUBSTITUA PELO NÚMERO CORRETO DO SEU WHATSAPP
             const numeroWhatsApp = '5586981147596'; 
             const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
             
@@ -569,7 +570,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // CORREÇÃO: Removemos a tentativa de carregar 'conteudo_cardapio.html' (erro 404)
+    // CORREÇÃO: Removemos a tentativa de carregar 'conteudo_cardapio.html' (causava o erro 404 e a desconfiguração)
     const conteudoOK = true; 
     
     // 2. Só prossegue se todos os arquivos HTML necessários foram carregados
@@ -581,10 +582,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Carrega os dados do JSON e popula o cardápio
         await carregarCardapio(); 
         
-        // Configura os Listeners de botões e modais (incluindo o FAB)
+        // Configura os Listeners de botões e modais
         setupEventListeners();
         
-        // Garante que o contador inicial seja 0 (Desktop e FAB)
+        // Garante que o contador inicial seja 0
         updateContadorCarrinho();
         
     } else {
