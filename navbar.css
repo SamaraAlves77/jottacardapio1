@@ -1,0 +1,135 @@
+/* ======================================================= */
+/* navbar.css */
+/* Estilos da barra de navegação: Fixa, Responsiva e Minimalista */
+/* ======================================================= */
+:root {
+    --primary-color: #ff69b4; /* Rosa Neon */
+    --secondary-color: #333;
+    --text-color: #eee;
+}
+
+.navbar {
+    background-color: var(--secondary-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    
+    /* FIXA CRÍTICA */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 900;
+}
+
+.logo a {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); /* Efeito Neon leve */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center; 
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 5px 0;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1.2em;
+    margin-left: 20px;
+    transition: color 0.3s;
+}
+
+.cart-icon:hover {
+    color: var(--primary-color);
+}
+
+#contador-carrinho {
+    background-color: var(--primary-color);
+    color: #000;
+    border-radius: 50%;
+    padding: 2px 7px;
+    font-size: 0.7em;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.7);
+}
+
+/* Menu Hamburger (Mobile) */
+.hamburger-menu-btn, .mobile-hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* MEDIA QUERIES para Responsividade */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start; 
+        width: 100%;
+        position: absolute;
+        top: 60px; 
+        left: 0;
+        background-color: var(--secondary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        width: 100%;
+        border-bottom: 1px dashed #444;
+        padding-bottom: 5px;
+    }
+    
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 5px 0;
+    }
+    
+    .cart-icon {
+        display: none; 
+    }
+
+    .hamburger-menu-btn, .mobile-hamburger-btn {
+        display: block;
+    }
+}
