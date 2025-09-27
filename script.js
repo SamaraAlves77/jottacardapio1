@@ -6,8 +6,7 @@ let adicionaisGlobais = [];
 let itemEmCustomizacao = null;
 const CATEGORIA_CUSTOMIZAVEL = 'Hambúrgueres Artesanais'; 
 
-// NOVO: Variável para armazenar o link da localização do cliente
-let localizacaoCliente = null;
+let localizacaoCliente = null; // Variável para armazenar o link da localização do cliente
 
 // Variáveis globais para os elementos (serão preenchidas em rebindElements após a injeção do HTML)
 let carrinhoModal, fecharModalBtn, carrinhoBtn, mobileCarrinhoBtn, contadorCarrinho, mobileContadorCarrinho, carrinhoItensContainer, carrinhoTotalSpan, notificacao, btnFinalizar, navLinks, hamburgerBtn, mobileHamburgerBtn, customizacaoModal, fecharCustomizacaoBtn, btnAdicionarCustomizado, listaAdicionaisContainer;
@@ -25,11 +24,9 @@ async function loadHTML(url, elementId) {
     }
     
     try {
-        // O fetch busca o arquivo na raiz (mesmo nível do script.js)
         const response = await fetch(url);
         
         if (!response.ok) {
-            // Se der erro 404, avisa o usuário diretamente
             element.innerHTML = `<h3 style="color: red; text-align: center;">ERRO 404: Arquivo '${url}' não encontrado.</h3>`;
             throw new Error(`Erro ao carregar o arquivo HTML: ${url}. Status: ${response.status}`);
         }
@@ -55,7 +52,7 @@ function rebindElements() {
     carrinhoTotalSpan = document.getElementById('carrinho-total');
     notificacao = document.getElementById('notificacao');
     btnFinalizar = document.getElementById('btn-finalizar-pedido');
-    navLinks = document.querySelector('.nav-links'); // Ajustado para pegar o menu principal injetado
+    navLinks = document.querySelector('.nav-links'); 
     hamburgerBtn = document.getElementById('hamburger-menu-btn');
     mobileHamburgerBtn = document.getElementById('mobile-hamburger-btn');
     customizacaoModal = document.getElementById('customizacao-modal');
@@ -239,7 +236,6 @@ function criarItemCardapio(item, categoriaNome) {
 }
 
 function criarSecaoCardapio(titulo, idContainer, itens) {
-    // Busca o ID do div que está dentro da seção em cardapio.html
     const container = document.getElementById(idContainer + '-grid'); 
     if (!container) {
         console.error(`Contêiner de grid não encontrado para a categoria: ${titulo} (ID esperado: ${idContainer}-grid)`);
@@ -262,14 +258,12 @@ async function carregarCardapio() {
         
         const cardapioData = await response.json(); 
 
-        // Encontra a categoria de adicionais para a customização
         const adicionaisCategoria = cardapioData.find(c => c.id === 'adicionais-extras');
         
         if (adicionaisCategoria) {
             adicionaisGlobais = adicionaisCategoria.itens || []; 
         }
 
-        // Popula as seções do cardápio na tela
         cardapioData.forEach(categoriaObj => {
             if (categoriaObj.id !== 'adicionais-extras') {
                 criarSecaoCardapio(categoriaObj.nome, categoriaObj.id, categoriaObj.itens);
@@ -308,7 +302,7 @@ function setupEventListeners() {
             if (!itemEmCustomizacao || itemEmCustomizacao.precoFinal === undefined) {
                 alert("Erro na customização. Tente novamente."); return;
             }
-            // Formata o nome para exibição no carrinho e WhatsApp
+            
             const adicionaisSelecionados = itemEmCustomizacao.adicionais.map(ad => `${ad.nome} x${ad.quantidade}`).join(', ');
             const nomeFinal = `${itemEmCustomizacao.nome} (${itemEmCustomizacao.adicionais.length} adicionais)`;
             
@@ -316,7 +310,6 @@ function setupEventListeners() {
                 nome: itemEmCustomizacao.nome,
                 preco: itemEmCustomizacao.precoFinal,
                 nomeExibicao: adicionaisSelecionados ? nomeFinal : itemEmCustomizacao.nome,
-                // Nome mais detalhado para o WhatsApp
                 nomeWhatsApp: `${itemEmCustomizacao.nome} (Adicionais: ${adicionaisSelecionados || 'Nenhum'})`,
                 adicionais: itemEmCustomizacao.adicionais
             };
@@ -336,10 +329,10 @@ function setupEventListeners() {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        // Gera link do Google Maps
                         localizacaoCliente = `https://maps.google.com/?q=${latitude},${longitude}`;
                         
                         btnLocalizacao.innerHTML = '<i class="fas fa-check"></i> Localização Anexada!';
+                        btnLocalizacao.classList.remove('btn-secundario');
                         btnLocalizacao.classList.add('btn-sucesso');
                         btnLocalizacao.disabled = false;
                         alert("Localização anexada com sucesso!");
@@ -348,6 +341,7 @@ function setupEventListeners() {
                         console.error("Erro ao obter localização:", error);
                         btnLocalizacao.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao Anexar Localização';
                         btnLocalizacao.classList.remove('btn-sucesso');
+                        btnLocalizacao.classList.add('btn-secundario');
                         btnLocalizacao.disabled = false;
                         localizacaoCliente = null;
                         alert("Não foi possível obter a localização. Verifique as permissões do navegador.");
@@ -368,10 +362,10 @@ function setupEventListeners() {
             // Pega dados do cliente
             const nomeCliente = document.getElementById('nome-cliente').value;
             const formaPagamentoElement = document.getElementById('forma-pagamento');
-            const formaPagamento = formaPagamentoElement.value; // NOVO
+            const formaPagamento = formaPagamentoElement.value;
             const enderecoCliente = document.getElementById('endereco-cliente').value;
             const telefoneCliente = document.getElementById('telefone-cliente').value;
-            const observacoes = document.getElementById('observacoes-pedido').value; // NOVO
+            const observacoes = document.getElementById('observacoes-pedido').value;
             
             if (!nomeCliente || !formaPagamento || !enderecoCliente || !telefoneCliente) {
                 alert("Por favor, preencha seu nome, forma de pagamento, endereço e telefone para finalizar o pedido."); 
@@ -380,16 +374,16 @@ function setupEventListeners() {
 
             let mensagem = `*PEDIDO JOTTAV BURGUER*\n\n`;
             mensagem += `*Nome:* ${nomeCliente}\n`;
-            mensagem += `*Forma de Pagamento:* ${formaPagamento.toUpperCase().replace('_', ' ')}\n`; // NOVO
+            mensagem += `*Forma de Pagamento:* ${formaPagamento.toUpperCase().replace('_', ' ')}\n`;
             mensagem += `*Endereço:* ${enderecoCliente}\n`;
             mensagem += `*Telefone:* ${telefoneCliente}\n\n`;
             
-            if (observacoes) { // NOVO
+            if (observacoes) { 
                 mensagem += `*Observações:* ${observacoes}\n\n`;
             }
 
-            if (localizacaoCliente) { // NOVO
-                mensagem += `*Localização Anexada (Google Maps):* ${localizacaoCliente}\n\n`;
+            if (localizacaoCliente) {
+                mensagem += `*Localização Anexada:* ${localizacaoCliente}\n\n`;
             }
             
             mensagem += `*ITENS DO PEDIDO (${carrinho.length}):*\n`;
@@ -428,7 +422,7 @@ function setupEventListeners() {
 
 
 // =======================================================
-// FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL (CORRIGIDA)
+// FUNÇÃO DE INICIALIZAÇÃO PRINCIPAL
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -437,7 +431,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navbarOK = await loadHTML('navbar.html', 'navbar-container');
     const modalOK = await loadHTML('modal_carrinho.html', 'modal-container');
     
-    // O conteúdo principal (cardápio) é fixo no cardapio.html.
     const mainContentContainer = document.getElementById('main-content-container');
     
     // 2. Só prossegue se os arquivos HTML injetados e o container principal existem
