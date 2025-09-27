@@ -1,0 +1,249 @@
+/* ======================================================= */
+/* modal_carrinho.css - CÓDIGO FINAL COM ALINHAMENTO PERFEITO */
+/* Resolve: Nome | Preço | Controles em linha */
+/* ======================================================= */
+:root {
+    --primary-color: #ff69b4; /* Rosa Neon */
+    --secondary-color: #333;
+}
+
+/* ------------------------------------------------------- */
+/* MODAIS BASE */
+/* ------------------------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; /* Permite rolagem do modal se o conteúdo for grande */
+    background-color: rgba(0, 0, 0, 0.85); 
+}
+
+.modal.ativo {
+    display: block;
+}
+
+.modal-content {
+    background-color: var(--secondary-color);
+    margin: 2% auto; /* Aproxima do topo em mobile */
+    padding: 25px;
+    border: 1px solid var(--primary-color); 
+    width: 95%; 
+    max-width: 550px; 
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); 
+    
+    max-height: 96vh; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column;
+}
+
+/* Close button (X) */
+.fechar-modal, .fechar-customizacao {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    align-self: flex-end; 
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.fechar-modal:hover, .fechar-customizacao:hover {
+    color: var(--primary-color);
+}
+
+.modal-content h3 {
+    text-align: center;
+    color: #fff;
+    margin-top: -10px; 
+    margin-bottom: 25px; 
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+
+/* ------------------------------------------------------- */
+/* LAYOUT DE CUSTOMIZAÇÃO (Otimizado) */
+/* ------------------------------------------------------- */
+
+.adicionais-opcoes {
+    padding-right: 10px;
+    margin-bottom: 25px;
+}
+
+.adicional-item-opcao {
+    /* CRÍTICO: Cria o espaçamento entre o Nome e o restante */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alinha tudo verticalmente no meio */
+    padding: 12px 0; 
+    border-bottom: 1px dashed #555;
+    color: #eee;
+    font-size: 1.05em;
+    /* CORREÇÃO/OTIMIZAÇÃO: Impede a quebra de linha principal */
+    flex-wrap: nowrap;
+}
+
+/* Esquerda: Nome do Adicional */
+.adicional-item-opcao > span:first-child {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    flex-basis: 0; /* Adicionado para melhor funcionamento do flex-grow */
+    min-width: 100px; /* Garante que não encolha demais */
+    margin-right: 15px; /* Espaçamento da coluna do meio */
+}
+
+/* Grupo Preço e Contador (Direita) - Contêiner Flex */
+.adicional-contador {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* IMPEDE QUE ENCOLHA */
+    gap: 10px; /* Espaço entre o preço e os botões */
+    margin-left: auto; /* Empurra para a direita */
+    min-width: 120px; /* Garante espaço mínimo para os controles */
+}
+
+/* Meio: Preço do Adicional */
+.adicional-contador .preco-adicional {
+    color: #fff;
+    font-weight: normal;
+    font-size: 0.95em; 
+    min-width: 60px; /* Garante que tenha espaço e não fique apertado */
+    text-align: center; 
+}
+
+/* Direita: Controles (+ 0 -) */
+.contador-botoes {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Espaçamento mínimo para os botões ficarem juntos */
+}
+
+.quantidade-adicional {
+    min-width: 25px; 
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    padding: 0 2px;
+}
+
+/* Resumo (Rodapé) */
+.customizacao-resumo {
+    padding-top: 15px;
+    border-top: 2px solid var(--primary-color); 
+    margin-top: 0; 
+    margin-bottom: 20px; /* Espaço para o botão */
+}
+
+.customizacao-resumo p {
+    color: #aaa;
+    margin-bottom: 5px;
+    display: flex; 
+    justify-content: space-between;
+}
+
+.customizacao-resumo h4 {
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 1.4em; 
+}
+
+/* Botões de Contador */
+.btn-aumentar-adicional, .btn-diminuir-adicional {
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    width: 28px; 
+    height: 28px; 
+    border-radius: 6px; 
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    /* CENTRALIZA O SINAL (+ ou -) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+
+/* Botão de Ação Principal (Adicionar ao Carrinho) - CENTRALIZADO */
+#btn-adicionar-customizado {
+    width: 100%;
+    padding: 16px; 
+    background-color: var(--primary-color); 
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    margin-top: 20px; 
+    box-shadow: 0 0 10px var(--primary-color); 
+}
+
+/* ------------------------------------------------------- */
+/* ESTILOS DO CARRINHO/CHECKOUT (Ajustes de espaçamento) */
+/* ------------------------------------------------------- */
+
+.carrinho-itens {
+    padding-right: 10px; 
+    margin-bottom: 20px; 
+    border: 1px solid #444;
+    padding: 15px; 
+    border-radius: 8px;
+}
+
+.carrinho-total-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4em; 
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 15px 0;
+    border-top: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color); 
+    margin-bottom: 20px;
+}
+
+/* Formulário e Campos */
+.carrinho-finalizar input,
+.carrinho-finalizar select,
+.carrinho-finalizar textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px; 
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    font-size: 1em;
+}
+
+/* Botão de Finalizar Pedido */
+#btn-finalizar-pedido {
+    width: 100%;
+    padding: 14px; 
+    background-color: #38c172; /* Tom de verde para finalizar */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* MEDIA QUERY PARA AJUSTE DO MODAL EM TELAS MAIORES */
+@media (min-width: 600px) {
+    .modal-content {
+        margin: 10vh auto;
+    }
+}
