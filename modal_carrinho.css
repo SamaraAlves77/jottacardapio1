@@ -1,5 +1,5 @@
 /* ======================================================= */
-/* modal_carrinho.css - CÓDIGO FINAL COM ALINHAMENTO E OVERLAY CORRIGIDOS */
+/* modal_carrinho.css - CÓDIGO FINAL COM ALINHAMENTO PERFEITO */
 /* ======================================================= */
 :root {
     --primary-color: #ff69b4; /* Rosa Neon */
@@ -66,7 +66,7 @@
 
 
 /* ------------------------------------------------------- */
-/* LAYOUT DO CARRINHO (Alinhamento dos Itens) */
+/* LAYOUT DO CARRINHO (Mantido, mas com espaçamento limpo) */
 /* ------------------------------------------------------- */
 
 .carrinho-itens {
@@ -89,7 +89,7 @@
 
 .carrinho-item span:first-child {
     max-width: 65%; 
-    flex-shrink: 1; /* Permite que o texto encolha se precisar */
+    flex-shrink: 1; 
 }
 
 .carrinho-total-container {
@@ -104,7 +104,7 @@
     margin-bottom: 20px;
 }
 
-/* Formulário e Campos */
+/* Formulário e Campos (Sem alterações no alinhamento) */
 .carrinho-finalizar input,
 .carrinho-finalizar select,
 .carrinho-finalizar textarea {
@@ -127,7 +127,7 @@
 
 
 /* ------------------------------------------------------- */
-/* LAYOUT DE CUSTOMIZAÇÃO (Correção da Sobreposição) */
+/* LAYOUT DE CUSTOMIZAÇÃO (CORRIGIDO) */
 /* ------------------------------------------------------- */
 
 .adicionais-opcoes {
@@ -137,62 +137,69 @@
 
 .adicional-item-opcao {
     display: flex;
+    /* Alinha o nome na esquerda e o grupo (preço + contador) na direita */
     justify-content: space-between;
     align-items: center;
     padding: 12px 0; 
     border-bottom: 1px dashed #555;
     color: #eee;
     font-size: 1.05em;
-    flex-wrap: wrap; /* PERMITE QUE OS ITENS QUEBREM A LINHA SE NÃO HOUVER ESPAÇO */
+    flex-wrap: wrap; 
 }
 
-/* CORRIGINDO O NOME DO ADICIONAL PARA NÃO ENCAVALAR */
+/* Nome do Adicional (Esquerda) */
 .adicional-item-opcao > span:first-child {
-    flex-basis: auto; /* Permite que o texto ocupe o espaço necessário */
-    flex-grow: 1; /* Cresce para preencher o espaço */
-    margin-right: 10px; /* Espaço entre o nome e o contador */
-    min-width: 100px; /* Evita que o nome fique minúsculo em telas pequenas */
+    flex-grow: 1; /* Permite que o nome ocupe a maior parte do espaço */
+    max-width: 50%; /* Limita o crescimento para dar espaço aos controles */
+    margin-right: 15px; /* Mais espaço entre o nome e o preço */
 }
 
+/* Grupo Preço e Contador (Direita) */
 .adicional-contador {
     display: flex;
     align-items: center;
-    gap: 8px; /* Reduzido levemente o espaçamento entre os elementos do contador */
-    flex-shrink: 0; /* IMPEDE QUE O CONTADOR ENCOLHA */
-    margin-left: auto; /* Empurra para a direita */
+    flex-shrink: 0; /* Impede que este grupo encolha */
+    gap: 10px; /* Espaço entre o preço e os botões */
+    margin-left: auto; /* Garante que o grupo vá para a direita */
 }
 
-/* Estiliza o preço individual do adicional */
+/* Preço do Adicional (Meio) */
 .adicional-contador .preco-adicional {
     color: #fff;
     font-weight: normal;
-    font-size: 0.9em; /* Preço um pouco menor */
-    margin-right: 5px; /* Espaço antes do '-' */
-    min-width: 50px; /* Garante que o preço tenha espaço mínimo */
-    text-align: right;
+    font-size: 0.95em; 
+    /* Garante que o preço tenha o espaço adequado e esteja alinhado */
+    min-width: 60px; 
+    text-align: center; /* CENTRALIZA O PREÇO */
+}
+
+/* Grupo de Botões e Quantidade (Direita) */
+.contador-botoes {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Espaço bem pequeno entre os botões */
 }
 
 .quantidade-adicional {
-    min-width: 28px; /* Ligeiramente maior */
+    min-width: 25px; /* Tamanho ajustado para caber 00 */
     text-align: center;
-    margin: 0; /* Remove margem desnecessária */
     font-weight: bold;
     color: #fff;
+    padding: 0 2px;
 }
 
 .customizacao-resumo {
     padding-top: 15px;
     border-top: 2px solid var(--primary-color); 
     margin-top: 0; 
-    
-    /* ADICIONA MARGEM INFERIOR PARA EVITAR SOBREPOSIÇÃO DO BOTÃO PRINCIPAL */
     margin-bottom: 20px; 
 }
 
+/* Resumo (Rodapé): Esquerda/Direita */
 .customizacao-resumo p {
     color: #aaa;
     margin-bottom: 5px;
-    display: flex; /* Para alinhar Preço Base/Adicionais com valores */
+    display: flex; 
     justify-content: space-between;
 }
 
@@ -214,10 +221,10 @@
     background-color: var(--primary-color);
     color: #000;
     border: none;
-    width: 32px; 
-    height: 32px; 
+    width: 28px; /* Ligeiramente menor para caber melhor na linha */
+    height: 28px; 
     border-radius: 6px; 
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -227,7 +234,55 @@
     line-height: 1;
 }
 
-/* ... (O restante do código de botões, FAB e Notificação permanece o mesmo) ... */
+.btn-aumentar-adicional:hover, .btn-diminuir-adicional:hover {
+    background-color: #ff85c0;
+}
+
+/* Botão de Ação Principal (Adicionar ao Carrinho) - CENTRALIZADO E GRANDE */
+#btn-adicionar-customizado {
+    width: 100%;
+    padding: 16px; 
+    background-color: var(--primary-color); 
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    margin-top: 20px; 
+    box-shadow: 0 0 10px var(--primary-color); 
+}
+
+#btn-adicionar-customizado:hover {
+    background-color: #ff85c0; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--primary-color);
+}
+
+/* Botão Finalizar Pedido (Carrinho) */
+#btn-finalizar-pedido {
+    width: 100%;
+    padding: 14px; 
+    background-color: var(--primary-color); 
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    margin-top: 15px;
+    box-shadow: 0 0 10px var(--primary-color); 
+}
+
+#btn-finalizar-pedido:hover {
+    background-color: #ff85c0; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--primary-color);
+}
+
+/* ... (O restante do código de botões secundários, FAB e Notificação permanece o mesmo) ... */
 
 /* MEDIA QUERY PARA AJUSTE DO MODAL EM TELAS MAIORES */
 @media (min-width: 600px) {
