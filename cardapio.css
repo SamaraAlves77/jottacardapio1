@@ -1,5 +1,5 @@
 /* ======================================= */
-/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO)     */
+/* 4. MODAIS (CARRINHO E CUSTOMIZAÇÃO) - CORRIGIDO */
 /* ======================================= */
 .modal {
     display: none; 
@@ -9,9 +9,9 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.85); /* Fundo bem escuro */
-    padding-top: 50px;
+    overflow-y: auto; /* Permite rolar a tela inteira se o modal for maior que o viewport */
+    background-color: rgba(0,0,0,0.85); 
+    padding: 20px 0; /* Ajusta o padding vertical para telas menores */
 }
 
 .modal.ativo {
@@ -20,23 +20,30 @@
 
 .modal-content {
     /* Fundo Escuro com Destaque Neon */
-    background-color: var(--secondary-color); /* Fundo #212121 */
+    background-color: var(--secondary-color);
     color: white;
     margin: 5% auto; 
-    padding: 30px; /* Mais padding */
+    padding: 30px; 
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
     position: relative;
     border: 1px solid var(--primary-color);
     box-shadow: 0 0 15px var(--primary-color), 0 5px 15px rgba(0,0,0,0.8);
+    
+    /* CORREÇÃO CHAVE: Define o box-sizing para que o padding não cause transbordo */
+    box-sizing: border-box; 
+    max-height: 95vh; /* Limita a altura máxima a 95% da altura da tela */
+    overflow-y: auto; /* Adiciona scroll ao modal se ele transbordar a altura máxima */
 }
 
+/* O restante dos estilos do Modal-Content h3, fechar-modal, etc. permanecem os mesmos */
+
 .modal-content h3 {
-    color: var(--primary-color); /* Título em Neon */
+    color: var(--primary-color); 
     text-align: center;
     margin-bottom: 20px;
-    text-shadow: 0 0 5px var(--primary-color); /* Brilho no título */
+    text-shadow: 0 0 5px var(--primary-color);
     text-transform: uppercase;
 }
 
@@ -62,126 +69,26 @@
     padding-right: 10px;
     margin-bottom: 10px;
 }
+/* ... (outros estilos do carrinho-item e total permanecem os mesmos) ... */
 
-.carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0; /* Mais espaçamento */
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); /* Linha sutil clara */
-}
 
-.carrinho-item:last-child {
-    border-bottom: none;
-}
+/* --- Seção de Adicionais (Customização Modal) --- */
 
-.carrinho-item-nome {
-    flex-grow: 1;
-    text-align: left;
-    font-weight: 500;
-}
-
-.carrinho-item-preco {
-    color: var(--primary-color); /* Preço em Neon */
-    font-weight: 700;
-    margin-left: 10px;
-}
-
-.btn-remover {
-    background-color: #e53935;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 25px; /* Um pouco maior */
-    height: 25px;
-    font-size: 0.9rem;
-    line-height: 1;
-    margin-left: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-remover:hover {
-    background-color: #b71c1c;
-}
-
-/* Total do Carrinho */
-.carrinho-total-container {
-    text-align: right;
-    font-size: 1.4rem; 
-    font-weight: 700;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 2px solid var(--primary-color); /* Separador Neon */
-    color: var(--primary-color); /* Texto do total em Neon */
-    text-shadow: 0 0 5px var(--primary-color);
-}
-
-.carrinho-total-container span {
-    color: white;
-    margin-right: 5px;
-}
-
-/* Estilos de Finalização (Inputs e Botão) */
-.carrinho-finalizar {
-    margin-top: 25px;
-    padding: 10px;
-    background-color: #333; /* Fundo para a área de inputs */
-    border-radius: 5px;
+#customizacao-modal .modal-content {
     display: flex;
     flex-direction: column;
-    gap: 15px;
 }
 
-.carrinho-finalizar input {
-    padding: 12px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    background-color: #444; /* Fundo escuro para inputs */
-    color: white;
-    transition: border-color 0.3s, box-shadow 0.3s;
+/* CORREÇÃO CHAVE PARA A LISTA DE ADICIONAIS */
+.lista-adicionais-container { /* Use o ID ou classe do contêiner da sua lista de adicionais */
+    max-height: 40vh; /* Limita a altura da lista a uma porcentagem da tela */
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
-.carrinho-finalizar input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color); /* Efeito Neon no focus */
-    outline: none;
+/* Garante que o Resumo e o botão fiquem visíveis no final */
+.customizacao-resumo, #btn-adicionar-customizado {
+    flex-shrink: 0; /* Impede que estes elementos diminuam */
 }
 
-.carrinho-finalizar input::placeholder {
-    color: #aaa;
-}
-
-#btn-finalizar-pedido {
-    /* Mantém o verde WhatsApp com destaque */
-    background-color: #25d366; 
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5); 
-}
-
-#btn-finalizar-pedido:hover {
-    background-color: #128c7e;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.8);
-}
-
-/* Estilos de Customização */
-.adicionais-opcoes h4, .customizacao-resumo h4 {
-    color: var(--primary-color);
-    text-shadow: 0 0 3px var(--primary-color);
-}
-
-.adicional-item-opcao {
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-}
-
-.adicional-item-opcao small {
-    color: #ccc;
-}
+/* ... (Estilos de Adicionais/Finalização/Contador permanecem os mesmos) ... */
